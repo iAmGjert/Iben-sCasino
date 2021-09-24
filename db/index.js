@@ -1,5 +1,8 @@
 const Sequelize = require('Sequelize');
-const orm = new Sequelize('pokerDatabase', '/*username*/', '/*password*/');
+const orm = new Sequelize('pokerDatabase', '/*username*/', '/*password*/', {
+  host: 'localhost',
+  dialect: 'mysql',
+});
 
 const User = orm.define('User', {
   sub: Sequelize.NUMBER,
@@ -15,8 +18,26 @@ const Friends = orm.define('Friends', {
 User.hasMany(Friends);
 Friends.belongsTo(User);
 
-User.sync();
-Friends.sync();
+
+// Somehow use this to drop the database
+User.sync()
+  .then(() => {
+    console.log('Connection has been established successfully.');
+  })
+  .catch((err) => {
+    console.error('Unable to connect to the database:', err);
+  });
+
+
+Friends.sync()
+  .then(() => {
+    console.log('Connection has been established successfully.');
+  })
+  .catch((err) => {
+    console.error('Unable to connect to the database:', err);
+  });
+
+
 
 exports.User = User;
 exports.Friends = Friends;
