@@ -1,18 +1,39 @@
-const Sequelize = require('Sequelize');
-const orm = new Sequelize('pokerDatabase', '/*username*/', '/*password*/', {
+const { Sequelize } = require('Sequelize');
+const orm = new Sequelize('poker_database', 'root', '', {
   host: 'localhost',
   dialect: 'mysql',
 });
 
 const User = orm.define('User', {
-  sub: Sequelize.NUMBER,
-  name: Sequelize.STRING,
-  picture: Sequelize.STRING,
-  email: Sequelize.STRING,
+  sub: {
+    type: 
+    Sequelize.STRING,
+    primaryKey: true,
+    
+  
+  }, 
+  name: {
+    type: 
+    Sequelize.STRING(255),
+    allowNull: false,
+  },
+  picture: {
+    type: 
+    Sequelize.STRING(255),
+    allowNull: false,
+  },
+  email: {
+    type: 
+    Sequelize.STRING(255),
+    allowNull: false,
+  }
 });
 
 const Friends = orm.define('Friends', {
-  friends: Sequelize.STRING,
+  friends: {
+    type: 
+    Sequelize.STRING(255),
+  }
 });
 
 User.hasMany(Friends);
@@ -20,6 +41,7 @@ Friends.belongsTo(User);
 
 
 // Somehow use this to drop the database
+
 User.sync()
   .then(() => {
     console.log('Connection has been established successfully.');
@@ -91,6 +113,27 @@ full google response object:
     locale: 'en'
   }
 }
-
+  student_id: {
+      type: DataTypes.INTEGER(11),
+      primaryKey: true,
+      autoIncrement: true
+    },
+    name: {
+      type: DataTypes.STRING(255),
+      allowNull: false
+    },
+    class: {
+      type: DataTypes.STRING(50),
+      allowNull: false
+    },
+    section: {
+      type: DataTypes.STRING(50),
+      allowNull:false
+    },
+    roll_number: {
+      type: DataTypes.STRING(10),
+      allowNull: false,
+      unique:true
+    }
 
 */
