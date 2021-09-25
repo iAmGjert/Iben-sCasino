@@ -1,6 +1,66 @@
 const axios = require('axios');
 
-//const testId = 'y210y3onuiww'
+
+// const info = {
+//   deckId: '',
+//   dealer: {
+//     points: {low: 0}
+//   },
+//   user: {
+//     points: {low: 0}}
+// }
+
+//helper function to calculate points for a card
+const points = (card) => {
+  if (parseInt(card.value)) {
+    return parseInt(card.value)
+  } else if (card.value === 'KING' || card.value === 'QUEEN' || card.value === 'JACK') {
+    return 10;
+  } else {//ace
+    return 'ACE'
+  }
+}
+
+const handPoints = (cards ) => {
+  const pointsMap = cards.map(card => points(card));
+  if (pointsMap.includes('ACE')) {
+    const total = {}
+    total.low = pointsMap.reduce((x, y) => {
+      return y === 'ACE' ? x + 1 : x + y;
+    }, 0);
+    total.high = pointsMap.reduce((x, y) => {
+      return y === 'ACE' ? x + 11 : x + y;
+    }, 0);
+   // info[player].points.low = total.low;
+   // info[player].points.high = total.high;
+    return total;
+
+  } else {
+    const low = pointsMap.reduce((x, y) => x + y)
+   // info[player].points.low = low;
+    return {
+      low: low
+    };
+  }
+}
+//this function run on the first deal, see if value 21 returned for the high
+const blackJack = (points) => {
+
+  if(points.high === 21) {
+    return true;
+  }else {
+    return false;
+  }
+}
+//this function runs every time a card is added, if the low is over 21 then it is a bust
+const bust = (points) => {
+  return points.low > 21 ? true : false;
+}
+
+//this will be a function to calculate the score closest to 21.  NEEDS TO ACCOUNT FOR MULTIPLE ACES!!!
+const bestScore = () => {
+
+}
 
 /**
  * this is the function to initally deal the cards.  creates and shuffles a deck using DoC api, deals 2 cards to the dealer, and 2 to the user.
@@ -14,7 +74,6 @@ const initialDeal = async () => {
     const {data} = await axios.get('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1')    //6 decks is standard black jack
     const id = data.deck_id; //this will need to be available outside of this scope
     
-  // const id = testId
     const dealer = await axios.get(`https://deckofcardsapi.com/api/deck/${id}/draw/?count=2`)
     const user = await axios.get(`https://deckofcardsapi.com/api/deck/${id}/draw/?count=2`)
 
@@ -29,13 +88,20 @@ const initialDeal = async () => {
     const dealerPile = await axios.get(`https://deckofcardsapi.com/api/deck/${id}/pile/dealer/add/?cards=${dealerHandCodes.join(',')}`)
     const userPile = await axios.get(`https://deckofcardsapi.com/api/deck/${id}/pile/user/add/?cards=${userHandCodes.join(',')}`)
 
+    //get the points for dealer and user
+
+    const dealerPoints = handPoints(dealer.data.cards);
+    const userPoints = handPoints(user.data.cards);
+    
 
     
 
     return {
       dealerHand: dealer.data.cards,
       userHand: user.data.cards,
-      deckId: id
+      deckId: id,
+      dealerPoints: dealerPoints,
+      userPoints: userPoints
     };
   }
   catch (err) {
@@ -62,7 +128,10 @@ const hit = async (deckId, player ) => {
     const hand = {};
     hand[player] = pile.data.piles[player].cards;
     //hand is an array of the cards in the user or dealers hand
-    return hand;
+    console.log('HAND', hand)
+    const points = handPoints(hand[player]);
+    const over = bust(points)
+    return {hand: hand, points: points, bust: over};
 
   }
   catch (err) {
@@ -71,46 +140,15 @@ const hit = async (deckId, player ) => {
  
 }
 
-//helper function to calculate points for a card
-const points = (card) => {
-  if(parseInt(card.value)) {
-    return parseInt(card.value)
-  } else if (card.value === 'KING' || card.value === 'QUEEN' || card.value === 'JACK') {
-    return 10;
-  } else {//ace
-    return 'ACE'
-  }
-}
+
 
 //function to return the total of points for a hand
 //the low is if ace is counted as 1
 //high if ace is counted as 11
 
-const handPoints = (cards) => {
-  const pointsMap = cards.map(card => points(card));
-  if (pointsMap.includes('ACE')) {
-    const total = {}
-    total.low = pointsMap.reduce((x, y) => {
-      return y === 'ACE' ? x + 1 : x + y;
-    }, 0)
-    total.high = pointsMap.reduce((x, y) => {
-      return y === 'ACE' ? x + 11 : x + y;
-    }, 0)
 
-    return total;
 
-  } else {
-    return {
-      low: pointsMap.reduce((x, y) => x + y)
-    };
-  }
-}
-
-//this will be a function to calculate the score closest to 21.  NEEDS TO ACCOUNT FOR MULTIPLE ACES!!!
-const bestScore = () => {
-
-}
-
-console.log(handPoints([{value: 'ACE'}, {value: 'QUEEN'}]))
+//console.log(handPoints([{value: 'ACE'}, {value: 'QUEEN'}], 'user'))
+//console.log(info)
 
 module.exports = {initialDeal, hit}

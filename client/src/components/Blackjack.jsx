@@ -14,7 +14,15 @@ class Blackjack extends React.Component {
       userHand: [],
       deckId: '',
       userPoints: {low: 0},
-      dealerPoints: {low: 0}
+      dealerPoints: {low: 0},
+      dealer21: false, //true if 21 is points
+      user21: false, //true if points are 21,
+      dealerBust: false, //true if dealer busts (>21 on the low points)
+      userBust: false, //true if user busts (>21 on the low pts)
+      dealerFin: false, // true if hits 21, over 21 (on the low.  i.e. cant play anymore)
+      userFin: false //true if hits 21 or over 21 (on the low),
+      
+
     };
     this.initialDeal = this.initialDeal.bind(this);
     this.userHitCard = this.userHitCard.bind(this);
@@ -37,7 +45,9 @@ class Blackjack extends React.Component {
       await this.setState({
         dealerHand: data.data.dealerHand,
         userHand: data.data.userHand,
-        deckId: data.data.deckId
+        deckId: data.data.deckId,
+        userPoints: data.data.userPoints,
+        dealerPoints: data.data.dealerPoints
       })
       console.log('thisstate', this.state)
       return;
@@ -53,9 +63,10 @@ class Blackjack extends React.Component {
   async userHitCard() {
     try {
       const hand = await axios.get(`/routes/blackjack/hit/${this.state.deckId}&user`)
-      console.log('hand', hand)
+      console.log('HAND!', hand, hand.data.hand.user)
       this.setState({
-        userHand: hand.data.user
+        userHand: hand.data.hand.user,
+        userPoints: hand.data.points
       })
     }
     catch (err) {
@@ -68,7 +79,8 @@ class Blackjack extends React.Component {
     try {
       const hand = await axios.get(`/routes/blackjack/hit/${this.state.deckId}&dealer`)
       this.setState({
-        dealerHand: hand.data.dealer
+        dealerHand: hand.data.hand.dealer,
+        dealerPoints: hand.data.points
       });
       console.log('thissstate', this.state)
     }
