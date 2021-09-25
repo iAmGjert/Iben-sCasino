@@ -12,7 +12,9 @@ class Blackjack extends React.Component {
     this.state = {
       dealerHand: [],
       userHand: [],
-      deckId: ''
+      deckId: '',
+      userPoints: {low: 0},
+      dealerPoints: {low: 0}
     };
     this.initialDeal = this.initialDeal.bind(this);
     this.userHitCard = this.userHitCard.bind(this);
@@ -61,6 +63,7 @@ class Blackjack extends React.Component {
     }
   }
 
+  //this is going to need to become automatic
   async dealerHitCard() {
     try {
       const hand = await axios.get(`/routes/blackjack/hit/${this.state.deckId}&dealer`)
