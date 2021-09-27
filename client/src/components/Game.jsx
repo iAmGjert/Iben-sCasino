@@ -4,7 +4,7 @@ import Login from './Login.jsx';
 import {Router, Route, Switch} from 'react-router';
 
 
-class App extends React.Component {
+class Game extends React.Component {
 
   constructor(props) {
     super(props);
@@ -51,4 +51,4 @@ class App extends React.Component {
 } 
 
 
-export default App;
+export default Game;
