@@ -21,13 +21,15 @@ class Blackjack extends React.Component {
       userBust: false, //true if user busts (>21 on the low pts)
       dealerFin: false, // true if hits 21, over 21 (on the low.  i.e. cant play anymore)
       userFin: false, //true if hits 21 or over 21 (on the low),
-      dealerStand: false //this is true when the cards is >= 17 && <=21.  ace always treated as 11 for this. 
+      dealerStand: false, //this is true when the cards is >= 17 && <=21.  ace always treated as 11 for this. 
+      userStand: false
       
 
     };
     this.initialDeal = this.initialDeal.bind(this);
     this.userHitCard = this.userHitCard.bind(this);
     this.dealerHitCard = this.dealerHitCard.bind(this);
+    this.userStand = this.userStand.bind(this);
   }
 
   /**
@@ -73,39 +75,69 @@ class Blackjack extends React.Component {
       console.log('HAND!', hand, hand.data.hand.user);
       this.setState({
         userHand: hand.data.hand.user,
-        userPoints: hand.data.points
+        userPoints: hand.data.points,
+        userBust: hand.data.bust
       });
+      //then we need to do the this.dealerHitCard
     } catch (err) {
       console.log('err in userHitCard', err );
     }
   }
 
-  //this is going to need to become automatic
-  async dealerHitCard() {
+  async userStand() {
     try {
-      const hand = await axios.get(`/routes/blackjack/hit/${this.state.deckId}&dealer`);
-      console.log('dealer hand: ', hand)
       this.setState({
-        dealerHand: hand.data.hand.dealer,
-        dealerPoints: hand.data.points,
-        userBust: hand.data.bust,
-        dealerStand: hand.data.dealerStand
+        userStand: true
       });
-      console.log('thissstate', this.state);
+
     } catch (err) {
-      console.log('err in dealerHitCard', err);
+      console.log(err);
     }
   }
 
+  //this is going to need to become automatic
+  async dealerHitCard() { 
+    console.log('dhc');
+    const {dealerStand, dealerBust, dealer21} = this.state;
+    console.log('this.state in dhc', this.state);
+    if (dealerStand === false && dealerBust === false && dealer21 === false) {
+      try {
+        const hand = await axios.get(`/routes/blackjack/hit/${this.state.deckId}&dealer`);
+        console.log('dealer hand: ', hand);
+        this.setState({
+          dealerHand: hand.data.hand.dealer,
+          dealerPoints: hand.data.points,
+          dealerBust: hand.data.bust,
+          dealerStand: hand.data.dealerStand,
+          dealer21: hand.data.equal21
+        });
+        console.log('thissstate', this.state);
+        return await this.dealerHitCard();
+      } catch (err) {
+        console.log('err in dealerHitCard', err);
+      }
+
+    } else { //if dealer stand is true
+      this.setState({
+        dealerFin: true,
+      });
+      return;
+    }
+   
+  }
+
+
+
 
   render() {
-    const {dealerHand, userHand} = this.state;
+    const {dealerHand, userHand, userBust, userStand} = this.state;
     return (
       <div>blackjack div
         <div>cards</div>
     
-        <button onClick={this.userHitCard}>user hit card</button>
+        <button style={{display: userBust || userStand ? 'none' : 'block'}} onClick={this.userHitCard}>user hit card</button>
         <button onClick={this.dealerHitCard}> dealer hit  card</button>
+        <button onClick={this.userStand}>user stand</button>
         <BlackjackDealer dealerHand={dealerHand} />
         <BlackjackUser userHand={userHand} />
       </div>

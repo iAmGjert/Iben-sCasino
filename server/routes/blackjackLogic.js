@@ -46,7 +46,7 @@ const handPoints = (cards ) => {
 //this function run on the first deal, see if value 21 returned for the high
 const blackJack = (points) => {
 
-  if (points.high === 21) {
+  if (points.low === 21 || points.high === 21 ) {
     return true;
   } else {
     return false;
@@ -93,8 +93,8 @@ const initialDeal = async () => {
     const dealerPoints = handPoints(dealer.data.cards);
     const userPoints = handPoints(user.data.cards);
 
-    const dealerStand = (dealerPoints.high >= 17 || dealerPoints.low >= 17)
-    console.log('dealer stand', dealerStand)
+    const dealerStand = (dealerPoints.high >= 17 || dealerPoints.low >= 17);
+    console.log('dealer stand', dealerStand);
     
 
     
@@ -134,9 +134,10 @@ const hit = async (deckId, player ) => {
     //console.log('HAND', hand);
     const points = handPoints(hand[player]);
     const over = bust(points);
-    const dealerStand = (points.high >= 17 && points.high <= 21) || (points.low >= 17 && points.low <= 21);  //for the dealer automated play, dont refer to this in user in front end , only dealer
-    console.log('dS', dealerStand)
-    return {hand: hand, points: points, bust: over, dealerStand: dealerStand};
+    const dealerStand = (points.high >= 17 && points.high <= 21) || (points.low >= 17 && points.low <= 21); //for the dealer automated play, dont refer to this in user in front end , only dealer
+    console.log('dS', dealerStand);
+    const equal21 = blackJack(points);
+    return {hand: hand, points: points, bust: over, dealerStand: dealerStand, equal21: equal21};
 
   } catch (err) {
     console.log(err);
