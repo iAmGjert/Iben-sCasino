@@ -18,7 +18,7 @@ passport.use(new GoogleStrategy({
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
   callbackURL: 'http://127.0.0.1:1337/google/callback'
 },
-function(accessToken, refreshToken, profile, cb) {
+function(accessToken, refreshToken, profile, done) { // this was cb
   // register user here
   const { sub, name, picture, email } = profile._json;
   
@@ -26,20 +26,20 @@ function(accessToken, refreshToken, profile, cb) {
     where: {
       email: email
     }
-  }).then(function(user, done) {
+  }).then((user) => {
     if (user) {
-      return done(null, false, {
-        message: 'That email is already taken'
-      });
+      return null;
+     
 
     } else {
-      User.create(profile._json).then(function(newUser, done) {
-        if (!newUser) {
-          return done(null, false);
-        }
-        if (newUser) {
-          return done(null, newUser);
-        }
+      User.create(profile._json).then((/*newUser, done*/) => {
+        console.log('all good!');
+        // if (!newUser) {
+        //   return done(null, false);
+        // }
+        // if (newUser) {
+        //   return done(null, newUser);
+        // }
       }).catch((err) => {
         console.log('Create Error:', err);
       });
@@ -48,7 +48,7 @@ function(accessToken, refreshToken, profile, cb) {
     console.log('FindOne Err:', err);
   });
   console.log('google:', profile._json);
-  cb(null, profile);
+  done(null, profile);
  
 }
 ));
