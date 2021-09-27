@@ -5,10 +5,7 @@ const Login = (props) => {
   const {changeRender} = props
   return (
     <div>login goes here
-      <button onClick={()=>{
-        console.log('click')
-        changeRender('blackjack')
-      }}>test changeRender to blackjack</button>
+      <button onClick={()=> changeRender('blackjack')}>test changeRender to blackjack</button>
     </div>
   )
 }
