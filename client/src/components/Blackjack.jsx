@@ -38,9 +38,9 @@ class Blackjack extends React.Component {
 
   async initialDeal() {
     try {
-      console.log('click')
+      console.log('click');
       const data = await axios.get('/routes/blackjack');
-      console.log('d.dh', data.data.dealerHand, 'd.uH', data.data.userHand, data)
+      console.log('d.dh', data.data.dealerHand, 'd.uH', data.data.userHand, data);
 
       await this.setState({
         dealerHand: data.data.dealerHand,
@@ -48,11 +48,11 @@ class Blackjack extends React.Component {
         deckId: data.data.deckId,
         userPoints: data.data.userPoints,
         dealerPoints: data.data.dealerPoints
-      })
-      console.log('thisstate', this.state)
+      });
+      console.log('thisstate', this.state);
       return;
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
   }
 
@@ -62,37 +62,35 @@ class Blackjack extends React.Component {
    */
   async userHitCard() {
     try {
-      const hand = await axios.get(`/routes/blackjack/hit/${this.state.deckId}&user`)
-      console.log('HAND!', hand, hand.data.hand.user)
+      const hand = await axios.get(`/routes/blackjack/hit/${this.state.deckId}&user`);
+      console.log('HAND!', hand, hand.data.hand.user);
       this.setState({
         userHand: hand.data.hand.user,
         userPoints: hand.data.points
-      })
-    }
-    catch (err) {
-      console.log('err in userHitCard', err )
+      });
+    } catch (err) {
+      console.log('err in userHitCard', err );
     }
   }
 
   //this is going to need to become automatic
   async dealerHitCard() {
     try {
-      const hand = await axios.get(`/routes/blackjack/hit/${this.state.deckId}&dealer`)
+      const hand = await axios.get(`/routes/blackjack/hit/${this.state.deckId}&dealer`);
       this.setState({
         dealerHand: hand.data.hand.dealer,
         dealerPoints: hand.data.points,
         userBust: hand.data.bust
       });
-      console.log('thissstate', this.state)
-    }
-    catch (err) {
-      console.log('err in dealerHitCard', err)
+      console.log('thissstate', this.state);
+    } catch (err) {
+      console.log('err in dealerHitCard', err);
     }
   }
 
 
   render() {
-    const {dealerHand, userHand} = this.state
+    const {dealerHand, userHand} = this.state;
     return (
       <div>blackjack div
         <div>cards</div>
@@ -102,7 +100,7 @@ class Blackjack extends React.Component {
         <BlackjackDealer dealerHand={dealerHand} />
         <BlackjackUser userHand={userHand} />
       </div>
-    )
+    );
   }
 }
 

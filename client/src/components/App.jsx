@@ -28,10 +28,10 @@ class App extends React.Component {
   conditionalRender() {
     const {view} = this.state;
 
-    if(view === 'blackjack') {
+    if (view === 'blackjack') {
       return <Blackjack />;
     }
-    if(view === 'login') {
+    if (view === 'login') {
       return <Login changeRender={this.changeView} />;
     }
 
@@ -44,7 +44,7 @@ class App extends React.Component {
       <div>
         {this.conditionalRender()}
       </div>
-    )
+    );
   }
 
  
