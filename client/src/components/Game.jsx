@@ -1,7 +1,7 @@
 import React from 'react';
 import Blackjack from './Blackjack.jsx';
-import Login from './Login.jsx';
-import {Router, Route, Switch} from 'react-router';
+import BlackjackStart from './BlackjackStart.jsx';
+
 
 
 class Game extends React.Component {
@@ -9,10 +9,10 @@ class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      view: 'blackjack'
+      view: 'start'
     };
     this.renderView = this.conditionalRender.bind(this);
-    this.changeView = this.changeRender.bind(this);
+    this.changeRender = this.changeRender.bind(this);
   }
 
   //function to change the view so render will render conditionally
@@ -31,8 +31,8 @@ class Game extends React.Component {
     if (view === 'blackjack') {
       return <Blackjack />;
     }
-    if (view === 'login') {
-      return <Login changeRender={this.changeView} />;
+    if (view === 'start') {
+      return <BlackjackStart changeRender={this.changeRender} />;
     }
 
   }

@@ -20,7 +20,8 @@ class Blackjack extends React.Component {
       dealerBust: false, //true if dealer busts (>21 on the low points)
       userBust: false, //true if user busts (>21 on the low pts)
       dealerFin: false, // true if hits 21, over 21 (on the low.  i.e. cant play anymore)
-      userFin: false //true if hits 21 or over 21 (on the low),
+      userFin: false, //true if hits 21 or over 21 (on the low),
+      dealerStand: false //this is true when the cards is >= 17 && <=21.  ace always treated as 11 for this. 
       
 
     };
@@ -42,18 +43,24 @@ class Blackjack extends React.Component {
       const data = await axios.get('/routes/blackjack');
       console.log('d.dh', data.data.dealerHand, 'd.uH', data.data.userHand, data);
 
-      await this.setState({
+      this.setState({
         dealerHand: data.data.dealerHand,
         userHand: data.data.userHand,
         deckId: data.data.deckId,
         userPoints: data.data.userPoints,
-        dealerPoints: data.data.dealerPoints
+        dealerPoints: data.data.dealerPoints,
+        dealerStand: data.data.dealerStand
       });
       console.log('thisstate', this.state);
       return;
     } catch (err) {
       console.log(err);
     }
+  }
+
+  //have the cards dealt load on component mounting
+  componentDidMount() {
+    this.initialDeal();
   }
 
   /**
@@ -77,10 +84,12 @@ class Blackjack extends React.Component {
   async dealerHitCard() {
     try {
       const hand = await axios.get(`/routes/blackjack/hit/${this.state.deckId}&dealer`);
+      console.log('dealer hand: ', hand)
       this.setState({
         dealerHand: hand.data.hand.dealer,
         dealerPoints: hand.data.points,
-        userBust: hand.data.bust
+        userBust: hand.data.bust,
+        dealerStand: hand.data.dealerStand
       });
       console.log('thissstate', this.state);
     } catch (err) {
@@ -94,7 +103,7 @@ class Blackjack extends React.Component {
     return (
       <div>blackjack div
         <div>cards</div>
-        <button onClick={this.initialDeal}>deal</button>
+    
         <button onClick={this.userHitCard}>user hit card</button>
         <button onClick={this.dealerHitCard}> dealer hit  card</button>
         <BlackjackDealer dealerHand={dealerHand} />

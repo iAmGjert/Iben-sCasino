@@ -92,6 +92,9 @@ const initialDeal = async () => {
 
     const dealerPoints = handPoints(dealer.data.cards);
     const userPoints = handPoints(user.data.cards);
+
+    const dealerStand = (dealerPoints.high >= 17 || dealerPoints.low >= 17)
+    console.log('dealer stand', dealerStand)
     
 
     
@@ -101,7 +104,8 @@ const initialDeal = async () => {
       userHand: user.data.cards,
       deckId: id,
       dealerPoints: dealerPoints,
-      userPoints: userPoints
+      userPoints: userPoints,
+      dealerStand: dealerStand
     };
   } catch (err) {
     console.log(err);
@@ -127,10 +131,12 @@ const hit = async (deckId, player ) => {
     const hand = {};
     hand[player] = pile.data.piles[player].cards;
     //hand is an array of the cards in the user or dealers hand
-    console.log('HAND', hand);
+    //console.log('HAND', hand);
     const points = handPoints(hand[player]);
     const over = bust(points);
-    return {hand: hand, points: points, bust: over};
+    const dealerStand = (points.high >= 17 && points.high <= 21) || (points.low >= 17 && points.low <= 21);  //for the dealer automated play, dont refer to this in user in front end , only dealer
+    console.log('dS', dealerStand)
+    return {hand: hand, points: points, bust: over, dealerStand: dealerStand};
 
   } catch (err) {
     console.log(err);
