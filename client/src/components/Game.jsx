@@ -1,14 +1,15 @@
 import React from 'react';
 import Blackjack from './Blackjack.jsx';
 import Login from './Login.jsx';
+import {Router, Route, Switch} from 'react-router';
 
 
-class App extends React.Component {
+class Game extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      view: 'login'
+      view: 'blackjack'
     };
     this.renderView = this.conditionalRender.bind(this);
     this.changeView = this.changeRender.bind(this);
@@ -27,10 +28,10 @@ class App extends React.Component {
   conditionalRender() {
     const {view} = this.state;
 
-    if(view === 'blackjack') {
+    if (view === 'blackjack') {
       return <Blackjack />;
     }
-    if(view === 'login') {
+    if (view === 'login') {
       return <Login changeRender={this.changeView} />;
     }
 
@@ -43,11 +44,11 @@ class App extends React.Component {
       <div>
         {this.conditionalRender()}
       </div>
-    )
+    );
   }
 
  
 } 
 
 
-export default App;
+export default Game;
