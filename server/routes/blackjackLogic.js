@@ -95,6 +95,10 @@ const initialDeal = async () => {
 
     const dealerStand = (dealerPoints.high >= 17 || dealerPoints.low >= 17);
     console.log('dealer stand', dealerStand);
+    const dealer21 = blackJack(dealerPoints);
+    const user21 = blackJack(userPoints);
+
+
     
 
     
@@ -105,7 +109,11 @@ const initialDeal = async () => {
       deckId: id,
       dealerPoints: dealerPoints,
       userPoints: userPoints,
-      dealerStand: dealerStand
+      dealerStand: dealerStand,
+      dealer21: dealer21,
+      user21: user21,
+      dealerFin: dealer21 || user21,
+      userFin: dealer21 || user21
     };
   } catch (err) {
     console.log(err);
@@ -137,7 +145,8 @@ const hit = async (deckId, player ) => {
     const dealerStand = (points.high >= 17 && points.high <= 21) || (points.low >= 17 && points.low <= 21); //for the dealer automated play, dont refer to this in user in front end , only dealer
     console.log('dS', dealerStand);
     const equal21 = blackJack(points);
-    return {hand: hand, points: points, bust: over, dealerStand: dealerStand, equal21: equal21};
+    const finished = equal21 || over
+    return {hand: hand, points: points, bust: over, dealerStand: dealerStand, equal21: equal21, finished: finished};
 
   } catch (err) {
     console.log(err);
