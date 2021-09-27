@@ -1,4 +1,4 @@
-const { Sequelize } = require('Sequelize');
+const { Sequelize } = require('sequelize');
 const orm = new Sequelize('poker_database', 'root', '', {
   host: 'localhost',
   dialect: 'mysql',
