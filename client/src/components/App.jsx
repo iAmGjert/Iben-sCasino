@@ -1,16 +1,52 @@
 import React from 'react';
 import Blackjack from './Blackjack.jsx';
-//DONT ADD THIS FILE TO THE GIT!!!
+import Login from './Login.jsx';
 
-const App = () => {
+
+class App extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      view: 'login'
+    };
+    this.renderView = this.conditionalRender.bind(this);
+    this.changeView = this.changeRender.bind(this);
+  }
+
+  //function to change the view so render will render conditionally
+
+  changeRender(view) {
+    this.setState({
+      view: view
+    });
+  }
 
   //make a conditional render here.
 
-  return (
-    <div>
-      <Blackjack />
-    </div>
-  )
+  conditionalRender() {
+    const {view} = this.state;
+
+    if(view === 'blackjack') {
+      return <Blackjack />;
+    }
+    if(view === 'login') {
+      return <Login changeRender={this.changeView} />;
+    }
+
+  }
+
+
+
+  render() {
+    return (
+      <div>
+        {this.conditionalRender()}
+      </div>
+    )
+  }
+
+ 
 } 
 
 
