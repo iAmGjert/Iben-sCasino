@@ -152,61 +152,60 @@ class Blackjack extends React.Component {
     const {dealerHand, userHand, user21, userBust, userStand, dealer21, dealerBust, finished, userPoints, dealerPoints} = this.state;
     const {betOutcome} = this.props;
 
-    let FinishedSpace;
+    let FinishedSpace; //this will conditionally render <FinishedSpace /> when the game finishes
+
+    //conditionals for properties of finished games to be passed down to Finished component
+    const results = {};
     if (user21 && dealer21) {
-      FinishedSpace = <Finished 
-        outcome='blackjack for both' 
-        winner="draw" 
-        betOutcome={betOutcome}
-        userScore={userPoints.bestScore} 
-        dealerScore={dealerPoints.bestScore}/>;
+      results.outcome = 'blackjack for both'; 
+      results.winner = 'draw'; 
+      results.betOutcome = betOutcome;
+      results.userScore = userPoints.bestScore;
+      results.dealerScore = dealerPoints.bestScore;
     } else if (user21) {
-      FinishedSpace = <Finished 
-        winner="user" 
-        betOutcome={betOutcome}
-        userScore={userPoints.bestScore} 
-        dealerScore={dealerPoints.bestScore}
-        outcome='blackjack for user' />;
+      results.winner = 'user'; 
+      results.betOutcome = betOutcome;
+      results.userScore = userPoints.bestScore;
+      results.dealerScore = dealerPoints.bestScore;
+      results.outcome = 'blackjack for user';
     } else if (dealer21) {
-      FinishedSpace = <Finished 
-        winner="dealer" 
-        betOutcome={betOutcome}
-        userScore={userPoints.bestScore} 
-        dealerScore={dealerPoints.bestScore}
-        outcome='blackjack for dealer' />;
+      results.winner = 'dealer'; 
+      results.betOutcome = betOutcome;
+      results.userScore = userPoints.bestScore; 
+      results.dealerScore = dealerPoints.bestScore;
+      results.outcome = 'blackjack for dealer';
     } else if (userBust) {
-      FinishedSpace = <Finished 
-        winner="dealer" 
-        betOutcome={betOutcome}
-        userScore={userPoints.bestScore} 
-        dealerScore={dealerPoints.bestScore}
-        outcome='user busts' />;
+      results.winner = 'dealer'; 
+      results.betOutcome = betOutcome;
+      results.userScore = userPoints.bestScore;
+      results.dealerScore = dealerPoints.bestScore;
+      results.outcome = 'user busts';
     } else if (dealerBust) {
-      FinishedSpace = <Finished 
-        winner="user" 
-        betOutcome={betOutcome}
-        userScore={userPoints.bestScore} 
-        dealerScore={dealerPoints.bestScore}
-        outcome='dealer busts' />;
+      results.winner = 'user'; 
+      results.betOutcome = betOutcome;
+      results.userScore = userPoints.bestScore; 
+      results.dealerScore = dealerPoints.bestScore;
+      results.outcome = 'dealer busts';
     } else if (finished) {
-      FinishedSpace = <Finished 
-        winner={
-          userPoints.bestScore > dealerPoints.bestScore ? 'user' :
-            userPoints.bestScore < dealerPoints.bestScore ? 'dealer' : 'draw'
-        } 
-        userScore={userPoints.bestScore} 
-        betOutcome={betOutcome}
-        dealerScore={dealerPoints.bestScore}
-        outcome = 'finish' />;
-    } else {
-      FinishedSpace = <div>not finished</div>;
+      results.winner = (
+        userPoints.bestScore > dealerPoints.bestScore ? 'user' :
+          userPoints.bestScore < dealerPoints.bestScore ? 'dealer' : 'draw'
+      ); 
+      results.userScore = userPoints.bestScore; 
+      results.betOutcome = betOutcome;
+      results.dealerScore = dealerPoints.bestScore;
+      results.outcome = 'finish';
+    } 
+
+    if (finished) {
+      FinishedSpace = <Finished results={results}/>;
     }
+  
+
     return (
       <div>blackjack div
         <div>cards</div>
-    
         <button style={{display: userBust || userStand ? 'none' : 'block'}} onClick={this.userHitCard}>user hit card</button>
-    
         <button style={{display: userStand || finished ? 'none' : 'block'}} onClick={this.userStand}>user stand</button>
         <BlackjackDealer dealerHand={dealerHand} />
         <BlackjackUser userHand={userHand} />

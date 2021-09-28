@@ -8,15 +8,14 @@ class Finished extends React.Component {
   }
 
   componentDidMount() {
-    //logic for who wins here
-    const {winner, betOutcome} = this.props;
+    const {winner, betOutcome} = this.props.results;
     const n = winner === 'user' ? 1 :
       winner === 'dealer' ? -1 : 0; 
     betOutcome(n);
   }
 
   render() {
-    const {outcome, userScore, dealerScore, winner} = this.props;
+    const {outcome, userScore, dealerScore, winner} = this.props.results;
     return (
       <div>gameover
         <h1>{outcome}</h1>
