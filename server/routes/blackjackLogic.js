@@ -1,14 +1,6 @@
 const axios = require('axios');
+const _ = require('underscore-node');
 
-
-// const info = {
-//   deckId: '',
-//   dealer: {
-//     points: {low: 0}
-//   },
-//   user: {
-//     points: {low: 0}}
-// }
 
 //helper function to calculate points for a card
 const points = (card) => {
@@ -21,28 +13,7 @@ const points = (card) => {
   }
 };
 
-const handPoints = (cards ) => {
-  const pointsMap = cards.map(card => points(card));
-  if (pointsMap.includes('ACE')) {
-    const total = {};
-    total.low = pointsMap.reduce((x, y) => {
-      return y === 'ACE' ? x + 1 : x + y;
-    }, 0);
-    total.high = pointsMap.reduce((x, y) => {
-      return y === 'ACE' ? x + 11 : x + y;
-    }, 0);
-    // info[player].points.low = total.low;
-    // info[player].points.high = total.high;
-    return total;
 
-  } else {
-    const low = pointsMap.reduce((x, y) => x + y);
-    // info[player].points.low = low;
-    return {
-      low: low
-    };
-  }
-};
 //this function run on the first deal, see if value 21 returned for the high
 const blackJack = (points) => {
 
@@ -57,10 +28,76 @@ const bust = (points) => {
   return points.low > 21 ? true : false;
 };
 
-//this will be a function to calculate the score closest to 21.  NEEDS TO ACCOUNT FOR MULTIPLE ACES!!!
-const bestScore = () => {
+
+
+//n is number of aces
+const aceOptions = (n) => {
+  const outcomes = [];
+  const options = [1, 11];
+
+  const combos = (combo = []) => {
+    if (combo.length === n) {
+      outcomes.push(combo);
+      return outcomes;
+    }
+    options.forEach(option => {
+      combos([...combo, option]);
+    });
+  };
+  combos();
+  const totals = outcomes.map(combo => combo.reduce((x, y) => x + y));
+  return _.uniq(totals).filter(x => x <= 21);
 
 };
+
+//this will be a function to calculate the score closest to 21.  NEEDS TO ACCOUNT FOR MULTIPLE ACES!!!
+const bestScore = (cardPoints) => {
+  //best score is <= 21 and closest to 21
+  //const cardPoints = cards.map(card => points(card));
+  let total = 0;
+  let aces = 0;
+  cardPoints.forEach(points => {
+    points === 'ACE' ? aces++ : total += points;
+  });
+  
+  //if no aces, return total
+  if (!aces) {
+    return total;
+  } else {
+    const aceCombos = aceOptions(aces);
+    const combos = aceCombos.map(sum => sum + total).filter(total => total <= 21);
+    return Math.max(...combos);
+
+  }
+  
+};
+
+const handPoints = (cards ) => {
+  const pointsMap = cards.map(card => points(card));
+  if (pointsMap.includes('ACE')) {
+    const total = {};
+    total.low = pointsMap.reduce((x, y) => {
+      return y === 'ACE' ? x + 1 : x + y;
+    }, 0);
+    total.high = pointsMap.reduce((x, y) => {
+      return y === 'ACE' ? x + 11 : x + y;
+    }, 0);
+    total.bestScore = bestScore(pointsMap);
+    // info[player].points.low = total.low;
+    // info[player].points.high = total.high;
+    return total;
+
+  } else {
+    const low = pointsMap.reduce((x, y) => x + y);
+    // info[player].points.low = low;
+    return {
+      low: low,
+      bestScore: bestScore(pointsMap)
+    };
+  }
+};
+
+
 
 /**
  * this is the function to initally deal the cards.  creates and shuffles a deck using DoC api, deals 2 cards to the dealer, and 2 to the user.
@@ -93,8 +130,8 @@ const initialDeal = async () => {
     const dealerPoints = handPoints(dealer.data.cards);
     const userPoints = handPoints(user.data.cards);
 
-    const dealerStand = (dealerPoints.high >= 17 || dealerPoints.low >= 17);
-    console.log('dealer stand', dealerStand);
+    const dealerStand = ((dealerPoints.high >= 17 && dealerPoints.high <= 21) || (dealerPoints.low >= 17 && dealerPoints.low <= 21));
+    //clean this up ^ this isnt needed anymore 
     const dealer21 = blackJack(dealerPoints);
     const user21 = blackJack(userPoints);
 
@@ -143,9 +180,8 @@ const hit = async (deckId, player ) => {
     const points = handPoints(hand[player]);
     const over = bust(points);
     const dealerStand = (points.high >= 17 && points.high <= 21) || (points.low >= 17 && points.low <= 21); //for the dealer automated play, dont refer to this in user in front end , only dealer
-    console.log('dS', dealerStand);
     const equal21 = blackJack(points);
-    const finished = equal21 || over
+    const finished = equal21 || over;
     return {hand: hand, points: points, bust: over, dealerStand: dealerStand, equal21: equal21, finished: finished};
 
   } catch (err) {

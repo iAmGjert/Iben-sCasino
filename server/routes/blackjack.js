@@ -23,16 +23,21 @@ Blackjack.get('/', async (req, res) => {
 Blackjack.get('/hit/:deckId&:player', async(req, res) => {
   try {
     //get deckId and what player from the req.params
-    console.log('hit');
+ 
     const {deckId, player} = req.params;
-    console.log('parmaams', req.params, 'deckId', deckId, 'player', player, );
+ 
     const hand = await hit(deckId, player);
-    console.log('hand', hand);
+
     res.status(201).send(hand);
   } catch (err) {
     console.log('hit err', err);
     res.sendStatus(500);
   }
 });
+
+/**
+ * needa function here for when a bet is won/lost, to update the DB with the new bank
+ * 
+ */
 
 module.exports = {Blackjack};

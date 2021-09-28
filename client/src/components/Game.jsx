@@ -16,8 +16,7 @@ class Game extends React.Component {
     this.renderView = this.conditionalRender.bind(this);
     this.changeRender = this.changeRender.bind(this);
     this.placeBet = this.placeBet.bind(this);
-    this.winBet = this.winBet.bind(this);
-    this.loseBet = this.loseBet.bind(this);
+    this.betOutcome = this.betOutcome.bind(this);
   }
 
   //function to change the view so render will render conditionally
@@ -36,8 +35,8 @@ class Game extends React.Component {
     if (view === 'blackjack') {
       return <Blackjack 
         bet={this.state.bet}
-        winBet={this.state.winBet}
-        loseBet={this.state.loseBet}
+        betOutcome={this.betOutcome}
+     
       />;
     }
     if (view === 'start') {
@@ -52,21 +51,19 @@ class Game extends React.Component {
     });
   }
 
-  winBet() {
+  betOutcome(x) {
+    //x is +/- 1 or 0 depend on win/lose/draw
+    console.log('betOutcome', x);
     this.setState({
-      monies: this.state.monies + this.state.bet,
+      monies: this.state.monies + x * this.state.bet,
       bet: 0
     });
     //need backend part to adjust the bank in the db
+    console.log(this.state.monies, this.state.bet);
+    console.log(this.state);
   }
 
-  loseBet() {
-    this.setState({
-      monies: this.state.monies - this.state.bet,
-      bet: 0
-    });
-    //need the backend part to adjust hte bank in the db
-  }
+
 
 
 

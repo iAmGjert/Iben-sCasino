@@ -14,8 +14,8 @@ class Blackjack extends React.Component {
       dealerHand: [],
       userHand: [],
       deckId: '',
-      userPoints: {low: 0},
-      dealerPoints: {low: 0},
+      userPoints: {low: 0, bestScore: 0},
+      dealerPoints: {low: 0, bestScore: 0},
       dealer21: false, //true if 21 is points
       user21: false, //true if points are 21,
       dealerBust: false, //true if dealer busts (>21 on the low points)
@@ -24,7 +24,8 @@ class Blackjack extends React.Component {
       userFin: false, //true if hits 21 or over 21 (on the low),
       dealerStand: false, //this is true when the cards is >= 17 && <=21.  ace always treated as 11 for this. 
       userStand: false,
-      finished: false
+      finished: false,
+
       
 
     };
@@ -57,8 +58,11 @@ class Blackjack extends React.Component {
         dealer21: data.data.dealer21,
         dealerFin: data.data.dealerFin,
         userFin: data.data.userFin,
+        finished: data.data.user21 || data.data.dealer21
  
       });
+
+      
       console.log('thisstate', this.state);
       return;
     } catch (err) {
@@ -86,8 +90,10 @@ class Blackjack extends React.Component {
         userBust: hand.data.bust,
         user21: hand.data.equal21,
         userFin: hand.data.finished,
-        finished: hand.data.bust || hand.data.equal21
+        finished: hand.data.bust || hand.data.equal21 || (hand.data.finished && this.state.dealerFin)
       });
+
+     
 
     } catch (err) {
       console.log('err in userHitCard', err );
@@ -98,11 +104,17 @@ class Blackjack extends React.Component {
     try {
       this.setState({
         userStand: true,
-        userFin: true
+        userFin: true,
+        finished: this.state.dealerStand
       });
 
-    //then we need to do the this.dealerHitCard
-      return await this.dealerHitCard();
+      if (this.state.dealerStand) {
+        return;
+      } else {
+        //then we need to do the this.dealerHitCard
+        return await this.dealerHitCard();
+      }
+ 
 
     } catch (err) {
       console.log(err);
@@ -111,13 +123,10 @@ class Blackjack extends React.Component {
 
   //this is going to need to become automatic
   async dealerHitCard() { 
-    console.log('dhc');
     const {dealerStand, dealerBust, dealer21} = this.state;
-    console.log('this.state in dhc', this.state);
     if (dealerStand === false && dealerBust === false && dealer21 === false) {
       try {
         const hand = await axios.get(`/routes/blackjack/hit/${this.state.deckId}&dealer`);
-        console.log('dealer hand: ', hand);
         this.setState({
           dealerHand: hand.data.hand.dealer,
           dealerPoints: hand.data.points,
@@ -125,7 +134,6 @@ class Blackjack extends React.Component {
           dealerStand: hand.data.dealerStand,
           dealer21: hand.data.equal21
         });
-        console.log('thissstate', this.state);
         return await this.dealerHitCard();
       } catch (err) {
         console.log('err in dealerHitCard', err);
@@ -146,13 +154,57 @@ class Blackjack extends React.Component {
 
 
   render() {
-    const {dealerHand, userHand, userBust, userStand, finished} = this.state;
-    console.log('finished', finished)
-   let FinishedSpace;
-    if(finished) {
-      FinishedSpace = <Finished />;
+    const {dealerHand, userHand, user21, userBust, userStand, dealer21, dealerBust, finished, userPoints, dealerPoints} = this.state;
+    const {betOutcome} = this.props;
+
+    let FinishedSpace;
+    if (user21 && dealer21) {
+      FinishedSpace = <Finished 
+        outcome='blackjack for both' 
+        winner="draw" 
+        betOutcome={betOutcome}
+        userScore={userPoints.bestScore} 
+        dealerScore={dealerPoints.bestScore}/>;
+    } else if (user21) {
+      FinishedSpace = <Finished 
+        winner="user" 
+        betOutcome={betOutcome}
+        userScore={userPoints.bestScore} 
+        dealerScore={dealerPoints.bestScore}
+        outcome='blackjack for user' />;
+    } else if (dealer21) {
+      FinishedSpace = <Finished 
+        winner="dealer" 
+        betOutcome={betOutcome}
+        userScore={userPoints.bestScore} 
+        dealerScore={dealerPoints.bestScore}
+        outcome='blackjack for dealer' />;
+    } else if (userBust) {
+      FinishedSpace = <Finished 
+        winner="dealer" 
+        betOutcome={betOutcome}
+        userScore={userPoints.bestScore} 
+        dealerScore={dealerPoints.bestScore}
+        outcome='user busts' />;
+    } else if (dealerBust) {
+      FinishedSpace = <Finished 
+        winner="user" 
+        betOutcome={betOutcome}
+        userScore={userPoints.bestScore} 
+        dealerScore={dealerPoints.bestScore}
+        outcome='dealer busts' />;
+    } else if (finished) {
+      FinishedSpace = <Finished 
+        winner={
+          userPoints.bestScore > dealerPoints.bestScore ? 'user' :
+            userPoints.bestScore < dealerPoints.bestScore ? 'dealer' : 'draw'
+        } 
+        userScore={userPoints.bestScore} 
+        betOutcome={betOutcome}
+        dealerScore={dealerPoints.bestScore}
+        outcome = 'finish' />;
     } else {
-      FinishedSpace = <div>not finished</div>
+      FinishedSpace = <div>not finished</div>;
     }
     return (
       <div>blackjack div
@@ -160,10 +212,10 @@ class Blackjack extends React.Component {
     
         <button style={{display: userBust || userStand ? 'none' : 'block'}} onClick={this.userHitCard}>user hit card</button>
     
-        <button onClick={this.userStand}>user stand</button>
+        <button style={{display: userStand || finished ? 'none' : 'block'}} onClick={this.userStand}>user stand</button>
         <BlackjackDealer dealerHand={dealerHand} />
         <BlackjackUser userHand={userHand} />
-       {FinishedSpace}
+        {FinishedSpace}
         
       </div>
     );
