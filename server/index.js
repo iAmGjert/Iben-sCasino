@@ -20,13 +20,13 @@ app.use('/routes/userDatabase', Data);
 app.use(express.static(frontend));
 
 app.use(passport.initialize());
-app.get('/google', passport.authenticate('google', {scope: ['profile', 'email']}))
-  // .then(() => {
-  //   console.log('auth success');
-  // })
-  // .catch(() => {
-  //   console.log('auth failure');
-  // });
+app.get('/google', passport.authenticate('google', {scope: ['profile', 'email']}));
+// .then(() => {
+//   console.log('auth success');
+// })
+// .catch(() => {
+//   console.log('auth failure');
+// });
 
 app.get('/google/callback', 
   passport.authenticate('google', { failureRedirect: '/login' }),

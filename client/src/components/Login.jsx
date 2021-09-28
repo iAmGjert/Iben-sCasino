@@ -1,7 +1,8 @@
 import React from 'react';
 import axios from 'axios';
-const clientId = require('../../../config.js');
+const {clientId} = require('../../../config.js');
 
+//import { CLIENT_ID } from '../../../config';
 import { GoogleLogin } from 'react-google-login';
 
 
@@ -32,7 +33,7 @@ const Login = (props) => {
     <div>login goes here
       
       <GoogleLogin
-        clientId={clientId} // --> move to backend require it in.
+        clientId={ clientId.CLIENT_ID } // --> move to backend require it in.
         buttonText="Log in with Google"
         onSuccess={responseGoogle}
         //onFailure={responseGoogle}
