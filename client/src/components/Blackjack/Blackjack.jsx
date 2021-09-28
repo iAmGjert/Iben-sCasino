@@ -23,8 +23,8 @@ class Blackjack extends React.Component {
       dealerFin: false, // true if hits 21, over 21 (on the low.  i.e. cant play anymore)
       userFin: false, //true if hits 21 or over 21 (on the low),
       dealerStand: false, //this is true when the cards is >= 17 && <=21.  ace always treated as 11 for this. 
-      userStand: false,
-      finished: false,
+      userStand: false, //user decide to stay
+      finished: false, //the game is finished -- either user or dealer reaches 21, user busts, dealer busts, or both players stand and best score wins
 
       
 

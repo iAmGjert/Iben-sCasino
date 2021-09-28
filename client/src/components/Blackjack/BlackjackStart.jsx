@@ -14,6 +14,10 @@ class BlackjackStart extends React.Component {
     this.removeChip = this.removeChip.bind(this);
   }
 
+  /**
+   * I: x is the amount to increase bet by,  corresponds to chip
+   * O: n/a but adjusts available money and changes the current bet
+   */
   increaseBet(x) {
     if (x < this.state.available) {
       this.setState({
@@ -23,6 +27,10 @@ class BlackjackStart extends React.Component {
     }
   }
 
+  /**
+   * I: x is the amount to decrease bet by,  corresponds to chip
+   * O: n/a but adjusts available money and changes the current bet
+   */
   removeChip(x) {
     this.setState({
       available: this.state.available + x,

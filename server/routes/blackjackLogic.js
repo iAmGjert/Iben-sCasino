@@ -3,6 +3,11 @@ const _ = require('underscore-node');
 
 
 //helper function to calculate points for a card
+/**
+ * helper function to calculate points for a card
+ * @param {object} card //the card object 
+ * @returns value   //a numeric value if it is any card except for ace, returns 'ACE' if it is an ace
+ */
 const points = (card) => {
   if (parseInt(card.value)) {
     return parseInt(card.value);
@@ -13,24 +18,35 @@ const points = (card) => {
   }
 };
 
-
-//this function run on the first deal, see if value 21 returned for the high
+/**
+ * simple function that calculates if blackjack happens (i.e. 21)
+ * @param {number} points 
+ * @returns {boolean}
+ */
 const blackJack = (points) => {
 
-  if (points.low === 21 || points.high === 21 ) {
+  if (points.low === 21 || points.high === 21 || points.bestScore ) {
     return true;
   } else {
     return false;
   }
 };
-//this function runs every time a card is added, if the low is over 21 then it is a bust
+
+/**
+ * helper function runs every time a card is added.  if lowest possible score is >21, then it is a bust
+ * @param {number} points 
+ * @returns boolean
+ */
 const bust = (points) => {
   return points.low > 21 ? true : false;
 };
 
 
-
-//n is number of aces
+/**
+ * function to calculate viable possible totals from multiple aces
+ * @param {number} n is number, number of aces
+ * @returns array of posssible totals, duplicates removed, over 21s removed
+ */
 const aceOptions = (n) => {
   const outcomes = [];
   const options = [1, 11];
@@ -50,7 +66,11 @@ const aceOptions = (n) => {
 
 };
 
-//this will be a function to calculate the score closest to 21.  NEEDS TO ACCOUNT FOR MULTIPLE ACES!!!
+/**
+ * function that calculates the best score, the score closest to 21 but not over 21
+ * @param {array} cardPoints 
+ * @returns 
+ */
 const bestScore = (cardPoints) => {
   //best score is <= 21 and closest to 21
   //const cardPoints = cards.map(card => points(card));
@@ -101,13 +121,12 @@ const handPoints = (cards ) => {
 
 /**
  * this is the function to initally deal the cards.  creates and shuffles a deck using DoC api, deals 2 cards to the dealer, and 2 to the user.
- * I: na/a
+ * I: n/a
  * O: an object of the dealers hand and the users hand and also the deck id. {dealerHand: [array of 2 cards], userHand: [array of 2 cards], deckId: deck id from api}
  */
 const initialDeal = async () => {
 
-  try {
-    
+  try {    
     const {data} = await axios.get('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1'); //6 decks is standard black jack
     const id = data.deck_id; //this will need to be available outside of this scope
     
@@ -190,15 +209,5 @@ const hit = async (deckId, player ) => {
  
 };
 
-
-
-//function to return the total of points for a hand
-//the low is if ace is counted as 1
-//high if ace is counted as 11
-
-
-
-//console.log(handPoints([{value: 'ACE'}, {value: 'QUEEN'}], 'user'))
-//console.log(info)
 
 module.exports = {initialDeal, hit};
