@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const cors = require('cors');
 const app = express();
 const passport = require('passport');
 const authenticate = require('./authenticate.js');
@@ -8,7 +9,7 @@ const { Data } = require('./routes/userDatabase');
 const blj = require('./routes/blackjack');
 
 const port = 1337;
-
+app.use(cors({origin: 'http://localhost:1337'}));
 app.use(express.json());
 
 const frontend = path.resolve(__dirname, '..', 'client', 'dist');
@@ -19,7 +20,13 @@ app.use('/routes/userDatabase', Data);
 app.use(express.static(frontend));
 
 app.use(passport.initialize());
-app.get('/google', passport.authenticate('google', {scope: ['profile', 'email']}));
+app.get('/google', passport.authenticate('google', {scope: ['profile', 'email']}))
+  // .then(() => {
+  //   console.log('auth success');
+  // })
+  // .catch(() => {
+  //   console.log('auth failure');
+  // });
 
 app.get('/google/callback', 
   passport.authenticate('google', { failureRedirect: '/login' }),

@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-// require in .env file routed through a config.js file.
-require('dotenv').config();
+const clientId = require('../../../config.js');
+
 import { GoogleLogin } from 'react-google-login';
 
 
@@ -15,9 +15,9 @@ import { GoogleLogin } from 'react-google-login';
 
 const responseGoogle = (response) => {
   // CORS issue -> using entire url  --> need to use local host?
-  axios.get('http://127.0.0.1:1337/google')
-    .then(() => {
-      console.log(response);
+  axios.get('http://localhost:1337/google')
+    .then((response) => {
+      console.log('response success:', response);
     })
     .catch((err) => {
       console.log('response error:', err);
@@ -32,7 +32,7 @@ const Login = (props) => {
     <div>login goes here
       
       <GoogleLogin
-        clientId='CLIENT_ID'
+        clientId={clientId} // --> move to backend require it in.
         buttonText="Log in with Google"
         onSuccess={responseGoogle}
         //onFailure={responseGoogle}

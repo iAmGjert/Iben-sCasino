@@ -19,6 +19,10 @@ passport.use(new GoogleStrategy({
   callbackURL: 'http://127.0.0.1:1337/google/callback'
 },
 function(accessToken, refreshToken, profile, done) { // this was cb
+  console.log('is authenticate running');
+  // not hitting the google oauth api
+
+
   // register user here
   const { sub, name, picture, email } = profile._json;
   
