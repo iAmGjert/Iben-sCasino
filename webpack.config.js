@@ -11,6 +11,7 @@ module.exports = {
     path: path.resolve(__dirname, 'client', 'dist')
   },
   watch: isDev,
+  devtools: 'source-map',
   module: {
     rules: [
       {

@@ -14,9 +14,9 @@ passport.deserializeUser((user, done) => {
 
 
 passport.use(new GoogleStrategy({
-  clientID: '521603210674-c3r17jn27bg4s5qefj4nnit2ccb2sj03.apps.googleusercontent.com',
+  clientID: process.env.CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: 'http://127.0.0.1:1337/google/callback'
+  callbackURL: 'http://localhost:1337/google/callback'
 },
 function(accessToken, refreshToken, profile, done) { // this was cb
   console.log('is authenticate running');
