@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
     "start": "nodemon server/index.js",
-    "lint" : "eslint . --fix --ext .js,.jsx"
+    "lint": "eslint . --fix --ext .js,.jsx"
   },
   "repository": {
     "type": "git",
