@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-
+// require in .env file routed through a config.js file.
+require('dotenv').config();
 import { GoogleLogin } from 'react-google-login';
 
 
@@ -31,7 +32,7 @@ const Login = (props) => {
     <div>login goes here
       
       <GoogleLogin
-        clientId='521603210674-c3r17jn27bg4s5qefj4nnit2ccb2sj03.apps.googleusercontent.com' 
+        clientId='CLIENT_ID'
         buttonText="Log in with Google"
         onSuccess={responseGoogle}
         //onFailure={responseGoogle}
