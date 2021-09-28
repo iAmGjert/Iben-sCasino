@@ -53,14 +53,12 @@ class Game extends React.Component {
 
   betOutcome(x) {
     //x is +/- 1 or 0 depend on win/lose/draw
-    console.log('betOutcome', x);
     this.setState({
       monies: this.state.monies + x * this.state.bet,
       bet: 0
     });
     //need backend part to adjust the bank in the db
-    console.log(this.state.monies, this.state.bet);
-    console.log(this.state);
+
   }
 
 

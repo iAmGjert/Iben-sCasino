@@ -45,8 +45,6 @@ class Blackjack extends React.Component {
   async initialDeal() {
     try {
       const data = await axios.get('/routes/blackjack');
-      //console.log('d.dh', data.data.dealerHand, 'd.uH', data.data.userHand, data);
-
       this.setState({
         dealerHand: data.data.dealerHand,
         userHand: data.data.userHand,
@@ -61,9 +59,6 @@ class Blackjack extends React.Component {
         finished: data.data.user21 || data.data.dealer21
  
       });
-
-      
-      console.log('thisstate', this.state);
       return;
     } catch (err) {
       console.log(err);
@@ -76,13 +71,12 @@ class Blackjack extends React.Component {
   }
 
   /**
-   * this is a function to add a card for the user
+   * this is a function to add a card for the user.  makes a get req to the server side which draws a card.  updates the state
  
    */
   async userHitCard() {
     try {
       const hand = await axios.get(`/routes/blackjack/hit/${this.state.deckId}&user`);
-      console.log('HAND!', hand, hand.data.hand.user);
   
       this.setState({
         userHand: hand.data.hand.user,
@@ -93,13 +87,14 @@ class Blackjack extends React.Component {
         finished: hand.data.bust || hand.data.equal21 || (hand.data.finished && this.state.dealerFin)
       });
 
-     
-
     } catch (err) {
       console.log('err in userHitCard', err );
     }
   }
 
+  /**
+   * user decides to stay with their hand.  updates the state, calls the function for the dealer to take their turn
+   */
   async userStand() {
     try {
       this.setState({

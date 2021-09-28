@@ -25,7 +25,7 @@ const points = (card) => {
  */
 const blackJack = (points) => {
 
-  if (points.low === 21 || points.high === 21 || points.bestScore ) {
+  if (points.low === 21 || points.high === 21 || points.bestScore === 21 ) {
     return true;
   } else {
     return false;

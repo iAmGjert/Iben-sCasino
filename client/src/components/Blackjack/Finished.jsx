@@ -8,7 +8,6 @@ class Finished extends React.Component {
   }
 
   componentDidMount() {
-    console.log('Finished component did mount');
     //logic for who wins here
     const {winner, betOutcome} = this.props;
     const n = winner === 'user' ? 1 :
