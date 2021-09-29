@@ -1,14 +1,17 @@
 const path = require('path');
+const { NODE_ENV = 'production' } = process.env;
+const isDev = NODE_ENV.includes('dev'); 
 
 module.exports = {
 
-  mode: 'development',
+  mode: isDev ? 'development' : 'production',
   entry: path.resolve(__dirname, 'client', 'src', 'index.jsx'),
   output: {
     filename: 'bundles.js',
     path: path.resolve(__dirname, 'client', 'dist')
   },
-  watch: true,
+  watch: isDev,
+  devtool: 'source-map',
   module: {
     rules: [
       {
