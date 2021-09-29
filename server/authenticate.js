@@ -5,13 +5,32 @@ require('dotenv').config();
 const { User, Friends } = require('../db/index.js');
 
 passport.serializeUser((user, done) => {
-  done(null, user.id);
+  //console.log('serialize:', user);
+  // console.log('sub:', user.id);
+  done(null, user.id); 
 });
 
-passport.deserializeUser((user, done) => {
-  //User.findById
-  done(null, user);
-});
+passport.deserializeUser((user, id, done) => { 
+  //console.log('deserial:', id);
+  
+  User.findOne({
+    where: { 
+      sub: id 
+    }}/*, (err, user) => { 
+    console.log('deserial err;', err);
+    done(err, user);
+  }*/)
+    .then((id) => {
+      if (id) {
+        //console.log('user.sub:', id);
+        done(null, id);
+      }
+    
+    }).catch((err) => {
+      console.log('Error deserial:', err);
+    });
+    
+}); 
 
 
 passport.use(new GoogleStrategy({
@@ -47,7 +66,7 @@ function(accessToken, refreshToken, profile, done) { // this was cb
   }).catch((err) => {
     console.log('FindOne Err:', err);
   });
- // console.log('google:', profile._json);
+  // console.log('google:', profile._json);
   done(null, profile);
  
 }
