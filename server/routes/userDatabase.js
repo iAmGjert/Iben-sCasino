@@ -44,12 +44,20 @@ Data.get('/friends', (req, res) => {
 
 
 Data.post('/friends', (req, res) => {
-  console.log(req.body.name);
+  // console.log(req.body.name);
   const { friends } = req.body;
-  Friends.create({friends: friends }).then(() => {
+  let user;
+  User.findOne({ where: { name: "Tre'von Mitchell" } }).then(data => {
     //console.log(results);
-    res.sendStatus(201);
-  }).catch((err) => {
+    user = data;
+    Friends.create(friends)
+    .then((friend) => {
+   
+      return user.addFriends(friend)
+     })
+     res.sendStatus(201);
+  })
+  .catch((err) => {
     console.log('Friends Post Data:', err);
     res.status(404);
   });

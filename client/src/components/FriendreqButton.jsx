@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import axios from 'axios';
 //may need to change this into a class component
 class FriendreqButton extends Component {
 constructor(props){
@@ -10,13 +10,19 @@ this.state = {
 }
   //should create an event handler, so when a user clicks the send friend request
 
-  sendFriendreq(userId) {
+  sendFriendreq(user) {
     //should send a axios post request
+    axios.post('/routes/userDatabase/friends', {
+      friends: {
+        friends: user.name
+      }
+    } )
   }
 
   render() {
+    const { user } = this.props;
   return (
-    <button onClick={() => this.sendFriendreq()}>
+    <button onClick={() => this.sendFriendreq(user)}>
      Send Friend Request
     </button>
   )
