@@ -9,28 +9,42 @@ const { Data } = require('./routes/userDatabase');
 require('dotenv').config();
 const { ClientId } = require('./routes/clientId');
 const blj = require('./routes/blackjack');
+/* inititilize cookies 
+var session = require("express-session"),
+    bodyParser = require("body-parser");
 
+app.use(express.static("public"));
+app.use(session({ secret: "cats" }));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+*/
 const port = 1337;
-app.use(cors({origin: 'http://localhost:1337'}));
+app.use(cors());
 app.use(express.json());
 
 const frontend = path.resolve(__dirname, '..', 'client', 'dist');
-
+app.use('/routes/clientId', ClientId);
 app.use('/routes/blackjack', blj.Blackjack);
 app.use('/routes/userDatabase', Data);
-app.use('/routes/clientId', ClientId);
+
 app.use(express.static(frontend));
 
 app.use(passport.initialize());
+
 app.get('/google', passport.authenticate('google', {scope: ['profile', 'email']}));
+ 
   
 
 app.get('/google/callback', 
   passport.authenticate('google', { failureRedirect: '/login' }),
   function(req, res) {
+    console.log('GET: google/callback');
     // Successful authentication, redirect home.
-    //res.redirect('/'); --> to the main game page
-    res.send('Logged In!');
+    res.redirect('/blackjack');// --> to the main game page
+    //res.send('Logged In!');
   });
 
 

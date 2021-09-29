@@ -1,26 +1,14 @@
 import React from 'react';
 import axios from 'axios';
-//const {clientId} = require('../../../config.js');
-//import { CLIENT_ID } from '../../../config';
-//console.log('client:', CLIENT_ID)
-//import { CLIENT_ID } from 'config';
+
 import { GoogleLogin } from 'react-google-login';
-//const passport = require ('passport');
 
-// const handleLogin = () => {
-//   axios.get('/google/callback').then(() => {
-//     console.log("login");
-//   }).catch((err) => {
-//     console.log('Error handleLogin:', err)
-//   })
-// }
-
-const responseGoogle = () => {
- // CORS issue -> using entire url  --> need to use local host?
-  axios.get('/google')
-  
-    .then(() => {
-      console.log('response success:');
+const responseGoogle = (response) => {
+  // CORS issue -> using entire url  --> need to use local host?
+  console.log('response:', response)
+  axios.post('/login')
+    .then((response) => {
+      console.log('response success:', response);
     })
     .catch((err) => {
       console.log('response error:', err);
@@ -60,6 +48,7 @@ class Login extends React.Component {
         onSuccess={responseGoogle}
         //onFailure={responseGoogle}
         cookiePolicy={'single_host_origin'}
+       
       />;
     } else {
       GoogleDisplay = <div>google display</div>;
@@ -67,6 +56,7 @@ class Login extends React.Component {
     return (
       <div>login goes here
         {GoogleDisplay}
+        <a href='http://localhost:1337/google'>GOOGLE</a>
         <button onClick={()=> changeRender('blackjack')}>test changeRender to blackjack</button>
       </div>
     );

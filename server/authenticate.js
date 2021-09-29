@@ -9,6 +9,7 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((user, done) => {
+  //User.findById
   done(null, user);
 });
 
@@ -19,7 +20,7 @@ passport.use(new GoogleStrategy({
   callbackURL: 'http://localhost:1337/google/callback'
 },
 function(accessToken, refreshToken, profile, done) { // this was cb
-  console.log('is authenticate running');
+  console.log('is authenticate running', profile);
   // not hitting the google oauth api
 
 
