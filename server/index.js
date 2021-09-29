@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const app = express();
+const session = require('express-session');
 const passport = require('passport');
 const authenticate = require('./authenticate.js');
 const { Data } = require('./routes/userDatabase');
@@ -10,7 +11,7 @@ require('dotenv').config();
 const { ClientId } = require('./routes/clientId');
 const blj = require('./routes/blackjack');
 /* inititilize cookies 
-var session = require("express-session"),
+,
     bodyParser = require("body-parser");
 
 app.use(express.static("public"));
@@ -31,19 +32,22 @@ app.use('/routes/blackjack', blj.Blackjack);
 app.use('/routes/userDatabase', Data);
 
 app.use(express.static(frontend));
-
+app.use(session({secret: process.env.SESSION_SECRET})); // does app.use(express.json()) need to be in here.
 app.use(passport.initialize());
-
-app.get('/google', passport.authenticate('google', {scope: ['profile', 'email']}));
+app.use(passport.session());
+app.get('/google', passport.authenticate('google', {scope: ['profile', 'email']}), (req, res) => {
+  //console.log('req.user:', req.user);
+});
  
   
 
 app.get('/google/callback', 
   passport.authenticate('google', { failureRedirect: '/login' }),
   function(req, res) {
-    
+    //console.log('session:', req.session);
     // Successful authentication, redirect home.
     res.redirect('/blackjack');// --> to the main game page
+    
     //res.send('Logged In!');
   });
 
