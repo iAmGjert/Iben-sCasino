@@ -20,7 +20,7 @@ passport.use(new GoogleStrategy({
   callbackURL: 'http://localhost:1337/google/callback'
 },
 function(accessToken, refreshToken, profile, done) { // this was cb
-  console.log('is authenticate running', profile);
+ 
   // not hitting the google oauth api
 
 
@@ -38,13 +38,8 @@ function(accessToken, refreshToken, profile, done) { // this was cb
 
     } else {
       User.create(profile._json).then((/*newUser, done*/) => {
-        console.log('all good!');
-        // if (!newUser) {
-        //   return done(null, false);
-        // }
-        // if (newUser) {
-        //   return done(null, newUser);
-        // }
+        
+       
       }).catch((err) => {
         console.log('Create Error:', err);
       });
@@ -52,7 +47,7 @@ function(accessToken, refreshToken, profile, done) { // this was cb
   }).catch((err) => {
     console.log('FindOne Err:', err);
   });
-  console.log('google:', profile._json);
+ // console.log('google:', profile._json);
   done(null, profile);
  
 }

@@ -13,7 +13,7 @@ const {initialDeal, hit} = require('./blackjackLogic');
 Blackjack.get('/', async (req, res) => {
   
   try {
-    console.log('blackjack:', req.user);
+    
     const start = await initialDeal();
     res.status(201).send(start);
   } catch (err) {

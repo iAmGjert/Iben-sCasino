@@ -41,7 +41,7 @@ app.get('/google', passport.authenticate('google', {scope: ['profile', 'email']}
 app.get('/google/callback', 
   passport.authenticate('google', { failureRedirect: '/login' }),
   function(req, res) {
-    console.log('GET: google/callback');
+    
     // Successful authentication, redirect home.
     res.redirect('/blackjack');// --> to the main game page
     //res.send('Logged In!');
