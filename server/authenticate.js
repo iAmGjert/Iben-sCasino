@@ -9,16 +9,21 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((user, done) => {
+  //User.findById
   done(null, user);
 });
 
 
 passport.use(new GoogleStrategy({
-  clientID: '521603210674-c3r17jn27bg4s5qefj4nnit2ccb2sj03.apps.googleusercontent.com',
+  clientID: process.env.CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: 'http://127.0.0.1:1337/google/callback'
+  callbackURL: 'http://localhost:1337/google/callback'
 },
 function(accessToken, refreshToken, profile, done) { // this was cb
+ 
+  // not hitting the google oauth api
+
+
   // register user here
   const { sub, name, picture, email } = profile._json;
   
@@ -33,13 +38,8 @@ function(accessToken, refreshToken, profile, done) { // this was cb
 
     } else {
       User.create(profile._json).then((/*newUser, done*/) => {
-        console.log('all good!');
-        // if (!newUser) {
-        //   return done(null, false);
-        // }
-        // if (newUser) {
-        //   return done(null, newUser);
-        // }
+        
+       
       }).catch((err) => {
         console.log('Create Error:', err);
       });
@@ -47,7 +47,7 @@ function(accessToken, refreshToken, profile, done) { // this was cb
   }).catch((err) => {
     console.log('FindOne Err:', err);
   });
-  console.log('google:', profile._json);
+ // console.log('google:', profile._json);
   done(null, profile);
  
 }
