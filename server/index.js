@@ -2,7 +2,8 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const session = require('express-session');
-const cookieParser = require('cookie-parser');
+//const cookieSession = require('cookie-session');
+//const cookieParser = require('cookie-parser');
 const passport = require('passport');
 const authenticate = require('./authenticate.js');
 const { Data } = require('./routes/userDatabase');
@@ -50,7 +51,7 @@ app.use('/routes/userDatabase', Data);
 app.use('/routes/profile', Profile);
 
 app.get('/google', passport.authenticate('google', {scope: ['profile', 'email']}), (req, res) => {
-  // console.log('req.user:', req.user, 'req.cookie', req.cookie, 'req.sesh', req.session);
+  //console.log('req.user:', req.user, 'req.cookie', req.cookie, 'req.sesh', req.session);
 });
  
   
@@ -58,7 +59,7 @@ app.get('/google', passport.authenticate('google', {scope: ['profile', 'email']}
 app.get('/google/callback', 
   passport.authenticate('google', { failureRedirect: '/login', }),
   function(req, res, next) {
-    //console.log( 'req.user', req.user);
+    console.log( 'req.user', req.user);
     // Successful authentication, redirect home.
     // res.redirect('/blackjack');// --> to the main game page
     res.redirect('/profile');
