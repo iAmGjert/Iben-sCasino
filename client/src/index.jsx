@@ -4,11 +4,9 @@ import Game from './components/Game.jsx';
 import {BrowserRouter as Router, Link, Route} from 'react-router-dom';
 import Login from './components/Login.jsx';
 import Profile from './components/Profile.jsx';
-<<<<<<< HEAD
 import AddFriends from './components/AddFriends.jsx';
-=======
 import NavBar from './components/NavBar.jsx'
->>>>>>> dca2e7b... merge
+import Wrapper from './components/Wrapper.jsx'
 
 
 
@@ -19,7 +17,6 @@ ReactDOM.render(
         <Link to='/blackjack'>Blackjack</Link>
         <Link to='/login'>Login</Link>
         <Link to='/profile'>Profile</Link>
-
         <Link to='/addFriends'>Interacting with Users</Link>
 
       </aside>
