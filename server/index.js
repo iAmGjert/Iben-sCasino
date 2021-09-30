@@ -1,9 +1,7 @@
 const express = require('express');
 const path = require('path');
-const cors = require('cors');
 const app = express();
 const session = require('express-session');
-//const cookieSession = require('cookie-session');
 const cookieParser = require('cookie-parser');
 const passport = require('passport');
 const authenticate = require('./authenticate.js');
@@ -26,7 +24,6 @@ app.use(passport.session());
 
 */
 const port = 1337;
-app.use(cors());
 app.use(express.json());
 
 // app.use(cookieSession({
@@ -39,7 +36,7 @@ const frontend = path.resolve(__dirname, '..', 'client', 'dist');
 
 app.use(express.static(frontend));
 app.use(session({
-  secret: 'string', // process.env.SESSION_SECRET,
+  secret: process.env.SESSION_SECRET,
   resave: true,
   saveUninitialized: true
 

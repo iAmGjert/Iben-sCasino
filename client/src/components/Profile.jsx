@@ -21,9 +21,9 @@ class Profile extends React.Component {
       
   }
   async componentDidMount() {
-    const newName = await this.getUser();
+    const newUser = await this.getUser();
     this.setState({
-      name: newName
+      name: newUser.name
     });
     
   }
