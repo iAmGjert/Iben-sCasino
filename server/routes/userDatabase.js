@@ -49,7 +49,8 @@ Data.post('/friends', (req, res) => {
   // console.log(req.body.name);
   //we need the id of the current user who is adding the friend
   //and we need the id of the freind that we are adding 
-  const { currentUser, user } = req.body;
+  const { user } = req.body;
+  const currentUser = req.user;
   let updateUser;
   
   User.findOne({ where: { id: currentUser.id } }).then(currentU => {
