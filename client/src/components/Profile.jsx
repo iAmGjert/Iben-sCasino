@@ -7,16 +7,16 @@ class Profile extends React.Component {
   
   constructor(props) {
     super(props);
-    this.state={
+    this.state = {
       name: 'name'
-    }
-    this.getUser = this.getUser.bind(this)
+    };
+    this.getUser = this.getUser.bind(this);
   }
 
 
   async getUser() {
-    const data = await axios.get('/routes/profile/user')
-    return data.data
+    const data = await axios.get('/routes/profile/user');
+    return data.data;
    
       
   }
@@ -24,7 +24,7 @@ class Profile extends React.Component {
     const newName = await this.getUser();
     this.setState({
       name: newName
-    })
+    });
     
   }
 
@@ -34,7 +34,7 @@ class Profile extends React.Component {
         <h1>{this.state.name}</h1>
         <button onClick={this.getUser}>get user</button>
       </div>
-    )
+    );
   }
 
 }

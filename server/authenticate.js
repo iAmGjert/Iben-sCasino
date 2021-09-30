@@ -7,13 +7,12 @@ const { User, Friends } = require('../db/index.js');
 passport.serializeUser((user, done) => {
   //console.log('serialize:', user);
   // console.log('sub:', user.id);
- // console.log('serializeUser', user.id);
+  // console.log('serializeUser', user.id);
   done(null, user.id); 
 });
 
 
 passport.deserializeUser(( id, done) => { 
-  console.log('deserial:', id);
   
   User.findOne({
     where: { 
@@ -22,8 +21,6 @@ passport.deserializeUser(( id, done) => {
   })
     .then((id) => {
       if (id) {
-      //  console.log('then id:', id);
-        // return null
         done(null, id);
       }
     
@@ -41,8 +38,7 @@ passport.use(new GoogleStrategy({
 },
 function(accessToken, refreshToken, profile, done) { // this was cb
  
-  // not hitting the google oauth api
-  console.log('inside google strategy');
+  // not hitting the google oauth ap
 
   // register user here
   const { sub, name, picture, email } = profile._json;
@@ -53,15 +49,12 @@ function(accessToken, refreshToken, profile, done) { // this was cb
     }
   }).then((user) => {
     if (user) {
-      console.log('is user');
       return done(null, user);
-      //  return null
      
 
     } else {
-      console.log('create');
+
       User.create(profile._json).then((newUser) => {
-        console.log('create');
        
         return done(null, newUser);
        
@@ -74,9 +67,6 @@ function(accessToken, refreshToken, profile, done) { // this was cb
   }).catch((err) => {
     console.log('FindOne Err:', err);
   });
-  // console.log('google:', profile._json);
-  //console.log('i am here');
-  // done(null, profile);
  
 }
 ));
