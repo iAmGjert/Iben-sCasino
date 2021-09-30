@@ -12,11 +12,11 @@ this.state = {
 
   sendFriendreq(user) {
     //should send a axios post request
-    axios.post('/routes/userDatabase/friends', {
-      friends: {
-        friends: user.name
+    axios.patch(`/routes/userDatabase/friends/${user.sub}`, {
+      users: {
+       status: 'friendRequest'
       }
-    } )
+    })
   }
 
   render() {

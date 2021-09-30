@@ -63,5 +63,19 @@ Data.post('/friends', (req, res) => {
   });
 });
 
+Data.patch('/friends/:id', (req, res) => {
+    const { id } = req.params;
+    const { users } = req.body; 
+
+User.update(users, { where: { sub: id }})
+.then(() => {
+  res.sendStatus(201);
+})
+.catch(err => {
+  console.log(err);
+  res.status(404);
+})
+})
+
 
 module.exports = { Data };
