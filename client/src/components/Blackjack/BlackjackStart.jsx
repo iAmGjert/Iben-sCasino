@@ -44,7 +44,7 @@ class BlackjackStart extends React.Component {
 
     this.setState({
       available: this.props.monies
-    })
+    });
   }
 
   render() {

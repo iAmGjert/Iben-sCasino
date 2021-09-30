@@ -39,7 +39,7 @@ class Game extends React.Component {
     });
   }
 
- betOutcome(x) {
+  betOutcome(x) {
     //x is +/- 1 or 0 depend on win/lose/draw
   
     const delta = x * this.state.bet; //delta is change in money
@@ -59,11 +59,11 @@ class Game extends React.Component {
     try {
       const user = await axios.get('/routes/profile/user');
       const {name, money} = user.data;
-    //  console.log('money', money)
+      //  console.log('money', money)
       this.setState({
         name: name,
         monies: money
-      })
+      });
     } catch (err) {
       console.log('game mount err', err);
     }

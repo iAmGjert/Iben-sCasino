@@ -13,7 +13,7 @@ const {initialDeal, hit} = require('./blackjackLogic');
  * this is for the initial deal.   calls the initialDeal function in blackjack logic, sends those cards back to the front end
  */
 Blackjack.get('/', async (req, res) => {
- // console.log('req.user', req.user);
+  // console.log('req.user', req.user);
   try {
     const start = await initialDeal();
     res.status(201).send(start);
@@ -51,16 +51,16 @@ Blackjack.put('/bet/:amount/', async(req, res) => {
     //console.log('put request, req.user');
     const {amount} = req.params;
 
-   // console.log('amount', amount);
-   // console.log(req.session);
-    const {passport} = req.session
-   // console.log('passport', passport)
+    // console.log('amount', amount);
+    // console.log(req.session);
+    const {passport} = req.session;
+    // console.log('passport', passport)
     //find by user Id
     //const {session} = req  //get the session, userId from the session?
 
     const id = '1'; //get this from session.  hardcoded for now
 
-    const x = await User.findOne({where: {id : id }});
+    const x = await User.findOne({where: {id: id }});
     //console.log(typeof x.money, typeof amount);
     const newMoney = x.money + parseInt(amount);
     //console.log(newMoney)
