@@ -5,6 +5,11 @@ const orm = new Sequelize('poker_database', 'root', '', {
 });
 
 const User = orm.define('User', {
+  id: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
   sub: {
     type: 
     Sequelize.STRING,
@@ -26,7 +31,12 @@ const User = orm.define('User', {
     type: 
     Sequelize.STRING(255),
     allowNull: false,
+  },
+  money: {
+    type: Sequelize.INTEGER,
+    defaultValue: 100
   }
+
 });
 
 const Friends = orm.define('Friends', {
