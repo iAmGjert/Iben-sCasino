@@ -40,7 +40,7 @@ componentDidMount() {
 
 <div className='user-info'> 
 {user.name}    Email: {user.email}
-<FriendreqButton  user={user}/>
+<FriendreqButton  user={user} getUsers={this.getUsers}/>
 </div> 
 
   ))
