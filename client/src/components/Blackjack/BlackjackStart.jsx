@@ -1,5 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
+import axios from 'axios';
 
 class BlackjackStart extends React.Component {
   
@@ -7,7 +8,7 @@ class BlackjackStart extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      available: this.props.monies,
+      available: 0,
       currentBet: 0
     };
     this.increaseBet = this.increaseBet.bind(this);
@@ -19,9 +20,10 @@ class BlackjackStart extends React.Component {
    * O: n/a but adjusts available money and changes the current bet
    */
   increaseBet(x) {
-    if (x < this.state.available) {
+    //console.log('incbet', x, this.props.monies)
+    if (x < this.props.monies) {
       this.setState({
-        available: this.state.available - x,
+        available: this.props.monies - x,
         currentBet: this.state.currentBet + x
       });
     }
@@ -33,25 +35,32 @@ class BlackjackStart extends React.Component {
    */
   removeChip(x) {
     this.setState({
-      available: this.state.available + x,
+      available: this.props.monies + x,
       currentBet: this.state.currentBet - x
     });
   }
 
+  componentDidMount() {
+
+    this.setState({
+      available: this.props.monies
+    });
+  }
+
   render() {
-    const {changeRender, placeBet} = this.props;
-    const {available, currentBet} = this.state;
+    const {changeRender, placeBet, monies} = this.props;
+    const { available, currentBet} = this.state;
     return (
       <div>
         <p>current bet: {currentBet}</p>
         <p>available monies left: {available}</p>
         <button 
-          style={{display: 5 < available ? 'block' : 'none'}} 
+          style={{display: 5 < monies ? 'block' : 'none'}} 
           value={5} 
           onClick={()=>this.increaseBet(5)}
         >5</button>
         <button 
-          style={{display: 10 < available ? 'block' : 'none'}} 
+          style={{display: 10 < monies ? 'block' : 'none'}} 
           value={10}
           onClick={()=>this.increaseBet(10)}
         >10</button>
