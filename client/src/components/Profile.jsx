@@ -23,7 +23,7 @@ class Profile extends React.Component {
   }
   async componentDidMount() {
     const userData = await this.getUser(); 
-    //console.log(Object.values(userData));
+    
     this.setState({
       user: [Object.values(userData)] 
     });
@@ -31,14 +31,17 @@ class Profile extends React.Component {
   }
 
   render() {
+    const style = {
+      backgroundColor: '#35654d'
+    };
     return (
-      <div>profile component
+      <div style={style}><h1>Player's Room</h1>
         
         {
           this.state.user.map((info, i) => {
             return (
               <div key={i}>
-                <h1>{info[2]}</h1>
+                <h2>{info[2]}</h2>
                 <img src={info[3]}/>
                 <h3>{info[4]}</h3>
                 <h4>Baller Status: {info[5] > 75 ? 'Baller' : info[5] <= 75 && info[5] >= 35 ? 'Bum' : 'Broke!!!'}</h4>
@@ -47,7 +50,6 @@ class Profile extends React.Component {
             );
           })
         }
-        <button onClick={this.getUser}>get user</button>
       </div>
     );
   }
