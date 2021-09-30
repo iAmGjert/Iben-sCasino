@@ -7,7 +7,7 @@ const { User, Friends } = require('../db/index.js');
 passport.serializeUser((user, done) => {
   //console.log('serialize:', user);
   // console.log('sub:', user.id);
-  console.log('serializeUser', user.id);
+ // console.log('serializeUser', user.id);
   done(null, user.id); 
 });
 
@@ -22,7 +22,7 @@ passport.deserializeUser(( id, done) => {
   })
     .then((id) => {
       if (id) {
-        console.log('then id:', id);
+      //  console.log('then id:', id);
         // return null
         done(null, id);
       }

@@ -1,11 +1,20 @@
 const Profile = require('express').Router();
 
-Profile.get('/', (req, res) => {
+Profile.get('/user', async (req, res) => {
   console.log('PROFILE GET');
-  console.log('REQ USER', req.user);
+
+  //req.user is provided with the serialize/deserialize sessions
+
+  //console.log('REQ USER', req.user);
+
   //console.log(req.session);
   // console.log(req.session.passport.user)
-  res.send(req.user.name);
+  if(req.user) {
+    res.status(201).send(req.user.name);
+  } else {
+    res.status(201).send('anon')
+  }
+  
 });
 
 module.exports = {Profile};

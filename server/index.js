@@ -50,7 +50,7 @@ app.use(passport.session());
 app.use('/routes/clientId', ClientId);
 app.use('/routes/blackjack', blj.Blackjack);
 app.use('/routes/userDatabase', Data);
-app.use('/profile', Profile);
+app.use('/routes/profile', Profile);
 
 app.get('/google', passport.authenticate('google', {scope: ['profile', 'email']}), (req, res) => {
   // console.log('req.user:', req.user, 'req.cookie', req.cookie, 'req.sesh', req.session);
@@ -64,7 +64,7 @@ app.get('/google/callback',
     //console.log( 'req.user', req.user);
     // Successful authentication, redirect home.
     // res.redirect('/blackjack');// --> to the main game page
-    res.redirect('/profile/');
+    res.redirect('/profile');
     // res.sendStatus(201)
     
     
