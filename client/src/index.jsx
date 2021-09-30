@@ -4,7 +4,11 @@ import Game from './components/Game.jsx';
 import {BrowserRouter as Router, Link, Route} from 'react-router-dom';
 import Login from './components/Login.jsx';
 import Profile from './components/Profile.jsx';
+<<<<<<< HEAD
 import AddFriends from './components/AddFriends.jsx';
+=======
+import NavBar from './components/NavBar.jsx'
+>>>>>>> dca2e7b... merge
 
 
 
@@ -21,6 +25,7 @@ ReactDOM.render(
       </aside>
 
       <main>
+        <NavBar />
         <Route exact path='/login' component={Login} />
         <Route exact path='/blackjack' component={Game} />
         <Route exact path='/profile' component={Profile} />
