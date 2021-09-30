@@ -35,7 +35,11 @@ const User = orm.define('User', {
   money: {
     type: Sequelize.INTEGER,
     defaultValue: 100
-  }
+  },
+  status: {
+    type: Sequelize.STRING(255),
+    defaultValue: 'noRequest'
+   }
 
 });
 
