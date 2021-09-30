@@ -40,7 +40,6 @@ class Login extends React.Component {
         Login with Google
           </a>
         </div>
-        <button onClick={()=> changeRender('blackjack')}>test changeRender to blackjack</button>
       </div>
     );
   }
