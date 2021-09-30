@@ -44,8 +44,6 @@ Data.get('/friends', (req, res) => {
 
 
 Data.post('/friends', (req, res) => {
-  console.log('FRIENDS POST REQ')
-  console.log('REQ!', req.body)
   // console.log(req.body.name);
   //we need the id of the current user who is adding the friend
   //and we need the id of the freind that we are adding 
@@ -54,7 +52,7 @@ Data.post('/friends', (req, res) => {
   let updateUser;
   
   User.findOne({ where: { id: currentUser.id } }).then(currentU => {
-    console.log(`DATA!!`, currentU)
+    // console.log(`DATA!!`, currentU)
     updateUser = currentU;
     Friends.create(user)
       .then((user) => {
