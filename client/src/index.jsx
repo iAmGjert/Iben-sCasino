@@ -38,4 +38,5 @@ ReactDOM.render(
 /*<UserContext.Provider>
 <Wrapper />
 </UserContext.Provider>
+<PrivateRoute path='/blackjack' component={MyComponent} /> 
 */
