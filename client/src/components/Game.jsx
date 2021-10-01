@@ -49,7 +49,7 @@ class Game extends React.Component {
     });
     //need backend part to adjust the bank in the db
     axios.put(`/routes/blackjack/bet/${delta}`)
-      .then(x => console.log(x))
+      
       .catch(err => console.log(err));
   }
 

@@ -59,9 +59,9 @@ app.get('/google/callback',
   });
 
 app.get('/logout', (req, res) => {
-   req.logout();
-   res.redirect('/login')
-})
+  req.logout();
+  res.redirect('/login');
+});
 
 
 

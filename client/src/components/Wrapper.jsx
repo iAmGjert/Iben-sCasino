@@ -20,7 +20,7 @@ class Wrapper extends React.Component {
 
   async componentDidMount() {
     try {
-      console.log('mount');
+      
       const userData = await axios.get('/profile/user');
       const {name, money} = userData.data;
       this.setState({

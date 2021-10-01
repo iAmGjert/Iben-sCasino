@@ -17,9 +17,7 @@ ReactDOM.render(
     
 
       <main>
-        <UserContext.Provider>
-          <Wrapper />
-        </UserContext.Provider>
+       
         
         <Route exact path='/profile' component={Profile} />
      
@@ -36,3 +34,7 @@ ReactDOM.render(
 
 
 
+/*<UserContext.Provider>
+<Wrapper />
+</UserContext.Provider>
+*/
