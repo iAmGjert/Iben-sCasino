@@ -5,12 +5,15 @@ class FollowButton extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isFollow: 'Follow'
+      isFollow: 'Follow',
+      friends: '',
     };
+    this.followUser = this.followUser.bind(this);
+    this.removeFriend = this.removeFriend.bind(this);
   }
   //should create an event handler, so when a user clicks the send friend request
 
-  sendFriendreq(user) {
+  followUser(user) {
     console.log(user);
     const {currentUser} = this.props;
 
@@ -24,7 +27,6 @@ class FollowButton extends Component {
          })
        })
      
-    
     
     // axios.put(`/routes/userDatabase/friends/${user.sub}`, {
     //   users: {
@@ -41,15 +43,27 @@ class FollowButton extends Component {
         })
       })
   }
-
+//Where I left off
+  getFriends(){
+    const { currentUser } = this.props;
+    // console.log(currentUser);
+    axios.get(`/routes/userDatabase/friends/${currentUser.id}`)
+    .then(friend => {
+       
+    })
+  }
+  componentDidMount() {
+    // this.getFriends();
+  }
   render() {
-    const { isFollow } = this.state;
-    const { user } = this.props;
+    const { isFollow, friend } = this.state;
+    const { user, currentUser } = this.props;
     return (
       <button onClick={() =>  {
-        isFollow ===  'Follow' ? this.sendFriendreq(user) : this.removeFriend(user)
+        isFollow ===  'Follow' ? this.followUser(user) : this.removeFriend(user)
       }}>
-    {isFollow}
+        {isFollow}
+    {/* { friend.UserId === currentUser.id ? isFollow === 'Following' : isFollow === 'Follow'} */}
       </button>
     );
   }

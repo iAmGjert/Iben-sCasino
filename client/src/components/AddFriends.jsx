@@ -75,13 +75,15 @@ class AddFriends extends Component {
   render() {
     const { users, currentUser, value, userSearched } = this.state;
     return (
+      
       <div className='currentFriend'>
         <h1>currentUser: {this.state.currentUser.name}</h1>
         {/* image of the user's email/profile */}
+        <h3>Recent Players</h3>
         { users.map( (user, i) => (
 
           <div className='user-info' key={i}> 
-            {user.name}    Email: {user.email}
+        <img src={user.picture} />  {user.name}    Email: {user.email}
             <FollowButton user={user} currentUser={currentUser} key={i} />
           </div> 
 

@@ -42,10 +42,11 @@ Data.post('/user', (req, res) => {
 });
 
 
-Data.get('/friends', (req, res) => {
-  Friends.findAll().then((results) => {
-    // console.log(results);
-    res.sendStatus(200).send(results);
+Data.get('/friends/:id', (req, res) => {
+  const { id } = req.params
+  Friends.findAll({ where: { UserId: id }}).then((results) => {
+     console.log(results);
+    res.status(200).send(results);
   }).catch((err) => {
     console.log('Friends Get Data:', err);
     res.status(404);
@@ -65,8 +66,9 @@ Data.post('/friends', (req, res) => {
   
   User.findOne({ where: { id: currentUser.id } }).then(currentU => {
     // console.log(`DATA!!`, currentU)
+    console.log('DATA!!', user)
     updateUser = currentU;
-    Friends.create(user)
+    Friends.create({ friends: user.name })
       .then((user) => {
    
         return updateUser.addFriends(user);
