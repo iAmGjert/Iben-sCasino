@@ -17,6 +17,7 @@ class Finished extends React.Component {
 
   render() {
     const {outcome, userScore, dealerScore, winner} = this.props.results;
+    
     return (
       <div>gameover
         
