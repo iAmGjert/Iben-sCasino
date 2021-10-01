@@ -1,3 +1,4 @@
+const sequelize = require('sequelize');
 const { Sequelize } = require('sequelize');
 const orm = new Sequelize('poker_database', 'root', '', {
   host: 'localhost',
@@ -71,6 +72,10 @@ const PokerGames = orm.define('PokerGames', {
   moneyOnTable: {
     type: Sequelize.INTEGER,
     defaultValue: 0
+  },
+  bigBlind: {
+    type: Sequelize.INTEGER,
+    defaultValue: 10
   },
   bestHand: {
     type: Sequelize.STRING,

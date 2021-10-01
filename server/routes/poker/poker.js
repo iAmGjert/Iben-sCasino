@@ -2,6 +2,7 @@ const express = require('express');
 const Poker = express.Router();
 const {initialDeal, putBet, bestHand} = require('./pokerlogic');
 const {PokerGames} = require('../../../db');
+const { dealerBet } = require('./dealerLogic');
 
 Poker.get('/init', async (req, res) => {
   try {
@@ -22,8 +23,16 @@ Poker.get('/init', async (req, res) => {
 Poker.put('/bet', async (req, res) => {
   try {
     console.log('put bet');
-    await putBet(1, 5);
-    res.sendStatus(200);
+    //testing hardcoded
+    const gameId = 1;
+    const bet = 5;
+    await putBet(gameId, bet);
+
+    const dBet = await dealerBet(gameId, bet);
+
+
+
+    res.status(200).json(dBet);
   } catch (err) {
     console.log(err);
     res.sendStatus(500);
