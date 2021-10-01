@@ -6,6 +6,7 @@ import Login from './components/Login.jsx';
 import Profile from './components/Profile.jsx';
 import AddFriends from './components/AddFriends.jsx';
 import NavBar from './components/NavBar.jsx';
+import Logout from './components/Logout.jsx';
 import Wrapper from './components/Wrapper.jsx';
 import UserContext from './contexts/UserContext.jsx';
 
@@ -18,10 +19,10 @@ ReactDOM.render(
 
       <main>
        
-        
-        <Route exact path='/profile' component={Profile} />
-     
         <NavBar />
+        <Route exact path='/profile' component={Profile} />
+        <Route exact path='/logout' component={Logout} />
+        
         <Route exact path='/login' component={Login} />
         <Route exact path='/blackjack' component={Game} />
         
