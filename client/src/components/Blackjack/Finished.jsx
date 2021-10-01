@@ -17,6 +17,7 @@ class Finished extends React.Component {
 
   render() {
     const {outcome, userScore, dealerScore, winner} = this.props.results;
+    
     return (
       <div>gameover
         
@@ -24,6 +25,13 @@ class Finished extends React.Component {
         <div>
             UserScore: {userScore} dealerScore: {dealerScore}
             winner: {winner}
+        </div>
+        <div>
+          <button 
+            onClick={()=>{
+              this.props.changeRender('start');
+            }}
+          >new game</button>
         </div>
         
       </div>

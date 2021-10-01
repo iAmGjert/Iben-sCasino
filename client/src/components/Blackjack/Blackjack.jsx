@@ -198,7 +198,7 @@ class Blackjack extends React.Component {
     } 
 
     if (finished) {
-      FinishedSpace = <Finished results={results} betOutcome={this.props.betOutcome}/>;
+      FinishedSpace = <Finished results={results} betOutcome={this.props.betOutcome} changeRender={this.props.changeRender}/>;
     }
   
 

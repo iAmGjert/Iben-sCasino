@@ -60,7 +60,7 @@ app.get('/google/callback',
 
 app.get('/logout', (req, res) => {
   req.logout();
-  res.redirect('/login');
+  res.redirect('/login'); //why isnt this working?
 });
 
 
