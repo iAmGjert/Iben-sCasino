@@ -7,9 +7,10 @@ import 'regenerator-runtime/runtime';
 
 const Logout = () => {
   const logout = async () => {
+
     try {
       await axios.get('/logout');
-     
+  
     } catch (err) {
       console.log('logout err', err);
     }
