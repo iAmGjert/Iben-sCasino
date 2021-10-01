@@ -82,8 +82,44 @@ const PokerGames = orm.define('PokerGames', {
       console.log('VAL', val);
       return this.setDataValue('bestHand', val.join(','));
     }
+  },
+  hand: {
+    type: Sequelize.STRING,
+    defaultValue: '',
+    get() {
+      return this.getDataValue('hand').split(',');
+    },
+    set(val) {
+      
+      return this.setDataValue('hand', val.join(','));
+    }
 
-
+  },
+  dealerHand: {
+    type: Sequelize.STRING,
+    defaultValue: '',
+    get() {
+      return this.getDataValue('dealerHand').split(',');
+    },
+    set(val) {
+      
+      return this.setDataValue('dealerHand', val.join(','));
+    }
+  },
+  flop: {
+    type: Sequelize.STRING,
+    defaultValue: '',
+    get() {
+      return this.getDataValue('flop').split(',');
+    },
+    set(val) {
+     
+      return this.setDataValue('flop', val.join(','));
+    }
+  },
+  handRank: {
+    type: Sequelize.INTEGER,
+    defaultValue: 0
   }
 });
 
