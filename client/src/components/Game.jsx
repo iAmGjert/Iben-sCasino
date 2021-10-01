@@ -79,6 +79,7 @@ class Game extends React.Component {
       return <Blackjack 
         bet={this.state.bet}
         betOutcome={this.betOutcome}
+        changeRender={this.changeRender}
      
       />;
     }

@@ -25,6 +25,13 @@ class Finished extends React.Component {
             UserScore: {userScore} dealerScore: {dealerScore}
             winner: {winner}
         </div>
+        <div>
+          <button 
+            onClick={()=>{
+              this.props.changeRender('start');
+            }}
+          >new game</button>
+        </div>
         
       </div>
     );
