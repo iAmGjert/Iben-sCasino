@@ -7,6 +7,9 @@ class PokerGame extends React.Component {
     this.stage = {};
   }
 
+  //conditional render.  for the start page when buy in.
+
+  
   render() {
     return ( 
       <div>

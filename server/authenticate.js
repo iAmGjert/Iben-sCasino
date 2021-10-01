@@ -34,7 +34,7 @@ passport.deserializeUser(( id, done) => {
 passport.use(new GoogleStrategy({
   clientID: process.env.CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: 'http://localhost:1337/google/callback' //this should not be hardcoded
+  callbackURL: '/google/callback'//'http://localhost:1337/google/callback' //this should not be hardcoded
 },
 function(accessToken, refreshToken, profile, done) { // this was cb
  
