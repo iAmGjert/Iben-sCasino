@@ -32,11 +32,12 @@ class Profile extends React.Component {
 
   render() {
     const style = {
-      backgroundColor: '#35654d'
+      backgroundColor: '#35654d',
+      padding: '10px'
     };
     return (
-      <div style={style}><h1>Player's Room</h1>
-        
+      <div style={style}>
+        <div><h1>Player's Room</h1></div>
         {
           this.state.user.map((info, i) => {
             return (
