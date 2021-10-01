@@ -14,6 +14,7 @@ const NavBar = (props) => {
         <Link to='/profile'>Profile</Link>
         <Link to='/addFriends'>Interacting with Users</Link>
         <Link to='/logout'>Logout</Link>
+        <Link to='/poker'>Poker</Link>
       </p>
         
         

@@ -17,17 +17,19 @@ const initialDeal = async (userId, buyIn, x) => {
     const dealer = await axios.get(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=2`);
     const user = await axios.get(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=2`);
 
-    console.log('d.d.cards', dealer.data.cards);
     //the codes to track the cards
     const dealerHand = dealer.data.cards.map(card => {
+      console.log(card.code);
       return {code: card.code,
         image: card.image};
     });
     const userHand = user.data.cards.map(card => {
+      console.log(card.code);
       return {code: card.code,
         image: card.image};
     });
     const flopHand = flop.data.cards.map(card => {
+      console.log(card.code);
       return {code: card.code,
         image: card.image};
     });
@@ -44,7 +46,7 @@ const initialDeal = async (userId, buyIn, x) => {
 
     //create new game in the db
 
-    console.log('poker games', PokerGames);
+    //console.log('poker games', PokerGames);
     const newGame = await PokerGames.create({deckId: deckId, buyIn: buyIn, userId: userId });
     //console.log('newGame', newGame);
 
@@ -87,7 +89,7 @@ const putBet = async (gameId, bet) => {
   try {
     console.log('putbet');
     const currentGame = await PokerGames.findByPk(gameId);
-    console.log('currentGame: ', currentGame);
+    // console.log('currentGame: ', currentGame)
     //const moT = await currentGame.increment('moneyOnTable', {by: bet});
     const mL = await currentGame.decrement('buyIn', {by: bet});
     const moT = await currentGame.increment('moneyOnTable', {by: bet});
@@ -98,6 +100,42 @@ const putBet = async (gameId, bet) => {
   }
 };
 
+/**
+ * functions to choose best poker hand.
+ * this uses library poker-solver.  
+ * -->const bestHand = Hand.solve([array of codes])
+ * --> the array of codes parameter needs to be passed in in format Ad, Jc, etc, and 10 is passed in as a capital T...i.e. 10 of clubs is Tc
+ * 
+ */
+
+//helper function to get the code string to be compatible with teh poker-solver library
+const restring = (string) => {
+  //deck of cardsApi uses a 0 for 10
+  const stringArr = string.split('');
+  if (stringArr[0] === '0') {
+    stringArr[0] = 'T';
+  }
+  const lc = stringArr[1].toLowerCase();
+  const newStr = stringArr[0] + lc;
+  return newStr;
+
+};
+
+//for an array of codes
+const shiftCodes = (arr) => {
+  return arr.map(code => restring(code));
+};
+
+//I: hand is an array of codes
+//O: an array of codes
+//* this can also compare 2 array of hands
+const bestHand = (hand) => {
+  const shiftedHand = shiftCodes(hand);
+  const best = Hand.solve(shiftedHand).cards.map(card => card.value + card.suit);
+  //console.log(best.cards[0].value + best.cards[0].suit)
+  return best;
+};
+
 //need a function to place dbl blind
 
 //need a function to bet/raise
@@ -106,4 +144,4 @@ const putBet = async (gameId, bet) => {
 
 //need a functin to fold
 
-module.exports = {initialDeal, putBet};
+module.exports = {initialDeal, putBet, bestHand};

@@ -71,6 +71,19 @@ const PokerGames = orm.define('PokerGames', {
   moneyOnTable: {
     type: Sequelize.INTEGER,
     defaultValue: 0
+  },
+  bestHand: {
+    type: Sequelize.STRING,
+    defaultValue: '',
+    get() {
+      return this.getDataValue('bestHand').split(',');
+    },
+    set(val) {
+      console.log('VAL', val);
+      return this.setDataValue('bestHand', val.join(','));
+    }
+
+
   }
 });
 

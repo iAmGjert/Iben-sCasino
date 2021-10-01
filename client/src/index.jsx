@@ -8,12 +8,14 @@ import AddFriends from './components/AddFriends.jsx';
 import NavBar from './components/NavBar.jsx';
 import Wrapper from './components/Wrapper.jsx';
 import UserContext from './contexts/UserContext.jsx';
+import PokerGame from './components/PokerGame.jsx';
 
 
 
 ReactDOM.render(
   <Router>
     <div>
+      
     
 
       <main>
@@ -22,8 +24,9 @@ ReactDOM.render(
         </UserContext.Provider>
         
         <Route exact path='/profile' component={Profile} />
-     
+        
         <NavBar />
+        <Route exact path='/poker' component={PokerGame} />
         <Route exact path='/login' component={Login} />
         <Route exact path='/blackjack' component={Game} />
         
