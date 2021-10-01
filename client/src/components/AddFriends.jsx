@@ -77,7 +77,7 @@ class AddFriends extends Component {
     return (
       
       <div className='currentFriend'>
-        <h1>currentUser: {this.state.currentUser.name}</h1>
+        <h1>Active Player: {this.state.currentUser.name}</h1>
         {/* image of the user's email/profile */}
         <h3>Recent Players</h3>
         { users.map( (user, i) => (

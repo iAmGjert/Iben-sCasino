@@ -8,7 +8,7 @@ Data.get('/users', (req, res) => {
   User.findAll().then((results) => {
   //  console.log('req:', req.body, 'results:', results);
   console.log(results);
-      recentUsers = results.slice(results.length - 5, results.length - 1);
+      recentUsers = results.slice(results.length - 4, results.length - 1);
     res.status(200).send(recentUsers);
   }).catch((err) => {
     console.log('User Get Data:', err);
