@@ -1,6 +1,7 @@
 const axios = require('axios');
 const _ = require('underscore-node');
 const {PokerGames} = require('../../../db/index.js');
+const {Hand} = require('pokersolver');
 
 //need a function to find the best poker hand.  compare to the ranked list
 
@@ -84,17 +85,18 @@ const putBet = async (gameId, bet) => {
   //for now find by gameId
 
   try {
-
+    console.log('putbet');
+    const currentGame = await PokerGames.findByPk(gameId);
+    console.log('currentGame: ', currentGame);
+    //const moT = await currentGame.increment('moneyOnTable', {by: bet});
+    const mL = await currentGame.decrement('buyIn', {by: bet});
+    const moT = await currentGame.increment('moneyOnTable', {by: bet});
+    console.log(mL, moT);
 
   } catch (err) {
-    const currentGame = PokerGames.findByPk(gameId)
-    await currentGame.increment('moneyOnTable', {by: bet});
-    await currentGame.decrement('moneyLeft', {by: bet});
-  }
   
-
-
-}
+  }
+};
 
 //need a function to place dbl blind
 
@@ -104,4 +106,4 @@ const putBet = async (gameId, bet) => {
 
 //need a functin to fold
 
-module.exports = {initialDeal};
+module.exports = {initialDeal, putBet};

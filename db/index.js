@@ -67,11 +67,10 @@ const PokerGames = orm.define('PokerGames', {
     type: Sequelize.INTEGER,
     defaultValue: 50
   },
-  moneyLeft: { //this will be the money left in the pot
-    type: Sequelize.INTEGER
-  },
+
   moneyOnTable: {
-    type: Sequelize.INTEGER
+    type: Sequelize.INTEGER,
+    defaultValue: 0
   }
 });
 
