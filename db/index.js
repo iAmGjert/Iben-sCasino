@@ -50,6 +50,35 @@ const Friends = orm.define('Friends', {
   }
 });
 
+const PokerGames = orm.define('PokerGames', {
+  id: {
+    type: Sequelize.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  },
+  deckId: {
+    type: Sequelize.STRING(255)
+  },
+  userId: {
+    type: Sequelize.STRING(255),
+    
+  },
+  buyIn: {
+    type: Sequelize.INTEGER,
+    defaultValue: 50
+  },
+  moneyLeft: { //this will be the money left in the pot
+    type: Sequelize.INTEGER
+  },
+  moneyOnTable: {
+    type: Sequelize.INTEGER
+  }
+});
+
+User.hasMany(PokerGames, {foreignKey: {
+  name: 'userId'
+}});
+
 User.hasMany(Friends);
 Friends.belongsTo(User);
 
@@ -73,10 +102,19 @@ Friends.sync()
     console.error('Unable to connect to the database:', err);
   });
 
+PokerGames.sync()
+  .then(() => {
+    console.log('PokerGames.Sync');
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
 
 
 exports.User = User;
 exports.Friends = Friends;
+exports.PokerGames = PokerGames;
 
 
 /* 

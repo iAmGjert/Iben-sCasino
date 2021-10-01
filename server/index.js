@@ -7,6 +7,7 @@ const session = require('express-session');
 const passport = require('passport');
 const authenticate = require('./authenticate.js');
 const { Data } = require('./routes/userDatabase');
+const {Poker} = require('./routes/poker/poker');
 
 require('dotenv').config();
 const { ClientId } = require('./routes/clientId');
@@ -38,6 +39,7 @@ app.use('/routes/clientId', ClientId);
 app.use('/routes/blackjack', blj.Blackjack);
 app.use('/routes/userDatabase', Data);
 app.use('/routes/profile', Profile);
+app.use('/routes/poker/poker', Poker);
 
 app.get('/google', passport.authenticate('google', {scope: ['profile', 'email']}), (req, res) => {
   
@@ -59,9 +61,9 @@ app.get('/google/callback',
   });
 
 app.get('/logout', (req, res) => {
-   req.logout();
-   res.redirect('/login')
-})
+  req.logout();
+  res.redirect('/login');
+});
 
 
 
