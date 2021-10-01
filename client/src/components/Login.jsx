@@ -15,7 +15,7 @@ class Login extends React.Component {
     
     axios.get('/routes/clientId')
       .then(data => {
-        
+       
         const {CLIENT_ID} = data.data.parsed; //pull out the ID 
         this.setState({
           clientId: CLIENT_ID,
@@ -25,6 +25,7 @@ class Login extends React.Component {
   }
   render() {
     const {changeRender} = this.props;
+    
     const inlineStyle = {
       marginTop: '7px',
       marginRight: '8px'

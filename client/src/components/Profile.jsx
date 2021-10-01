@@ -16,7 +16,7 @@ class Profile extends React.Component {
 
   async getUser() {
     const data = await axios.get('/routes/profile/user'); 
-    // console.log('user:', data.data.money);
+    
     return data.data;
    
       
@@ -37,7 +37,7 @@ class Profile extends React.Component {
     };
     return (
       <div style={style}>
-        <div><h1>Player's Room</h1></div>
+        <h1>Player's Room</h1>
         {
           this.state.user.map((info, i) => {
             return (
