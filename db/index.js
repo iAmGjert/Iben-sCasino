@@ -50,14 +50,14 @@ const Friends = orm.define('Friends', {
   }
 });
 
-User.hasMany(Friends);
-Friends.belongsTo(User);
-
+User.hasMany(Friends, { onDelete: 'CASCADE'});
+Friends.belongsTo(User, {onDelete: 'CASCADE'});
 
 // Somehow use this to drop the database
 
 User.sync()
   .then(() => {
+
     console.log('Connection has been established successfully.');
   })
   .catch((err) => {

@@ -4,10 +4,12 @@ const Data = Router(); //not sure what goes in here...
 
 // still developing sequelize database request structure
 Data.get('/users', (req, res) => {
- 
+ let recentUsers;
   User.findAll().then((results) => {
   //  console.log('req:', req.body, 'results:', results);
-    res.status(200).send(results);
+  console.log(results);
+      recentUsers = results.slice(results.length - 5, results.length - 1);
+    res.status(200).send(recentUsers);
   }).catch((err) => {
     console.log('User Get Data:', err);
     res.status(500);
