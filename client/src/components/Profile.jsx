@@ -16,7 +16,7 @@ class Profile extends React.Component {
 
   async getUser() {
     const data = await axios.get('/routes/profile/user'); 
-    console.log('user:', data.data.money);
+    // console.log('user:', data.data.money);
     return data.data;
    
       

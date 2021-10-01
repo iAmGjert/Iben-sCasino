@@ -19,7 +19,7 @@ class Finished extends React.Component {
     const {outcome, userScore, dealerScore, winner} = this.props.results;
     return (
       <div>gameover
-        <button onClick={this.props.betOutcome}>betOutcome</button>
+        
         <h1>{outcome}</h1>
         <div>
             UserScore: {userScore} dealerScore: {dealerScore}

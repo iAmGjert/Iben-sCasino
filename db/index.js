@@ -39,7 +39,7 @@ const User = orm.define('User', {
   status: {
     type: Sequelize.STRING(255),
     defaultValue: 'noRequest'
-   }
+  }
 
 });
 
