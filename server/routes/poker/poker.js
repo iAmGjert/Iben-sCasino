@@ -37,8 +37,9 @@ Poker.put('/bestHand', async (req, res) => {
     console.log('besthand');
     const test = ['AS', '9S', '8S', '0S', '7D', '6H', '4D'];
     const best = bestHand(test);
+    console.log('best', best);
     //set the best hand in the db
-    await PokerGames.update({bestHand: best}, {where: {id: gameId}});
+    await PokerGames.update({bestHand: best.bestHand, handRank: best.rank}, {where: {id: gameId}});
 
 
 

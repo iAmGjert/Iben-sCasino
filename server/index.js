@@ -3,7 +3,7 @@ const path = require('path');
 const app = express();
 const session = require('express-session');
 //const cookieSession = require('cookie-session');
-//const cookieParser = require('cookie-parser');
+const cookieParser = require('cookie-parser');
 const passport = require('passport');
 const authenticate = require('./authenticate.js');
 const { Data } = require('./routes/userDatabase');
@@ -15,7 +15,9 @@ const blj = require('./routes/blackjack');
 const {Profile} = require('./routes/profile');
 
 const port = 1337;
+
 app.use(express.json());
+app.use(cookieParser());
 
 // app.use(cookieSession({
 //   maxAge: 24 * 60 * 60 * 1000,
@@ -61,6 +63,7 @@ app.get('/google/callback',
   });
 
 app.get('/logout', (req, res) => {
+
   req.logout();
   res.redirect('/login');
 });

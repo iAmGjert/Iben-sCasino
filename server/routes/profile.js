@@ -3,7 +3,7 @@ const Profile = require('express').Router();
 Profile.get('/user', async (req, res) => {
 
   //req.user is provided with the serialize/deserialize sessions
-
+  //console.log('cookies', req.cookies)
   //console.log('REQ USER', req.user);
 
   //console.log(req.session);

@@ -7,6 +7,7 @@ import 'regenerator-runtime/runtime';
 
 const Logout = () => {
   const logout = async () => {
+    console.log('click');
     try {
       await axios.get('/logout');
       console.log('looged out');
@@ -15,7 +16,7 @@ const Logout = () => {
     }
   };
   return (
-    <button>Logout</button>
+    <button onClick={logout}>Logout</button>
   );
 };
 
