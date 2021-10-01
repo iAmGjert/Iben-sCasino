@@ -9,13 +9,13 @@ const Logout = () => {
   const logout = async () => {
     try {
       await axios.get('/logout');
-      console.log('looged out');
+     
     } catch (err) {
       console.log('logout err', err);
     }
   };
   return (
-    <button>Logout</button>
+    <button onClick={logout}>Logout</button>
   );
 };
 
