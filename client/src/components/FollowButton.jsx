@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 //may need to change this into a class component
-class FriendreqButton extends Component {
+class FollowButton extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -28,10 +28,10 @@ class FriendreqButton extends Component {
     const { user } = this.props;
     return (
       <button onClick={() => this.sendFriendreq(user)}>
-     Send Friend Request
+     Follow
       </button>
     );
   }
 }
 
-export default FriendreqButton;
+export default FollowButton;

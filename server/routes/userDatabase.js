@@ -3,7 +3,7 @@ const { Router } = require('express');
 const Data = Router(); //not sure what goes in here...
 
 // still developing sequelize database request structure
-Data.get('/user', (req, res) => {
+Data.get('/users', (req, res) => {
  
   User.findAll().then((results) => {
   //  console.log('req:', req.body, 'results:', results);
@@ -14,6 +14,18 @@ Data.get('/user', (req, res) => {
   });
 });
 
+Data.get('/:user', (req, res) => {
+  const { user } = req.params
+  User.findAll({ where: { name: user } })
+  .then(user => {
+    console.log(user);
+    res.status(200).send(user);
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(500);
+  })
+})
 
 
 // does this need to be /google?
