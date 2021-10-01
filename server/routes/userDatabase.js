@@ -18,10 +18,10 @@ Data.get('/user', (req, res) => {
 
 // does this need to be /google?
 Data.post('/user', (req, res) => {
- // console.log(req.body.name);
+  // console.log(req.body.name);
   const { name } = req.body;
   User.create({name: name }).then(() => {
-   // console.log('req:', req.body, 'results:', results);
+    // console.log('req:', req.body, 'results:', results);
     res.sendStatus(201);
   }).catch((err) => {
     console.log('User Post Data:', err);
@@ -32,7 +32,7 @@ Data.post('/user', (req, res) => {
 
 Data.get('/friends', (req, res) => {
   Friends.findAll().then((results) => {
-   // console.log(results);
+    // console.log(results);
     res.sendStatus(200).send(results);
   }).catch((err) => {
     console.log('Friends Get Data:', err);

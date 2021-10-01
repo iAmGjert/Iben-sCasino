@@ -16,7 +16,7 @@ class FriendreqButton extends Component {
     axios.post('/routes/userDatabase/friends', {
       currentUser: currentUser,
       user: user
-    })
+    });
     // axios.put(`/routes/userDatabase/friends/${user.sub}`, {
     //   users: {
     //     status: 'friendRequest'

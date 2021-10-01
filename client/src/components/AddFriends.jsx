@@ -29,12 +29,12 @@ class AddFriends extends Component {
   getProfile() {
     axios.get('/routes/profile/user')
       .then(user => {
-        console.log(user)
+        console.log(user);
         this.setState({
           currentUser: user.data
-        })
+        });
       })
-      .catch((err => console.log('getprof err', err)))
+      .catch((err => console.log('getprof err', err)));
   }
   
   
