@@ -14,16 +14,7 @@ class FollowButton extends Component {
     console.log(user);
     const {currentUser} = this.props;
 
-    if(this.state.isFollow === 'Following') {
-      axios.delete(`/routes/userDatabase/friends/${user.id}`)
-      .then(() => {
-        this.setState({
-          isFollow: 'Follow'
-        })
-      })
-     } else {
-
-       //should send a axios post request
+    //should send a axios post request
        axios.post('/routes/userDatabase/friends', {
          currentUser: currentUser,
          user: user
@@ -32,7 +23,7 @@ class FollowButton extends Component {
            isFollow: 'Following'
          })
        })
-     }
+     
     
     
     // axios.put(`/routes/userDatabase/friends/${user.sub}`, {
@@ -42,11 +33,22 @@ class FollowButton extends Component {
     // });
   }
 
+  removeFriend(user) {
+    axios.delete(`/routes/userDatabase/friends/${user.id}`)
+      .then(() => {
+        this.setState({
+          isFollow: 'Follow'
+        })
+      })
+  }
+
   render() {
     const { isFollow } = this.state;
     const { user } = this.props;
     return (
-      <button onClick={() => this.sendFriendreq(user)}>
+      <button onClick={() =>  {
+        isFollow ===  'Follow' ? this.sendFriendreq(user) : this.removeFriend(user)
+      }}>
     {isFollow}
       </button>
     );

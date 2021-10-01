@@ -81,8 +81,14 @@ Data.post('/friends', (req, res) => {
 
 //delete a friend by id when the user is clicked on the following button to unfollow
 Data.delete('/friends/:id', (req, res) => {
-  //     const { } = req.params;
-  // Friends.destroy({ where: {}})
+   const { id } = req.params;
+  Friends.destroy({ where: { id: id }})
+  .then(() => {
+    res.sendStatus(201);
+  })
+  .catch(err => {
+    console.log(err);
+  })
 
 })
 
