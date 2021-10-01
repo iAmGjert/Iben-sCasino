@@ -1,7 +1,7 @@
 import React from 'react' 
 import FollowButton from './FollowButton.jsx'
 const UserPreview = ({userSearched }) => { 
-  console.log(userSearched)
+  
   return (
     <div className='preview'>
       {

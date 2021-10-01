@@ -35,7 +35,7 @@ class AddFriends extends Component {
   getProfile() {
     axios.get('/routes/profile/user')
       .then(user => {
-        console.log(user)
+        // console.log(user)
         this.setState({
           currentUser: user.data
         })
