@@ -58,6 +58,10 @@ app.get('/google/callback',
     // res.send(req.user);
   });
 
+app.get('/logout', (req, res) => {
+   req.logout();
+   res.redirect('/login')
+})
 
 
 

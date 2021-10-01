@@ -3,6 +3,8 @@ import axios from 'axios';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 
+/**beginnings of a header to display user name and money for the entire duration of using the app */
+
 class Wrapper extends React.Component {
   constructor(props) {
     super(props);
@@ -37,7 +39,7 @@ class Wrapper extends React.Component {
     return (
       <div>
 
-        prof headinng
+  
         <p>{name}</p>
         <p>{money}</p>
       </div>

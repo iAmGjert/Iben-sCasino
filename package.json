@@ -32,6 +32,7 @@
     "webpack-cli": "^4.8.0"
   },
   "dependencies": {
+    "@mui/material": "^5.0.2",
     "axios": "^0.21.4",
     "cookie-parser": "^1.4.5",
     "core-js": "^3.18.0",

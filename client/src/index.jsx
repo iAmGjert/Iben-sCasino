@@ -14,20 +14,14 @@ import UserContext from './contexts/UserContext.jsx';
 ReactDOM.render(
   <Router>
     <div>
-      <aside>
-        <Link to='/blackjack'>Blackjack</Link>
-        <Link to='/login'>Login</Link>
-        <Link to='/profile'>Profile</Link>
-        <Link to='/addFriends'>Interacting with Users</Link>
-
-      </aside>
+    
 
       <main>
         <UserContext.Provider>
           <Wrapper />
         </UserContext.Provider>
         
-        <Route exact path='/profile' infoDisplay={this.infoDisplay} component={Profile} />
+        <Route exact path='/profile' component={Profile} />
      
         <NavBar />
         <Route exact path='/login' component={Login} />
