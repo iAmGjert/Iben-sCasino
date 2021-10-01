@@ -50,8 +50,8 @@ app.get('/google/callback',
   function(req, res, next) {
     
     // Successful authentication, redirect home.
-    res.redirect('/blackjack');// --> to the main game page
-    //res.redirect('/profile');
+    //res.redirect('/blackjack');// --> to the main game page
+    res.redirect('/profile');
     // res.sendStatus(201)
     
     
