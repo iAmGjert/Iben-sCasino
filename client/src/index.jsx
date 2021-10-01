@@ -9,7 +9,7 @@ import NavBar from './components/NavBar.jsx';
 import Logout from './components/Logout.jsx';
 import Wrapper from './components/Wrapper.jsx';
 import UserContext from './contexts/UserContext.jsx';
-
+//import PrivateRoute from './components/PrivateRoute.jsx';
 
 
 ReactDOM.render(
@@ -25,7 +25,7 @@ ReactDOM.render(
         
         <Route exact path='/login' component={Login} />
         <Route exact path='/blackjack' component={Game} />
-        
+        {/* <PrivateRoute path='/blackjack' component={MyComponent} />  */}
         <Route exact path='/addFriends' component={AddFriends} />
       </main>
     </div>

@@ -40,7 +40,7 @@ app.use('/routes/userDatabase', Data);
 app.use('/routes/profile', Profile);
 
 app.get('/google', passport.authenticate('google', {scope: ['profile', 'email']}), (req, res) => {
-  
+  console.log('REQ USER', req.user);
 });
  
   
@@ -49,9 +49,10 @@ app.get('/google/callback',
   passport.authenticate('google', { failureRedirect: '/login', }),
   function(req, res, next) {
     console.log('session:', req.session);
+    console.log('user:', req.user);
     // Successful authentication, redirect home.
-    // res.redirect('/blackjack');// --> to the main game page
-    res.redirect('/profile');
+     res.redirect('/blackjack');// --> to the main game page
+    //res.redirect('/profile');
     // res.sendStatus(201)
     
     

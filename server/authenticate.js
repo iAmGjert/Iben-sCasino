@@ -5,7 +5,7 @@ require('dotenv').config();
 const { User, Friends } = require('../db/index.js');
 
 passport.serializeUser((user, done) => {
-
+  console.log(user);
   done(null, user.id); 
 });
 
