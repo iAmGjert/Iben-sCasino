@@ -44,14 +44,14 @@ class FollowButton extends Component {
       })
   }
 //Where I left off
-  getFriends(){
-    const { currentUser } = this.props;
-    // console.log(currentUser);
-    axios.get(`/routes/userDatabase/friends/${currentUser.id}`)
-    .then(friend => {
+  // getFriends(){
+  //   const { currentUser } = this.props;
+  //   // console.log(currentUser);
+  //   axios.get(`/routes/userDatabase/friends/${currentUser.id}`)
+  //   .then(friend => {
        
-    })
-  }
+  //   })
+  // }
   componentDidMount() {
     // this.getFriends();
   }

@@ -3,6 +3,8 @@ import axios from 'axios';
 import FollowButton from './FollowButton.jsx'
 import Search from './Search.jsx';
 import UserPreview from './UserPreview.jsx';
+import FollowingBar from './FollowingBar.jsx';
+import {Link} from 'react-router-dom';
 class AddFriends extends Component {
   constructor(props) {
     super(props);
@@ -25,7 +27,7 @@ class AddFriends extends Component {
   getUsers() {
     axios.get('/routes/userDatabase/users')
       .then(users => {
-        console.log(users.data);
+        // console.log(users.data);
         this.setState({
           users: users.data
         });
@@ -35,7 +37,7 @@ class AddFriends extends Component {
   getProfile() {
     axios.get('/routes/profile/user')
       .then(user => {
-        console.log(user);
+        // console.log(user);
         this.setState({
           currentUser: user.data
         });
@@ -77,7 +79,8 @@ class AddFriends extends Component {
     return (
       
       <div className='currentFriend'>
-        <h1>Active Player: {this.state.currentUser.name}</h1>
+        <Link  to='/Leaderboard'>Black Jack Leaderboard </Link>
+        <h1>Active Player: {currentUser.name}</h1>
         {/* image of the user's email/profile */}
         <h3>Recent Players</h3>
         { users.map( (user, i) => (
@@ -93,7 +96,7 @@ class AddFriends extends Component {
           <Search changeInput={this.changeInput} searchUser={this.searchUser} value={value}/>
           
           <UserPreview  userSearched={userSearched}   />
-          
+          <FollowingBar currentUser={currentUser} />
         </div>
       </div>
     );
