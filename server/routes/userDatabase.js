@@ -7,7 +7,7 @@ Data.get('/users', (req, res) => {
  let recentUsers;
   User.findAll().then((results) => {
   //  console.log('req:', req.body, 'results:', results);
-  console.log(results);
+  // console.log(results);
       recentUsers = results.slice(results.length - 4, results.length - 1);
     res.status(200).send(recentUsers);
   }).catch((err) => {
@@ -19,7 +19,7 @@ Data.get('/users', (req, res) => {
 Data.get('/users/leaderboard', (req, res) => {
    User.findAll().then((results) => {
    //  console.log('req:', req.body, 'results:', results);
-   console.log(results);
+  //  console.log(results);
      res.status(200).send(results);
    }).catch((err) => {
      console.log('User Get Data:', err);
@@ -31,7 +31,7 @@ Data.get('/:user', (req, res) => {
   const { user } = req.params
   User.findAll({ where: { name: user } })
   .then(user => {
-    console.log(user);
+    // console.log(user);
     res.status(200).send(user);
   })
   .catch(err => {

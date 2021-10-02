@@ -76,6 +76,7 @@ class AddFriends extends Component {
   
   render() {
     const { users, currentUser, value, userSearched } = this.state;
+    // console.log(currentUser)
     return (
       
       <div className='currentFriend'>
@@ -94,10 +95,9 @@ class AddFriends extends Component {
         }
         <div>
           <Search changeInput={this.changeInput} searchUser={this.searchUser} value={value}/>
-          
           <UserPreview  userSearched={userSearched}   />
-          <FollowingBar currentUser={currentUser} />
         </div>
+        <FollowingBar currentUser={currentUser} />
       </div>
     );
   }

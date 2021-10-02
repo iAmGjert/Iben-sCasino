@@ -6,13 +6,12 @@ class Leaderboard extends Component {
    this.state = {
      players: []
    }
-
+ this.getPlayers = this.getPlayers.bind(this);
  }
 
  getPlayers() {
   axios.get('/routes/userDatabase/users/leaderboard')
   .then(players => {
-    console.log(players);
     this.setState({
       players: players.data
     })

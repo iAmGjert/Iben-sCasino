@@ -18,13 +18,13 @@ class FollowingBar extends Component  {
  handleMouseLeave() {
   this.setState({ hover: false})
 }
- getFriends(){
-  const { currentUser } = this.props;
-  // console.log(currentUser);
+ getFriends() {
+   const { currentUser } = this.props;
+  console.log('LETS SEE!!: ', this.props);
   axios.get(`/routes/userDatabase/friends/${currentUser.id}`)
   .then(data => {
-     console.log(data);
-    // this.setState({
+    // console.log(data);
+    // // this.setState({
     //   friends: friend,
     // })
   })
