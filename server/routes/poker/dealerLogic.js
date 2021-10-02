@@ -44,4 +44,19 @@ const dealerBet = async (gameId, call) => {
   }
 };
 
-module.exports = {dealerBet};
+//this is for the dealer bet.  since dealer is casino and has unlimited pool of money, this will just update the PokerGames and add the bet to the money on the table
+const dealerBlind = async (gameId, bet) => {
+  try {
+    const currentGame = PokerGames.findByPk(gameId)
+    const mOT = currentGames.moneyOnTable
+
+    await PokerGames.update({money: mOT + bet}, {where: {gameId: id}})
+
+
+  } catch (err) {
+    console.log(err)
+  }
+
+}
+
+module.exports = {dealerBet, dealerBlind};

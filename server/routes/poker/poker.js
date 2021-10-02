@@ -2,14 +2,16 @@ const express = require('express');
 const Poker = express.Router();
 const {initialDeal, putBet, bestHand} = require('./pokerlogic');
 const {PokerGames} = require('../../../db');
-const { dealerBet } = require('./dealerLogic');
+const { dealerBet, dealerBlind } = require('./dealerLogic');
 
-Poker.get('/init', async (req, res) => {
+Poker.get('/init/:buyIn/:bigBlind', async (req, res) => {
   try {
+    console.log('init')
+    const {buyIn, bigBlind} = req.params;
 
     console.log('init');
-    const logic = await initialDeal(1, 50); //this userId is hardcoded...grab it from req.user
-    //console.log('logic', logic);
+    const logic = await initialDeal(1, buyIn, bigBlind); //this userId is hardcoded...grab it from req.user
+  //  console.log('logic', logic);
     res.status(201).send(logic);
   } catch (err) {
     console.log(err);
@@ -20,7 +22,9 @@ Poker.get('/init', async (req, res) => {
 
 //update this enpt to include parameters for bet amount and also gameId
 //put request for betting
-Poker.put('/bet', async (req, res) => {
+Poker.put('/bet/:gameId/:bet', async (req, res) => {
+  const {gameId, bet} = req.params
+  console.log('put request, gameId and bet: ', gameId, bet)
   try {
     console.log('put bet');
     //testing hardcoded
@@ -38,6 +42,31 @@ Poker.put('/bet', async (req, res) => {
     res.sendStatus(500);
   }
 });
+
+//this one for the blinds
+Poker.put('/blinds/:gameId/:bet', async (req, res) => {
+  const {gameId, bet} = req.params
+  console.log('blindbet')
+  console.log('put request, gameId and bet: ', gameId, bet)
+  try {
+    console.log('put bet');
+    //testing hardcoded
+    //const gameId = 1;
+    //const bet = 5;
+    await putBet(gameId, bet);
+
+    await dealerBlind(gameId, bet/2)
+
+
+
+    res.status(200).json(dBet);
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500);
+  }
+});
+
+
 
 //id in parameters
 Poker.put('/bestHand', async (req, res) => {

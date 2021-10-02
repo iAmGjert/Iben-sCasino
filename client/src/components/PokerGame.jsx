@@ -19,6 +19,7 @@ class PokerGame extends React.Component {
     };
     this.changeView = this.changeView.bind(this);
     this.conditionalRender = this.conditionalRender.bind(this);
+    this.setInitialMoney = this.setInitialMoney.bind(this);
   }
 
   //conditional render.  for the start page when buy in.
@@ -37,13 +38,23 @@ class PokerGame extends React.Component {
     });
   }
 
+  //this sets the initial buyIn and bigBlind in the state, when the starting screen chooses the buy insand big blinds
+  setInitialMoney(buyIn, bigBlind) {
+
+    this.setState({
+      buyIn: buyIn,
+      bigBlind: bigBlind
+    })
+    console.log('setInitialMoney;', buyIn, bigBlind)
+  }
+
   conditionalRender() {
-    const {view} = this.state;
+    const {view, bigBlind, buyIn} = this.state;
     if (view === 'start') {
-      return <PokerStart />;
+      return <PokerStart setInitialMoney={this.setInitialMoney} changeView={this.changeView} />;
     }
     if (view === 'poker') {
-      return <Poker />;
+      return <Poker bigBlind={bigBlind} buyIn={buyIn} />;
     }
   }
 

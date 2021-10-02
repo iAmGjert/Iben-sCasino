@@ -6,8 +6,8 @@ const {Hand} = require('pokersolver');
 //need a function to find the best poker hand.  compare to the ranked list
 
 //need a function to deal.  2 cards to each player, 3 cards up
-//userId is passed as a parameter from the routes via the session, x is the single blind
-const initialDeal = async (userId, buyIn, x) => {
+//userId is passed as a parameter from the routes via the session, 
+const initialDeal = async (userId, buyIn, bigBlind) => {
   try {
     const {data} = await axios.get('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1');
 
@@ -19,17 +19,17 @@ const initialDeal = async (userId, buyIn, x) => {
 
     //the codes to track the cards
     const dealerHand = dealer.data.cards.map(card => {
-      console.log(card.code);
+    //  console.log(card.code);
       return {code: card.code,
         image: card.image};
     });
     const userHand = user.data.cards.map(card => {
-      console.log(card.code);
+      // console.log(card.code);
       return {code: card.code,
         image: card.image};
     });
     const flopHand = flop.data.cards.map(card => {
-      console.log(card.code);
+      // console.log(card.code);
       return {code: card.code,
         image: card.image};
     });
@@ -47,8 +47,8 @@ const initialDeal = async (userId, buyIn, x) => {
     //create new game in the db
 
     //console.log('poker games', PokerGames);
-    const newGame = await PokerGames.create({deckId: deckId, buyIn: buyIn, userId: userId, hand: userHand.map(x => x.code), dealerHand: dealerHand.map(x => x.code), flop: flopHand.map(x => x.code)});
-    //console.log('newGame', newGame);
+    const newGame = await PokerGames.create({deckId: deckId, buyIn: buyIn, bigBlind: bigBlind, userId: userId, hand: userHand.map(x => x.code), dealerHand: dealerHand.map(x => x.code), flop: flopHand.map(x => x.code)});
+    console.log('newGame', newGame);
 
     return {
       
@@ -81,7 +81,7 @@ const addToFlop = async (gameId, deckId) => {
 };
 
 
-//need a function to place a single blind
+//need a function to place a single bet
 
 const putBet = async (gameId, bet) => {
   //for now find by gameId
@@ -93,7 +93,11 @@ const putBet = async (gameId, bet) => {
     //const moT = await currentGame.increment('moneyOnTable', {by: bet});
     const mL = await currentGame.decrement('buyIn', {by: bet});
     const moT = await currentGame.increment('moneyOnTable', {by: bet});
-    console.log(mL, moT);
+    // console.log(mL, moT);
+    
+
+  
+
 
   } catch (err) {
   
@@ -134,7 +138,7 @@ const bestHand = (hand) => {
   const {rank} = Hand.solve(shiftedHand);
   const best = Hand.solve(shiftedHand).cards.map(card => card.value + card.suit);
   //console.log(best.cards[0].value + best.cards[0].suit)
-  console.log(rank);
+  // console.log(rank);
   return {
     bestHand: best,
     rank: rank
