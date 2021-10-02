@@ -37,7 +37,7 @@ class Login extends React.Component {
     };
     const headerStyle = {
       fontSize: '180px',
-      textShadow: '2px 2px 2px #ffff00',
+      textShadow: '2px 2px 5px #ffff00',
     };
     const inlineStyle = {
       marginTop: '7px',

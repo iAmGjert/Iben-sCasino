@@ -8,8 +8,8 @@ const NavBar = (props) => {
 
   return (
     
-    <nav className="red darken-4">
-      <div className="nav-wrapper container">
+    <nav style={{borderStyle: 'dashed', borderColor: 'gold', borderWidth: '2px'}} className="deep-purple">
+      <div style={{textShadow: '0px 0px 5px #fff, 1px 1px 2px black'}}className="nav-wrapper container">
         <div className="row right hide-on-med-and-down">
           <div className="col s2.5"><Link to='/blackjack'>Blackjack</Link></div>
           <div className="col s2.5"><Link to='/login'>Login</Link></div>
