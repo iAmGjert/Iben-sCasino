@@ -33,17 +33,35 @@ class Profile extends React.Component {
   render() {
     const style = {
       backgroundColor: '#35654d',
-      padding: '10px'
+      padding: '10px',
+      textShadow: '0px 0px 4px #fff, 1px 1px 2px black, 0px 0px 1px red',
+      textAlign: 'center',
+      fontWeight: '900',
+      
+      
+    };
+    const border = {
+      borderWidth: '5px',
+      borderStyle: 'dotted',
+      paddingLeft: '15px',
+      marginRight: '80px',
+      marginLeft: '80px',
+      borderShadow: '4px',
+      boxShadow: '3px 3px 3px',
+      
     };
     return (
       <div style={style}>
-        <h1>Player's Room</h1>
+        <div className='card-panel green darken-2' style={border}><h1>Player's Room</h1></div>
+        
         {
           this.state.user.map((info, i) => {
             return (
               <div key={i}>
-                <h2>{info[2]}</h2>
-                <img src={info[3]}/>
+                <div className='row'>
+                  <h2>{info[2]}</h2>
+                </div>
+                <img className='circle responsive-img z-depth-4' src={info[3]}/>
                 <h3>{info[4]}</h3>
                 <h4>Baller Status: {info[5] > 75 ? 'Baller' : info[5] <= 75 && info[5] >= 35 ? 'Bum' : 'Broke!!!'}</h4>
                 <h3>$: {info[5]}</h3>

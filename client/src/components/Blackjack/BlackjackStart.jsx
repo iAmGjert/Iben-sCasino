@@ -13,6 +13,7 @@ class BlackjackStart extends React.Component {
     };
     this.increaseBet = this.increaseBet.bind(this);
     this.removeChip = this.removeChip.bind(this);
+    this.conditionalRender = this.conditionalRender.bind(this);
   }
 
   /**
@@ -39,6 +40,42 @@ class BlackjackStart extends React.Component {
       currentBet: this.state.currentBet - x
     });
   }
+  
+  conditionalRender() {
+    const {changeRender, placeBet, monies, name} = this.props;
+    console.log('name:', name);
+    const { available, currentBet} = this.state;
+    if (name === '' || name === undefined) {
+      return (
+        <p><em>You must log in!!!</em></p>
+      );
+    } else {
+      return (
+        <div>
+          <button 
+            style={{display: 5 < monies ? 'block' : 'none'}} 
+            value={5} 
+            onClick={()=>this.increaseBet(5)}
+          >5</button>
+          <button 
+            style={{display: 10 < monies ? 'block' : 'none'}} 
+            value={10}
+            onClick={()=>this.increaseBet(10)}
+          >10</button>
+          <button 
+            style={{display: 100 < available ? 'block' : 'none'}} 
+            onClick={()=>this.increaseBet(100)}
+            value={100}
+          >100</button>
+          <button bet={currentBet} onClick={()=> {
+            changeRender('blackjack');
+            placeBet(currentBet);
+          }}>place bet </button>
+        </div>
+      );
+    }
+    
+  }
 
   componentDidMount() {
 
@@ -48,31 +85,15 @@ class BlackjackStart extends React.Component {
   }
 
   render() {
-    const {changeRender, placeBet, monies} = this.props;
+    const {changeRender, placeBet, monies, name} = this.props;
+    
     const { available, currentBet} = this.state;
     return (
       <div>
         <p>current bet: {currentBet}</p>
         <p>available monies left: {available}</p>
-        <button 
-          style={{display: 5 < monies ? 'block' : 'none'}} 
-          value={5} 
-          onClick={()=>this.increaseBet(5)}
-        >5</button>
-        <button 
-          style={{display: 10 < monies ? 'block' : 'none'}} 
-          value={10}
-          onClick={()=>this.increaseBet(10)}
-        >10</button>
-        <button 
-          style={{display: 100 < available ? 'block' : 'none'}} 
-          onClick={()=>this.increaseBet(100)}
-          value={100}
-        >100</button>
-        <button bet={currentBet} onClick={()=> {
-          changeRender('blackjack');
-          placeBet(currentBet);
-        }}>place bet </button>
+        
+        {this.conditionalRender()}
       </div>
     );
   }

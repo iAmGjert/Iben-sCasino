@@ -1,8 +1,9 @@
 const express = require('express');
+
 const path = require('path');
 const app = express();
 const session = require('express-session');
-//const cookieSession = require('cookie-session');
+
 //const cookieParser = require('cookie-parser');
 const passport = require('passport');
 const authenticate = require('./authenticate.js');
@@ -14,12 +15,10 @@ const blj = require('./routes/blackjack');
 const {Profile} = require('./routes/profile');
 
 const port = 1337;
+
 app.use(express.json());
 
-// app.use(cookieSession({
-//   maxAge: 24 * 60 * 60 * 1000,
-//   keys: [process.env.SESSION_SECRET]
-// }));
+
 
 const frontend = path.resolve(__dirname, '..', 'client', 'dist');
 
@@ -59,8 +58,12 @@ app.get('/google/callback',
   });
 
 app.get('/logout', (req, res) => {
+
+  console.log('logout:', req.user);
   req.logout();
-  res.redirect('/login'); //why isnt this working?
+  res.redirect('/login');
+  
+  
 });
 
 
