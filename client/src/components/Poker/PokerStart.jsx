@@ -37,8 +37,8 @@ const PokerStart = ({changeView, setInitialMoney}) => {
       <p>
         <button 
           onClick={() => {
-            setInitialMoney(buyIn, bigBlind)
-            changeView('poker')
+            setInitialMoney(buyIn, bigBlind);
+            changeView('poker');
           }}>play poker!</button>
       </p>
     </div>

@@ -17,6 +17,7 @@ class Poker extends React.Component {
       moneyOnTable: 0,
       userBet: 0,
       dealerBet: 0,
+      dealerMove: '',
       river: false, //
       gameOver: false,
       gameId: '',
@@ -26,16 +27,19 @@ class Poker extends React.Component {
     };
     this.initialDeal = this.initialDeal.bind(this);
     this.userBet = this.userBet.bind(this);
-    this.blindBets = this.blindBets(this);
+    this.blindBets = this.blindBets.bind(this);
+    this.dealerFirstBet = this.dealerFirstBet.bind(this);
   }
 
   async initialDeal() {
     try {
       const {bigBlind, buyIn} = this.props;
+      console.log('initialDeal bb, bi', bigBlind, buyIn);
       const cards = await axios.get(`/routes/poker/poker/init/${buyIn}/${bigBlind}`);
       console.log('INITIAL DEAL CARDS: ', cards);
       return cards.data;
       //ALSO NEED TO SET THE GAME ID!!!!!
+      
       //also set the buyIN and big blind that are passed down via the props
 
     } catch (err) {
@@ -44,34 +48,10 @@ class Poker extends React.Component {
 
   }
 
-  async blindBets() {
-    console.log('blindbets')
-    try {
-      const {bigBlind, gameId} = this.state
-    //dealer is small blind
-    
-      //user is big blind
-      //update money on the table in the db w/ axios
-      const bb = await axios.put(`/routes/poker/poker/blinds/${gameId}/${bigBlind}`)
-      console.log('BB',  bb)
-      return bb
-      //**adjust cuz first bet, and dealer is by default returning just the small blind */
 
-      //add small blind to money on the tble
-      //should build a put request back end to update the money on table
-
-      //pass these as props to the moneyOnTable component
-
-      //then the dealer bets
-
-
-    } catch (err) {
-      console.log('blindBet err', err);
-    }
-
-  }
 
   async userBet(bet) {
+    console.log('userbet');
     try { //user place the bet
       //if the bet is  (0) -- set the state to over. game over
       if (!bet) {
@@ -83,7 +63,7 @@ class Poker extends React.Component {
       
 
       //if user calls or raises --> send the put request
-     const dealerBet = await axios.put(`/routes/poker/poker/bet/${gameId}/${bet}`);
+      const dealerBet = await axios.put(`/routes/poker/poker/bet/${gameId}/${bet}`);
       //* the dealer bet is retrned from that request 
 
       //dealer automatically makes hte bet -->update the state
@@ -106,26 +86,82 @@ class Poker extends React.Component {
 
     try {
       //call initial deal
+      console.log('cdm bB, bI', this.props.bigBlind, this.props.buyIn);
       console.log('poker component mount');
       const cards = await this.initialDeal();
       const {dealerHand, flopHand, userHand, gameId, } = cards;
-      this.setState({
+      this.setState((state, props) => ({
         dealerHand: dealerHand,
         flopHand: flopHand,
         userHand: userHand,
         gameId: gameId,
         bigBlind: this.props.bigBlind,
         buyIn: this.props.buyIn
-      });
-      const returned = await this.blindBets()
-      console.log('blindbets returned' , returned)
+      }), () => {
+        console.log('thisstate after cdm: ', this.state);
+        this.blindBets();
+
      
-      //set the state to display the cards
+      });
+
     } catch (err) {
       console.log(err);
     }
-    
 
+  }
+
+  async blindBets() {
+    console.log('blindbets');
+    
+    const {bigBlind} = this.props;
+    const {gameId} = this.state;
+    console.log('blindbets bb, gameId', bigBlind, gameId);
+    //dealer is small blind
+    
+    //user is big blind
+    //update money on the table in the db w/ axios
+    const mOT = await axios.put(`/routes/poker/poker/blinds/${gameId}/${bigBlind}`);
+    console.log('mOT', mOT);
+    this.setState({
+      moneyOnTable: mOT.data
+    });
+     
+    //**adjust cuz first bet, and dealer is by default returning just the small blind */
+
+    //add small blind to money on the tble
+    //should build a put request back end to update the money on table
+
+    //pass these as props to the moneyOnTable component
+
+    //then the dealer bets
+
+
+  }
+
+  async dealerFirstBet () {
+    try {
+      //summon to back end, see best hand, decide if call/fold/raise
+      const {bigBlind, gameId} = this.state;
+      const call = bigBlind/2;
+      
+
+      const {data} = await axios.get(`/routes/poker/poker/dealerBet/${gameId}/${call}`)
+
+      console.log('DFB.DATA', data.bet, data.move)
+      //call -> 1 more small blind to match the big blind
+      
+      //--> raise 
+      //fold --> game over, moneyOnTable goes to users buy in
+
+      this.setState({
+        dealerBet: data.bet,
+        dealerMove: data.move,
+        moneyOnTable: data.moneyOnTable
+      }, () => console.log(this.state))
+
+    } catch (err) {
+
+    }
   }
 
   //need to put down blinds.  dealer put down single, user put down dbl blind.  (maybe randomize this) 
@@ -152,27 +188,28 @@ class Poker extends React.Component {
   render() {
 
 
-    const {dealerHand, flopHand, userHand, dealerBet, userBet, moneyOnTable} = this.state;
+    const {dealerHand, flopHand, userHand, dealerBet, dealerMove, userBet, moneyOnTable} = this.state;
     return (
       <div>poker
-        <p>
+        <div>
           <DealerCards dealerHand={dealerHand} />
-        </p> 
-        <p>
+        </div> 
+        <div>
           <Flop flopHand={flopHand} />
-        </p>
-        <p>
+        </div>
+        <div>
           <UserCards userHand={userHand} />
-        </p>
-        <p>
-          <MoneyOnTable dealerBet={dealerBet} userBet={userBet} moneyOnTable={moneyOnTable} />
-        </p>
+        </div>
+        <div>
+          <MoneyOnTable dealerBet={dealerBet} dealerMove={dealerMove} userBet={userBet} moneyOnTable={moneyOnTable} />
+        </div>
        
-        <p>
+        <div>
           <button>call</button><b />
           <button>fold</button> <b />
           <button>raise</button><button>bigBlindIncrement</button>
-        </p>
+          <button onClick={this.dealerFirstBet}>dealerFirstBet</button>
+        </div>
         
       </div>
     );

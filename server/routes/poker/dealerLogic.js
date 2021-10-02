@@ -16,25 +16,34 @@ const dealerBet = async (gameId, call) => {
     const bigBlind = game.bigBlind;
     const pool = dealerHand.concat(flop);
 
-    const best = bestHand(pool);
+    const best = bestHand(pool).rank;
     /**
      * add randomization factor alpha here that will increase or decrease the best by a random factor to make the bettign strategy slightly less predictable, then set best += alpha
      */
 
+    
+
+    let returnBet; 
     if (best > 8) {
       //raise
-      return {move: 'raise', bet: call + bigBlind};
-    } else if (best > 3) {
+      returnBet =  {move: 'raise', bet: call + bigBlind};
+    } else if (best >= 0) {
       //match
-      return {move: 'call', bet: call};
+      returnBet =  {move: 'call', bet: call};
       
-
     } else {
       //fold 
-      return {move: 'fold', bet: 0};
+      returnBet =  {move: 'fold', bet: 0};
     }
 
+    //*NEED TO UPDATE MONEY ON TABLE
+    const currentGame = await PokerGames.findByPk(gameId);
+    const moneyOnTable = currentGame.moneyOnTable + returnBet.bet;
+    console.log('MONEYONTABLE', moneyOnTable, typeof moneyOnTable)
+    await PokerGames.update({moneyOnTable: moneyOnTable}, {where: {id: gameId}})
 
+    returnBet.moneyOnTable = moneyOnTable
+    return returnBet;
 
     //find the best hand, using best hand
 
@@ -47,16 +56,21 @@ const dealerBet = async (gameId, call) => {
 //this is for the dealer bet.  since dealer is casino and has unlimited pool of money, this will just update the PokerGames and add the bet to the money on the table
 const dealerBlind = async (gameId, bet) => {
   try {
-    const currentGame = PokerGames.findByPk(gameId)
-    const mOT = currentGames.moneyOnTable
+    console.log('dealerblind', gameId);
+    const currentGame = await PokerGames.findByPk(gameId);
+    //console.log('CURRENTGAME', currentGame);
+    const mOT = currentGame.moneyOnTable;
+    console.log('mONEYoNTABLE', mOT, typeof mOT, )
 
-    await PokerGames.update({money: mOT + bet}, {where: {gameId: id}})
+    await PokerGames.update({moneyOnTable: mOT + parseInt(bet)}, {where: {id: gameId}});
+    return mOT + bet;
+  
 
 
   } catch (err) {
-    console.log(err)
+    console.log(err);
   }
 
-}
+};
 
 module.exports = {dealerBet, dealerBlind};

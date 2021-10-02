@@ -44,8 +44,8 @@ class PokerGame extends React.Component {
     this.setState({
       buyIn: buyIn,
       bigBlind: bigBlind
-    })
-    console.log('setInitialMoney;', buyIn, bigBlind)
+    });
+    console.log('setInitialMoney;', buyIn, bigBlind);
   }
 
   conditionalRender() {

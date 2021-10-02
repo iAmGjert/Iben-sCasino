@@ -55,10 +55,7 @@ function(accessToken, refreshToken, profile, done) { // this was cb
     } else {
 
       User.create(profile._json).then((newUser) => {
-       
         return done(null, newUser);
-       
-       
       }).catch((err) => {
         console.log('Create Error:', err);
         return;

@@ -6,12 +6,12 @@ const { dealerBet, dealerBlind } = require('./dealerLogic');
 
 Poker.get('/init/:buyIn/:bigBlind', async (req, res) => {
   try {
-    console.log('init')
+    console.log('init');
     const {buyIn, bigBlind} = req.params;
 
     console.log('init');
     const logic = await initialDeal(1, buyIn, bigBlind); //this userId is hardcoded...grab it from req.user
-  //  console.log('logic', logic);
+    //  console.log('logic', logic);
     res.status(201).send(logic);
   } catch (err) {
     console.log(err);
@@ -23,8 +23,8 @@ Poker.get('/init/:buyIn/:bigBlind', async (req, res) => {
 //update this enpt to include parameters for bet amount and also gameId
 //put request for betting
 Poker.put('/bet/:gameId/:bet', async (req, res) => {
-  const {gameId, bet} = req.params
-  console.log('put request, gameId and bet: ', gameId, bet)
+  const {gameId, bet} = req.params;
+  console.log('put request, gameId and bet: ', gameId, bet);
   try {
     console.log('put bet');
     //testing hardcoded
@@ -45,9 +45,9 @@ Poker.put('/bet/:gameId/:bet', async (req, res) => {
 
 //this one for the blinds
 Poker.put('/blinds/:gameId/:bet', async (req, res) => {
-  const {gameId, bet} = req.params
-  console.log('blindbet')
-  console.log('put request, gameId and bet: ', gameId, bet)
+  const {gameId, bet} = req.params;
+  console.log('blindbet');
+  console.log('put request, gameId and bet: ', gameId, bet);
   try {
     console.log('put bet');
     //testing hardcoded
@@ -55,11 +55,11 @@ Poker.put('/blinds/:gameId/:bet', async (req, res) => {
     //const bet = 5;
     await putBet(gameId, bet);
 
-    await dealerBlind(gameId, bet/2)
+    const moneyOnTable = await dealerBlind(gameId, bet / 2);
 
 
 
-    res.status(200).json(dBet);
+    res.status(200).json(moneyOnTable);
   } catch (err) {
     console.log(err);
     res.sendStatus(500);
@@ -86,6 +86,22 @@ Poker.put('/bestHand', async (req, res) => {
   } catch (err) {
     console.log(err);
     res.sendStatus(500);
+  }
+});
+
+Poker.get('/dealerBet/:gameId/:call', async( req, res) => {
+  try {
+    const {gameId, call} = req.params;
+    console.log('get dealerBet', gameId, call);
+    
+    const dB = await dealerBet(gameId, parseInt(call));
+    //db is an object with {move: string, bet: number}
+    
+    res.status(201).send(dB);
+
+
+  } catch (err) {
+    console.log(err);
   }
 });
 

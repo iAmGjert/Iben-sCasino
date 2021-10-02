@@ -37,6 +37,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+
 app.use('/routes/clientId', ClientId);
 app.use('/routes/blackjack', blj.Blackjack);
 app.use('/routes/userDatabase', Data);
@@ -62,10 +63,12 @@ app.get('/google/callback',
     // res.send(req.user);
   });
 
-app.get('/logout', (req, res) => {
+app.get('/logout', async (req, res) => {
 
-  req.logout();
+  await req.logout()
+  
   res.redirect('/login');
+
 });
 
 

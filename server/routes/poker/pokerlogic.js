@@ -48,7 +48,7 @@ const initialDeal = async (userId, buyIn, bigBlind) => {
 
     //console.log('poker games', PokerGames);
     const newGame = await PokerGames.create({deckId: deckId, buyIn: buyIn, bigBlind: bigBlind, userId: userId, hand: userHand.map(x => x.code), dealerHand: dealerHand.map(x => x.code), flop: flopHand.map(x => x.code)});
-    console.log('newGame', newGame);
+    //console.log('newGame', newGame);
 
     return {
       
@@ -56,7 +56,8 @@ const initialDeal = async (userId, buyIn, bigBlind) => {
       userHand: userHand,
       flopHand: flopHand,
       gameId: newGame.id,
-      deckId: deckId
+      deckId: deckId,
+
     
      
       
