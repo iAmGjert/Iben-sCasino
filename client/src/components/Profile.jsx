@@ -34,9 +34,10 @@ class Profile extends React.Component {
     const style = {
       backgroundColor: '#35654d',
       padding: '10px',
-      textShadow: '2px 2px 5px #fff',
+      textShadow: '0px 0px 4px #fff, 1px 1px 2px black, 0px 0px 1px red',
       textAlign: 'center',
       fontWeight: '900',
+      
       
     };
     const border = {
