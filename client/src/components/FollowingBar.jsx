@@ -8,7 +8,6 @@ class FollowingBar extends Component  {
        friends: [],
        hover: false
    };
-   this.getFriends = this.getFriends.bind(this);
  }
 
  handleMouseEnter(e) {
@@ -18,19 +17,20 @@ class FollowingBar extends Component  {
  handleMouseLeave() {
   this.setState({ hover: false})
 }
- getFriends() {
-   const { currentUser } = this.props;
-  console.log('LETS SEE!!: ', this.props);
-  axios.get(`/routes/userDatabase/friends/${currentUser.id}`)
-  .then(data => {
-    // console.log(data);
-    // // this.setState({
-    //   friends: friend,
-    // })
-  })
-}
+//  getFriends() {
+//    const { currentUser } = this.props;
+//   console.log('FollowingBar: ', this.props);
+//   axios.get(`/routes/userDatabase/friends/${currentUser.id}`)
+//   .then(data => {
+//     // console.log(data);
+//     // // this.setState({
+//     //   friends: friend,
+//     // })
+//   })
+// }
 componentDidMount(){
-  this.getFriends();
+  // this.getFriends();
+  // console.log('FLAG:!!',this.props);
 }
   render(){
 
