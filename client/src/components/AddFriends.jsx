@@ -21,7 +21,7 @@ class AddFriends extends Component {
     this.getProfile = this.getProfile.bind(this);
     this.changeInput = this.changeInput.bind(this);
     this.searchUser = this.searchUser.bind(this);
-    this.getFriends = this.getFriends.bind(this);
+    // this.getFriends = this.getFriends.bind(this);
   
   }
   
@@ -41,13 +41,26 @@ class AddFriends extends Component {
   getProfile() {
     axios.get('/routes/profile/user')
       .then(user => {
-        console.log('getProfile', user.data);
+        // console.log('getProfile', user.data);
         this.setState({
           currentUser: user.data
         });
       })
       .catch((err => console.log('getprof err', err)));
   }
+
+//   getFriends() {
+    
+//     const { currentUser } = this.state;
+//   console.log('GetFriendsCurrentUser: ', currentUser);
+//    axios.get(`/routes/userDatabase/friends/${currentUser.id}`)
+//    .then(data => {
+//      console.log(data);
+//      // // this.setState({
+//      //   friends: friend,
+//      // })
+//    })
+//  }
 
   //event handler for search bar to update the input value
   changeInput(name) {
@@ -66,29 +79,15 @@ class AddFriends extends Component {
       })
   }
   
-  getFriends() {
-    const { currentUser } = this.state;
-  console.log('GetFriendsCurrentUser: ', currentUser);
-   axios.get(`/routes/userDatabase/friends/${currentUser.id}`)
-   .then(data => {
-     console.log(data);
-     // // this.setState({
-     //   friends: friend,
-     // })
-   })
- }
   
-  async componentDidMount() {
-      try {
-        await this.getUsers();
-       await this.getProfile();
+  
+  componentDidMount() {
+    
+        this.getUsers();
+        this.getProfile();
+        // this.getFriends();
         // this.searchUser();
-         await this.getFriends();
-         console.log('componentDidMont:', this.state)
-      }
-      catch(err){
-        console.log(err)
-      }
+        //  console.log('componentDidMont:', this.state)
     
   }
 

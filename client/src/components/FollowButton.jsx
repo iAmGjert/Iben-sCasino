@@ -25,6 +25,7 @@ class FollowButton extends Component {
          this.setState({
            isFollow: 'Following'
          })
+
        })
      
     
