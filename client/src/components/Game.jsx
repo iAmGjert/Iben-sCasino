@@ -84,7 +84,7 @@ class Game extends React.Component {
       />;
     }
     if (view === 'start') {
-      return <BlackjackStart monies={this.state.monies} placeBet={this.placeBet} betOutcome={this.betOutcome} changeRender={this.changeRender} />;
+      return <BlackjackStart monies={this.state.monies} name={this.state.name} placeBet={this.placeBet} betOutcome={this.betOutcome} changeRender={this.changeRender} />;
     }
 
   }
