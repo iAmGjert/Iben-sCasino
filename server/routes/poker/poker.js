@@ -14,6 +14,8 @@ Poker.get('/init/:buyIn/:bigBlind', async (req, res) => {
     const {buyIn, bigBlind} = req.params;
 
     console.log('init');
+    //**need to not hardcode hte userId */.  get it from req.user.id
+   // console.log('REQ USER', req.user)
     const logic = await initialDeal(1, buyIn, bigBlind); //this userId is hardcoded...grab it from req.user
     //  console.log('logic', logic);
     res.status(201).send(logic);
@@ -146,19 +148,11 @@ Poker.get('/winner/:gameId', async(req, res) => {
     bestDealerHand.index = 'dealer';
     //add an index property to the hands to keep track of whats what 
     //strings of descriptions pulled from the poker solver api,
-    //need to compare the winning and see if it is dealer or user
+    //need to compare the winning and see if it is dealer or user.  
+    //the docs for the poker solverapi are inaccurate- you need to take this step
     const userDescript = bestUserHand.descr;
     const dealerDescript = bestUserHand.descr;
-    console.log('uD', userDescript, 'dD', dealerDescript);
-    //console.log('best user hand', bestUserHand)
-    // console.log('best Dealer Hand', bestDealerHand)
-
     const winner = Hand.winners([bestUserHand, bestDealerHand]);
-    console.log('WINNER', console.log(winner[0].index));
-    // const whoWins = winner.descr === userDescript ? 'user ': 'dealer'
-    // console.log(whoWins)
-    // console.log('ww', Hand.winners([bestUserHand, bestDealerHand]));
-
     res.status(200).send(winner[0].index);
 
   } catch (err) {
