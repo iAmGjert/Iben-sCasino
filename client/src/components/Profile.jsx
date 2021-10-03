@@ -50,6 +50,8 @@ class Profile extends React.Component {
       boxShadow: '3px 3px 3px',
       
     };
+
+    //map over user profile from database and render to profile page
     return (
       <div style={style}>
         <div className='card-panel green darken-2' style={border}><h1>Player's Room</h1></div>

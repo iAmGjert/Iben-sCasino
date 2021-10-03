@@ -40,14 +40,17 @@ class BlackjackStart extends React.Component {
       currentBet: this.state.currentBet - x
     });
   }
-  
+  // conditional render to display button if logged in/ logged out
   conditionalRender() {
     const {changeRender, placeBet, monies, name} = this.props;
     console.log('name:', name);
     const { available, currentBet} = this.state;
     if (name === '' || name === undefined) {
       return (
-        <p><em>You must log in!!!</em></p>
+        <div className='card-panel green darken-2'>
+          <h2><em>You must log in to play the game!!!</em></h2>
+          
+        </div>
       );
     } else {
       return (
