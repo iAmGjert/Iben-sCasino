@@ -111,27 +111,60 @@ class AddFriends extends Component {
   render() {
     const { users, currentUser, value, userSearched, friends } = this.state;
     // console.log('ADDFRIENDS:', this.state)
+     const style = {
+      position: 'absolute', 
+      right: '30px',
+      fontSize: '20px',
+      fontWeight: 'bold',
+      color: 'white',
+      textShadow: '2px 2px 4px #000000'
+     }
+
+     const styleRecent = { 
+      fontSize: '20px',
+      fontWeight: 'bold',
+      color: 'white',
+      textShadow: '2px 2px 4px #000000',
+      position: 'relative',
+      left: '100px'
+     }
+     const imageStyle = {
+      border: '1px solid #ddd',
+      borderRadius: '50%',
+      padding: '5px',
+      width: '80px',
+      height: '80px',
+      // position: 'relative',
+      // left: '100px'
+     }
+
+     const infoStyle = {
+      position: 'relative',
+      left: '100px'
+     }
     return (
       
       <div className='currentFriend'>
         <Link  to='/Leaderboard'>Black Jack Leaderboard </Link>
-        <h1>Active Player: {currentUser.name}</h1>
-      
-        <h3>Recent Players</h3>
+        <h1 className='active-player' style={style}>Active Player: {currentUser.name}</h1> 
+        
+          
+        
+        <h3 className='recent-players' style={styleRecent}>Recent Players</h3>
+         
         { users.map( (user, i) => (
 
-          <div className='user-info' key={i}> 
-        <img src={user.picture} />  {user.name}    Email: {user.email}
+          <div className='user-info' key={i} style={infoStyle}> 
+        <img src={user.picture} style={imageStyle} /> {user.name}    Email: {user.email} 
             <FollowButton user={user} currentUser={currentUser} addFriend={this.addFriend}
             key={i} />
+            
           </div> 
 
         ))
         }
-        <div>
-          <Search changeInput={this.changeInput} searchUser={this.searchUser} value={value} />
-          <UserPreview  userSearched={userSearched} addFriend={this.addFriend}  />
-        </div>
+         <Search changeInput={this.changeInput} searchUser={this.searchUser} value={value} />
+          <UserPreview  userSearched={userSearched} addFriend={this.addFriend} />
         <FollowingBar latestFriends={friends}/>
       </div>
     );

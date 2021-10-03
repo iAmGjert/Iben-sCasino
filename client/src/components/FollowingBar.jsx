@@ -62,11 +62,17 @@ componentDidMount(){
 
       // const { friends, players } = this.state;
       const {latestFriends} = this.props;
+      const stylesHeader = {
+        fontSize: '20px',
+      fontWeight: 'bold',
+      color: 'white',
+      textShadow: '2px 2px 4px #000000'
+      }
       console.log(latestFriends);
     return (
-      <div className='following-bar' style={{height: '200%',width: '300px', backgroundColor: "#2F4050", marginTop: '20%'}}>
+      <div className='following-bar' style={{height: '300px',width: '300px', backgroundColor: "#2F4050", marginTop: '-30px'}}>
         <ul className="list-bar" style={{height: 'auto', padding: '0', width: '100%'}}>
-        <h5 className='following-header'>Following </h5>
+        <h5 className='following-header' style={stylesHeader}>Following {latestFriends.length} </h5>
       {latestFriends.map((friend, key) => {
         // return <div key={key}>Hello </div>
         return (
