@@ -123,7 +123,6 @@ Poker.get('/addToFlop/:gameId', async (req, res) => {
   try {
     const newCard = await addToFlop(gameId); //newCard will be an obj with code and image properties
     //ALSO NEED TO ADD THIS NEW CARD TO THE DB FLOP
-    console.log('NEW CARD', newCard);
     res.status(201).send(newCard);
   } catch (err) {
     console.log('ERR');
@@ -134,7 +133,6 @@ Poker.get('/addToFlop/:gameId', async (req, res) => {
 
 Poker.get('/winner/:gameId', async(req, res) => {
   try {
-    console.log('put winner');
     const {gameId} = req.params;
     //retrieve both hands
     const {flop, hand, dealerHand} = await PokerGames.findByPk(gameId);
