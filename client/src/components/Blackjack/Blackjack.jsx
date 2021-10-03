@@ -7,6 +7,7 @@ import BlackjackDealer from './BlackjackDealer.jsx';
 import BlackjackUser from './BlackjackUser.jsx';
 import Finished from './Finished.jsx';
 
+
 class Blackjack extends React.Component {
   constructor(props) {
     super(props);
@@ -201,9 +202,17 @@ class Blackjack extends React.Component {
       FinishedSpace = <Finished results={results} betOutcome={this.props.betOutcome} changeRender={this.props.changeRender}/>;
     }
   
+    const style = {
+      //backgroundColor: '#35654d',
+      // padding: '10px',
+      // textShadow: '2px 2px 5px #fff',
+      // textAlign: 'center',
+      // fontWeight: '900',
+      
+    };
 
     return (
-      <div>blackjack div
+      <div style={style}>blackjack div
         <div>cards</div>
         <button style={{display: userBust || userStand ? 'none' : 'block'}} onClick={this.userHitCard}>user hit card</button>
         <button style={{display: userStand || finished ? 'none' : 'block'}} onClick={this.userStand}>user stand</button>

@@ -5,22 +5,22 @@ require('dotenv').config();
 const { User, Friends } = require('../db/index.js');
 
 passport.serializeUser((user, done) => {
-  
+ 
   done(null, user.id); 
 });
 
 
-passport.deserializeUser(( id, done) => { 
+passport.deserializeUser((id, done) => { 
   
   User.findOne({
     where: { 
       id: id 
     }
   })
-    .then((id) => {
-      if (id) {
-        done(null, id);
-      }
+    .then((user) => { //id
+      // if (id) {
+      done(null, user); //id
+      // }
     
     }).catch((err) => {
       console.log('Error deserial:', err);
