@@ -129,6 +129,7 @@ Poker.get('/addToFlop/:gameId', async (req, res) => {
   }
 });
 
+
 Poker.get('/winner/:gameId', async(req, res) => {
   try {
     console.log('put winner');
@@ -160,14 +161,23 @@ Poker.get('/winner/:gameId', async(req, res) => {
 
     res.status(200).send(winner[0].index);
 
-
-
-
-
   } catch (err) {
     console.log('winner err', err);
     res.sendStatus(500);
   }
 });
+
+Poker.put('/moneyOnTable/:gameId/:moneyOnTable', async (req, res) => {
+  try {
+    const {gameId, moneyOnTable} = req.params;
+    await PokerGames.update({moneyOnTable: moneyOnTable}, {where: {id: gameId}});
+    res.sendStatus(203);
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500);
+  }
+}
+
+);
 
 module.exports = {Poker};

@@ -5,14 +5,20 @@ class Finished extends React.Component {
     super(props);
   }
 
-  componentDidMount() { //here call the get winner method from Poker.jsx
-    this.props.findWinner();
+  async componentDidMount() { //here call the get winner method from Poker.jsx
+    try {
+      await this.props.updateMoneyOnTable();
+      this.props.findWinner();
+    } catch (err) {
+      console.log(err);
+    }
+    
 
   }
 
   render() {
     return (
-      <div> game over.  winner: {this.props.winner.data}</div>
+      <div> game over.  winner: {this.props.winner}</div>
     );
   }
  

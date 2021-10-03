@@ -44,6 +44,7 @@ class Poker extends React.Component {
     this.nextCard = this.nextCard.bind(this);
     this.dealerRoundBet = this.dealerRoundBet.bind(this);
     this.findWinner = this.findWinner.bind(this);
+    this.updateMoneyOnTable = this.updateMoneyOnTable.bind(this);
   }
 
   async initialDeal() {
@@ -71,7 +72,8 @@ class Poker extends React.Component {
       //if the bet is  (0) -- set the state to over. game over
       if (bet.move === 'fold') {
         this.setState({
-          gameOver: true
+          gameOver: true,
+          userMove: 'fold'
         });
         return;
       }
@@ -279,19 +281,48 @@ class Poker extends React.Component {
 
   async findWinner() {
     try {
-      const {gameId} = this.state;
-      const winner = await axios.get(`/routes/poker/poker/winner/${gameId}`);
-      //set the state with the winner
-      this.setState({
-        winner: winner
-      });
+      let winner;
+      const {gameId, userMove, dealerMove} = this.state;
+      //if one player folds, the other is the winner automatically
+      if (userMove === 'fold') {
+        console.log('user faold');
+        winner = 'dealer';
+        this.setState({
+          winner: winner
+        });
+       
+   
+       
+        
+      } else if (dealerMove === 'fold') {
+        winner = 'user';
+        this.setState({
+          winner: winner
+        });
+        
+      } else {
+
+        console.log('here in else');
+        winner = await axios.get(`/routes/poker/poker/winner/${gameId}`);
+        //set the state with the winner
+        this.setState({
+          winner: winner.data
+        });
+      }
+      
     } catch (err) {
       console.log(err);
     }
   }
 
   async updateMoneyOnTable() { //mOT was easiest to track in the state here front end, so at the end of the game update the MoT
-    
+    try {
+      const {gameId, moneyOnTable} = this.state;
+      await axios.put(`/routes/poker/poker/moneyOnTable/${gameId}/${moneyOnTable}`);
+    } catch (err) {
+      console.log(err);
+    }
+ 
 
     
   }
@@ -299,8 +330,8 @@ class Poker extends React.Component {
   conditionalRender() {
     const {gameOver, winner} = this.state;
     if (gameOver) {
-      console.log('cond render');
-      return <Finished winner={winner} findWinner={this.findWinner}/>;
+      console.log('cond render', this.state);
+      return <Finished winner={winner} findWinner={this.findWinner} updateMoneyOnTable={this.updateMoneyOnTable} />;
 
     } 
   }
