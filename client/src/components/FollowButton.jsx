@@ -14,7 +14,6 @@ class FollowButton extends Component {
   //should create an event handler, so when a user clicks the send friend request
 
   followUser(user) {
-    console.log(user);
     const {currentUser} = this.props;
 
     //should send a axios post request
@@ -25,15 +24,10 @@ class FollowButton extends Component {
          this.setState({
            isFollow: 'Following'
          })
-
        })
+       
      
-    
-    // axios.put(`/routes/userDatabase/friends/${user.sub}`, {
-    //   users: {
-    //     status: 'friendRequest'
-    //   }
-    // });
+  
   }
 
   removeFriend(user) {
@@ -47,20 +41,24 @@ class FollowButton extends Component {
 //Where I left off
   // getFriends(){
   //   const { currentUser } = this.props;
-  //   // console.log(currentUser);
+    
   //   axios.get(`/routes/userDatabase/friends/${currentUser.id}`)
-  //   .then(friend => {
-       
+  //   .then(friends => {
+  //     this.setState({
+  //       friends: friends.data
+  //     })
   //   })
   // }
   componentDidMount() {
-    // this.getFriends();
+  //   this.getFriends();
   }
   render() {
     const { isFollow, friend } = this.state;
     const { user, currentUser } = this.props;
+
     return (
       <button onClick={() =>  {
+        this.props.addFriend(user);
         isFollow ===  'Follow' ? this.followUser(user) : this.removeFriend(user)
       }}>
         {isFollow}

@@ -21,7 +21,7 @@ class AddFriends extends Component {
     this.getProfile = this.getProfile.bind(this);
     this.changeInput = this.changeInput.bind(this);
     this.searchUser = this.searchUser.bind(this);
-    // this.getFriends = this.getFriends.bind(this);
+    this.addFriend = this.addFriend.bind(this);
   
   }
   
@@ -79,6 +79,20 @@ class AddFriends extends Component {
       })
   }
   
+  addFriend(friend) {
+    const {friends} = this.state;
+    console.log('add friend click, friend, friends', friend, friends);
+    const newFriends = [...friends];
+    if(newFriends.includes(friend)){
+       newFriends.splice(1);
+    } else {
+
+      newFriends.push(friend);
+    }
+    this.setState({
+      friends: newFriends
+    });
+  }
   
   
   componentDidMount() {
@@ -108,17 +122,17 @@ class AddFriends extends Component {
 
           <div className='user-info' key={i}> 
         <img src={user.picture} />  {user.name}    Email: {user.email}
-            <FollowButton user={user} currentUser={currentUser}
+            <FollowButton user={user} currentUser={currentUser} addFriend={this.addFriend}
             key={i} />
           </div> 
 
         ))
         }
         <div>
-          <Search changeInput={this.changeInput} searchUser={this.searchUser} value={value}/>
-          <UserPreview  userSearched={userSearched}   />
+          <Search changeInput={this.changeInput} searchUser={this.searchUser} value={value} />
+          <UserPreview  userSearched={userSearched} addFriend={this.addFriend}  />
         </div>
-        <FollowingBar friends={friends} />
+        <FollowingBar latestFriends={friends}/>
       </div>
     );
   }

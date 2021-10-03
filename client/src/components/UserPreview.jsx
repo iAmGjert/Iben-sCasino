@@ -1,6 +1,6 @@
 import React from 'react' 
 import FollowButton from './FollowButton.jsx'
-const UserPreview = ({userSearched }) => { 
+const UserPreview = ({userSearched, addFriend }) => { 
   
   return (
     <div className='preview'>
@@ -10,7 +10,7 @@ const UserPreview = ({userSearched }) => {
     <img className='user-picture' src={user.picture}/>
     <div className='user-name'>{user.name}</div>
     <div className='user-email'>{user.email}</div>
-  <FollowButton user={user}  />
+  <FollowButton user={user}  addFriend={addFriend} />
     </div>
         )
         )

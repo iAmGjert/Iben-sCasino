@@ -40,11 +40,6 @@ const User = orm.define('User', {
 });
 
 const Friends = orm.define('Friends', {
-  id: {
-    type: Sequelize.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
-  },
   friends: {
     type: 
     Sequelize.STRING(255),

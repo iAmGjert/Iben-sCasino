@@ -16,7 +16,7 @@ class FollowingBar extends Component  {
  getProfile() {
   axios.get('/routes/profile/user')
     .then(user => {
-      console.log('getProfile', user.data);
+      // console.log('getProfile', user.data);
       this.setState({
         currentUser: user.data
       });
@@ -24,7 +24,7 @@ class FollowingBar extends Component  {
     .then(() => {
       axios.get(`/routes/userDatabase/friends/${this.state.currentUser.id}`)
  .then(friends => {
-  //  console.log(friends);
+   console.log(friends);
    this.setState({
      friends: friends.data,
    })
@@ -57,42 +57,32 @@ componentDidMount(){
   this.getProfile();
   this.getPlayers();
   // this.getFriends();
-  // console.log('FLAG:!!',this.props);
 }
   render(){
 
-    // const SidebarData = [
-    //   {
-    //     picture: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvHH4XQ0CG0o5Msww62eqifaQ43TIxnBe3FQ&usqp=CAU',
-    //     userName: 'Maason Smith'
-    //   },
-    // {
-    //      picture: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvHH4XQ0CG0o5Msww62eqifaQ43TIxnBe3FQ&usqp=CAU',
-    //      userName: 'Maason Smith'
-    //    },
-    //  ]
-      const { friends, players } = this.state;
-      console.log(players);
+      // const { friends, players } = this.state;
+      const {latestFriends} = this.props;
+      console.log(latestFriends);
     return (
       <div className='following-bar' style={{height: '200%',width: '300px', backgroundColor: "#2F4050", marginTop: '20%'}}>
         <ul className="list-bar" style={{height: 'auto', padding: '0', width: '100%'}}>
         <h5 className='following-header'>Following </h5>
-      {friends.map((val, key) => {
-          return players.map(player => {
+      {latestFriends.map((friend, key) => {
+        // return <div key={key}>Hello </div>
+        return (
+          <li key={key} className='row' style={{height: '60px', width: '100%', listStyleType: 'none', margin: '0%', display: 'flex', flexDirection: 'row', color: 'white', fontFamily: 'trebuchet ms, Lucida Sans Unicode, Lucida Grande, Lucida Sans, Ariel, sans-serif ', }}> 
+      
+          <img src={friend.picture} style={{height: '66', width: '66px', flex: '30%', display: 'grid', placeItems: 'center', borderRadius: '50%', backgroundSize: 'cover', boxShadow: 'black 10px 10px 10px'}} /> 
+          <div style={{flex: '70%'}}>{friend.name} <UnfollowButton user={friend}/></div> 
+          <div style={{flex: '70%'}}>Total Money: ${friend.money}</div>
+          
+          </li>
 
-             if(val.friends === player.name) {
-   
-               return (
-                 <li key={key} className='row' style={{height: '60px', width: '100%', listStyleType: 'none', margin: '0%', display: 'flex', flexDirection: 'row', color: 'white', fontFamily: 'trebuchet ms, Lucida Sans Unicode, Lucida Grande, Lucida Sans, Ariel, sans-serif ', }}> 
-             
-                 <img src={player.picture} style={{height: '66', width: '66px', flex: '30%', display: 'grid', placeItems: 'center', borderRadius: '50%', backgroundSize: 'cover', boxShadow: 'black 10px 10px 10px'}} /> 
-                 <div style={{flex: '70%'}}>{val.friends} <UnfollowButton user={player}/></div> 
-                 <div style={{flex: '70%'}}>Total Money: ${player.money}</div>
-                 </li>
-               )
-             }
-           })
+          
+        )
+          
       })}
+      
       </ul>
       </div>
     )

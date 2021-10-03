@@ -29,6 +29,7 @@ this.getPlayers();
         <div className='card'>
           <div className='card-body'>
             <table className="table-boarder"> 
+            Position: 
             <col style={{width: '10%'} } />
             <col style={{width: '80%'} } />
             <col style={{width: '10%'} } />
@@ -37,7 +38,7 @@ this.getPlayers();
            players.map((player, i) => {
              return (
 
-<tr key={player.id}>
+   <tr key={player.id}>
                <td className="border-0">
                  <b className={i + 1===1 ||i + 1===2 || i + 1===3 ? 'text-danger' : '' } > {i + 1===1 ? '1st' : i + 1===2 ? '2nd' : i + 1===3 ? '3rd' : i + 1}
                  </b>

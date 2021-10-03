@@ -57,9 +57,28 @@ Data.post('/user', (req, res) => {
 
 Data.get('/friends/:id', (req, res) => {
   const { id } = req.params
+  // let userArr = [];
   Friends.findAll({ where: { UserId: id }}).then((results) => {
-     console.log(results);
+    // User.findAll().then((data) => {
+    //   // console.log('HELLO:', data);
+    //   data.forEach(user => {
+    //     // console.log('HELLO:', user.name)
+    //   results.forEach(friend => {
+    //     if(user.name === friend.friends){
+    //     // console.log('HELLO:', user)
+    //     userArr.push(user);
+    //     // res.status(200).send([user]);
+    //     } else {
+    //       res.status(200);
+    //     }
+    //     console.log('HELLO', userArr);
+    //     // res.status(200).send(userArr);
+    //   })
+    //   res.status(200).send(userArr);
+        
+    //   })
     res.status(200).send(results);
+    
   }).catch((err) => {
     console.log('Friends Get Data:', err);
     res.status(404);
@@ -79,7 +98,7 @@ Data.post('/friends', (req, res) => {
   
   User.findOne({ where: { id: currentUser.id } }).then(currentU => {
     // console.log(`DATA!!`, currentU)
-    console.log('DATA!!', user)
+    // console.log('DATA!!', user)
     updateUser = currentU;
     Friends.create({ friends: user.name })
       .then((user) => {
