@@ -6,7 +6,7 @@ const MoneyOnTable = ({userBet, dealerBet, moneyOnTable, dealerMove, buyIn}) => 
   return (
     <div>
       <div>mney on table: {moneyOnTable}</div>
-      <div>dealer chips  dealerMove: {dealerMove} this turn bet: {dealerBet}$  this round bet: y$</div>
+      <div>dealer chips  dealerMove: {dealerMove} this turn bet: {dealerBet}$ </div>
       <div>user chips this turn bet: {userBet}$   user money left: {buyIn} </div>
     </div>
   );

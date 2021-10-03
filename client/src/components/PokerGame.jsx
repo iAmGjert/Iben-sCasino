@@ -29,7 +29,7 @@ class PokerGame extends React.Component {
       const user = await axios.get('/routes/profile/user'); 
       this.setState({
         userMoney: user.data.money //set with the usermoney in the bank
-      }, () => console.log(this.state));
+      }, );
     } catch (err) {
       console.log('PokerGame mount err', err );
     }
@@ -49,7 +49,7 @@ class PokerGame extends React.Component {
       buyIn: buyIn,
       bigBlind: bigBlind
     });
-    console.log('setInitialMoney;', buyIn, bigBlind);
+
   }
 
 

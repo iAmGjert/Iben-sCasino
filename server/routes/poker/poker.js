@@ -10,10 +10,7 @@ const {Hand} = require('pokersolver');
  */
 Poker.get('/init/:buyIn/:bigBlind', async (req, res) => {
   try {
-    console.log('init');
     const {buyIn, bigBlind} = req.params;
-
-    console.log('init');
     //**need to not hardcode hte userId */.  get it from req.user.id
    // console.log('REQ USER', req.user)
     const logic = await initialDeal(1, buyIn, bigBlind); //this userId is hardcoded...grab it from req.user
@@ -30,9 +27,7 @@ Poker.get('/init/:buyIn/:bigBlind', async (req, res) => {
 //put request for betting.  auto deal accepts 0 for false and 1 for true
 Poker.put('/bet/:gameId/:bet/:autoDeal', async (req, res) => {
   const {gameId, bet, autoDeal} = req.params;
-  console.log('put request, gameId and bet: ', gameId, bet);
   try {
-    console.log('put bet');
     //testing hardcoded
     
     await putBet(gameId, bet);
@@ -55,19 +50,12 @@ Poker.put('/bet/:gameId/:bet/:autoDeal', async (req, res) => {
 Poker.put('/blinds/:gameId/:bet', async (req, res) => {
   const {gameId} = req.params;
   const bet = parseInt(req.params.bet);
-  console.log('blindbet');
-  console.log('put request, gameId and bet: ', gameId, bet);
   try {
-    console.log('put bet');
     //testing hardcoded
     //const gameId = 1;
     //const bet = 5;
     await putBet(gameId, bet);
-
     const moneyOnTable = await dealerBlind(gameId, bet / 2);
-
-
-
     res.status(200).json(moneyOnTable);
   } catch (err) {
     console.log(err);
@@ -79,20 +67,13 @@ Poker.put('/blinds/:gameId/:bet', async (req, res) => {
 
 //id in parameters
 Poker.put('/bestHand/', async (req, res) => {
-  console.log('THIS IS CALLED');
   try {
     const {gameId} = 1;
-    console.log('besthand');
-    
     //whoops this is hardcoded for testing fix this
     const test = ['AS', '9S', '8S', '0S', '7D', '6H', '4D'];
     const best = bestHand(test);
-    console.log('best', best);
     //set the best hand in the db
     await PokerGames.update({bestHand: best.bestHand, handRank: best.rank}, {where: {id: gameId}});
-
-
-
     res.sendStatus(201);
 
   } catch (err) {
@@ -104,13 +85,9 @@ Poker.put('/bestHand/', async (req, res) => {
 Poker.get('/dealerBet/:gameId/:call', async( req, res) => {
   try {
     const {gameId, call} = req.params;
-    console.log('get dealerBet', gameId, call);
-    
     const dB = await dealerBet(gameId, parseInt(call));
-    //db is an object with {move: string, bet: number}
-    
+    //db is an object with {move: string, bet: number}   
     res.status(201).send(dB);
-
 
   } catch (err) {
     console.log(err);
@@ -119,7 +96,6 @@ Poker.get('/dealerBet/:gameId/:call', async( req, res) => {
 
 Poker.get('/addToFlop/:gameId', async (req, res) => {
   const {gameId} = req.params;
-  console.log('get addToFlop');
   try {
     const newCard = await addToFlop(gameId); //newCard will be an obj with code and image properties
     //ALSO NEED TO ADD THIS NEW CARD TO THE DB FLOP
@@ -173,24 +149,19 @@ Poker.put('/moneyOnTable/:gameId/:moneyOnTable', async (req, res) => {
 Poker.put('/results/:gameId/:takeHome/:net', async (req, res) => {
   try {
     const {gameId, takeHome, net} = req.params;
-    console.log('net and pi net', net, parseInt(net));
     await PokerGames.update({takeHome: parseInt(takeHome), netEarnings: parseInt(net)}, {where: {id: gameId}});
     res.sendStatus(200);
   } catch (err) {
-    console.log(err);
     res.sendStatus(500);
   }
 });
 
 Poker.put('/userBank/:gameId/:net', async (req, res) => {
   try { 
-    console.log('bank put req');
     const {gameId, net} = req.params;
     const {userId} = await PokerGames.findByPk(gameId);
-    console.log('userId', userId);
     //update that users money
     const {money} = await User.findByPk(userId);
-    console.log('money', money);
     await User.update({money: money + parseInt(net)}, {where: {id: userId}});
     res.sendStatus(200);
 
