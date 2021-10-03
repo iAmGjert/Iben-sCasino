@@ -7,6 +7,9 @@ import FollowingBar from './FollowingBar.jsx';
 import {Link} from 'react-router-dom';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
+// import List from '@mui/material/List';
+// import ListItem from '@mui/material/ListItem';
+// import ListItemText from '@mui/material/ListItemText';
 class AddFriends extends Component {
   constructor(props) {
     super(props);
@@ -163,6 +166,7 @@ class AddFriends extends Component {
 
         ))
         }
+       
          <Search changeInput={this.changeInput} searchUser={this.searchUser} value={value} />
           <UserPreview  userSearched={userSearched} addFriend={this.addFriend} />
         <FollowingBar latestFriends={friends}/>
