@@ -30,4 +30,6 @@ Profile.get('/user', authCheck, async (req, res) => {
   
 });
 
+
+
 module.exports = {Profile};

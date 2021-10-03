@@ -1,5 +1,5 @@
 import React from 'react';
-import 'core-js/stable';
+import 'core-js/stable'; //core-js and regenerator-runtime get rid of errors related to using async/await in react
 import 'regenerator-runtime/runtime';
 import axios from 'axios';
 import Blackjack from './Blackjack/Blackjack.jsx';
