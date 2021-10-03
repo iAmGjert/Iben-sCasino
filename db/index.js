@@ -80,7 +80,7 @@ const PokerGames = orm.define('PokerGames', {
   bestHand: {
     type: Sequelize.STRING,
     defaultValue: '',
-    get() {
+    get() { //getters and setters required here because mysql does not handle array data types.  this converts to a string separated by commas for storage, and converts back to an array for getting from storage
       return this.getDataValue('bestHand').split(',');
     },
     set(val) {

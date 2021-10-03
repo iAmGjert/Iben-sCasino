@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Flop = ({flopHand}) => {
+const Flop = ({flopHand, turn, river, }) => {
 
   return (
     <div> floppy flop flop

@@ -6,6 +6,11 @@ import Flop from './Flop.jsx';
 import UserCards from './UserCards.jsx';
 import DealerCards from './DealerCards.jsx';
 import MoneyOnTable from './MoneyOnTable.jsx';
+import Turn from './Turn.jsx';
+import River from './River.jsx';
+import { thistle } from 'color-name';
+import FlopHeader from './FlopHeader.jsx';
+import Finished from './Finished.jsx';
 
 class Poker extends React.Component {
   constructor(props) {
@@ -18,6 +23,10 @@ class Poker extends React.Component {
       userBet: 0,
       dealerBet: 0,
       dealerMove: '',
+      userMove: '',
+      view: 'flop',
+      userPile: 0,
+
       turn: false, //whne this turns true, 4th card put down
       river: false, //when this turns true, 5th card put dwon
       gameOver: false, //when this is true: the game is over
@@ -25,12 +34,16 @@ class Poker extends React.Component {
       bigBlind: 0,
       buyIn: 0,
       gameId: 0,
-      increment: 0 //this is for when raising a bet by how much-- need to set back to 0 after using this val
+      increment: 0, //this is for when raising a bet by how much-- need to set back to 0 after using this val
+      winner: ''
     };
     this.initialDeal = this.initialDeal.bind(this);
     this.userBet = this.userBet.bind(this);
     this.blindBets = this.blindBets.bind(this);
     this.dealerFirstBet = this.dealerFirstBet.bind(this);
+    this.nextCard = this.nextCard.bind(this);
+    this.dealerRoundBet = this.dealerRoundBet.bind(this);
+    this.findWinner = this.findWinner.bind(this);
   }
 
   async initialDeal() {
@@ -53,7 +66,7 @@ class Poker extends React.Component {
 
   //for when the usre bets.  takes in object bet, which = {move: ___} and possibly has a raise property if the move is a raise.  
   async userBet(bet) {
-    console.log('userbet');
+    console.log('userbet', this.state.view);
     try { //user place the bet
       //if the bet is  (0) -- set the state to over. game over
       if (bet.move === 'fold') {
@@ -67,19 +80,32 @@ class Poker extends React.Component {
         const {dealerBet, userBet, gameId} = this.state;
         const call = dealerBet - userBet; //difference needed to call the bet
         const db = await axios.put(`/routes/poker/poker/bet/${gameId}/${call}/${0}`);
+        this.setState({ //set the user move
+          userMove: 'call'
+        }, async () => {
+          if (this.state.dealerMove === 'call' && this.state.userMove === 'call') {
+            //if both call, then the next card is dealt
+            await setTimeout(() =>{ console.log('Timeout'); }, 100);
+            this.nextCard();
+          }
+        });
 
         //set up for the next turn to happen
         this.state.river && this.setState({
+          
           gameOver: true
-        });
+        }, () => console.log('this.state.river', this.state));
 
         this.state.turn && this.setState({
+          
           river: true
-        });
+        }, () => console.log(this.state));
 
         !this.state.turn && this.setState({
           turn: true
-        });
+        }, () => console.log(this.state));
+
+       
 
         
       }
@@ -89,6 +115,11 @@ class Poker extends React.Component {
         const call = dealerBet - userBet; //difference needed to call the bet
         const betSize = call + increment; //amount needed to call plus the bet increment
         const db = await axios.put(`/routes/poker/poker/bet/${gameId}/${betSize}/${1}`);
+        this.setState({
+          userMove: 'raise',
+          increment: 0,
+          moneyOnTable: this.state.moneyOnTable + userBet
+        });
 
       }
      
@@ -103,8 +134,8 @@ class Poker extends React.Component {
 
     try {
       //call initial deal
-      console.log('cdm bB, bI', this.props.bigBlind, this.props.buyIn);
-      console.log('poker component mount');
+      // console.log('cdm bB, bI', this.props.bigBlind, this.props.buyIn);
+      //console.log('poker component mount');
       const cards = await this.initialDeal();
       const {dealerHand, flopHand, userHand, gameId, } = cards;
       this.setState((state, props) => ({
@@ -127,6 +158,7 @@ class Poker extends React.Component {
 
   }
 
+  /**these are the blind bets.  per convention, the dealer is the small blind, then the user is the big blind.  the dealers first turn after cards are flipped will be to call the big blind (or raise or fold) */
   async blindBets() {
     console.log('blindbets');
     
@@ -142,27 +174,20 @@ class Poker extends React.Component {
     this.setState({
       moneyOnTable: mOT.data
     });
-     
-    //**adjust cuz first bet, and dealer is by default returning just the small blind */
-
-    //add small blind to money on the tble
-    //should build a put request back end to update the money on table
-
-    //pass these as props to the moneyOnTable component
-
-    //then the dealer bets
+ 
 
 
   }
 
-  //for the dealers first bet.  dealer is small blind, user is bB
+  /*for the dealers first bet.  dealer is small blind, user is bB, so to call, dealer needs to place amount of small blind.  can also raise or fold */
   async dealerFirstBet () {
     try {
-      //summon to back end, see best hand, decide if call/fold/raise
+      console.log('dealer first bet', this.state.view);
+      
       const {bigBlind, gameId} = this.state;
       const call = bigBlind / 2;
       
-
+      //summon to back end, see best hand, decide if call/fold/raise
       const {data} = await axios.get(`/routes/poker/poker/dealerBet/${gameId}/${call}`);
 
       console.log('DFB.DATA', data.bet, data.move);
@@ -182,18 +207,116 @@ class Poker extends React.Component {
     }
   }
 
-  userMove () {
+  /**
+   * other bets: the dealer bets first after the card is turned, they can check(call), raise, or fold
+   */
+  async dealerRoundBet () {
+    console.log('click');
+    console.log('dealerRoundBet', this.state.view);
+    try {
+      console.log('dealerRoundBet called');
+      //summon to back end, see best hand, decide if call/fold/raise
+      const {bigBlind, gameId} = this.state;
+      
+      //send down what is needed to call
+      const diff = this.state.userBet - this.state.dealerBet;
+      console.log('diff', diff);
+
+      const {data} = await axios.get(`/routes/poker/poker/dealerBet/${gameId}/${diff}`);
+
+      console.log('DFB.DATA', data.bet, data.move);
+      //call -> 1 more small blind to match the big blind
+      
+      //--> raise 
+      //fold --> game over, moneyOnTable goes to users buy in
+
+      this.setState({
+        dealerBet: data.bet,
+        dealerMove: data.move,
+        moneyOnTable: this.state.moneyOnTable + data.bet
+      }, () => console.log('after dealer Round bet thisstate', this.state));
+
+    } catch (err) {
+
+    }
 
   }
 
+  /**function to draw the next card for the communal pile.  resets the dealers and users moves */
+  async nextCard() {
+    try {
+      const {gameId, turn, gameOver} = this.state;
+      if (gameOver) { 
+        console.log('GAME OVER');
+        return;
+      }
+
+     
+      await setTimeout(() => { console.log('timeout'); }, 100);
+      const {data} = await axios.get(`/routes/poker/poker/addToFlop/${gameId}`);
+      console.log('nxt card', data);
+      //find the next view:
+      
+      const nextView = this.state.view === 'flop' ? 'turn' :
+        this.state.view === 'turn' ? 'river' : 'fin';
+      //need to add this next card to the array of current cards in the flop
+      this.setState({
+        flopHand: this.state.flopHand.concat(data),
+        dealerMove: '',
+        userMove: '',
+        view: nextView,
+        dealerBet: 0,
+        userBet: 0
+       
+      }, () => console.log('thisstate after next card draw', this.state));
+
+      
+
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async findWinner() {
+    try {
+      const {gameId} = this.state;
+      const winner = await axios.get(`/routes/poker/poker/winner/${gameId}`);
+      //set the state with the winner
+      this.setState({
+        winner: winner
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async updateMoneyOnTable() { //mOT was easiest to track in the state here front end, so at the end of the game update the MoT
+    
+
+    
+  }
+  //have a change render function.  have hte view passed in either be 'flop', 'turn', or 'river'.  this will trigger the component mounting
+  conditionalRender() {
+    const {gameOver, winner} = this.state;
+    if (gameOver) {
+      console.log('cond render');
+      return <Finished winner={winner} findWinner={this.findWinner}/>;
+
+    } 
+  }
 
 
   render() {
-
-
     const {dealerHand, flopHand, userHand, dealerBet, dealerMove, userBet, moneyOnTable, river, turn} = this.state;
+
+   
+
+   
+   
+    
+
     return (
-      <div>poker
+      <div>poker {this.conditionalRender()}
         <div>
           <DealerCards dealerHand={dealerHand} />
         </div> 
@@ -220,7 +343,15 @@ class Poker extends React.Component {
           >fold</button> <b />
           <button
             onClick={() => {
-              this.userBet({move: 'raise'});
+              const {bigBlind, increment} = this.state;
+              this.setState({
+                increment: increment + bigBlind,
+                userBet: userBet + bigBlind
+              }, () =>{ 
+                console.log('increment', this.state);
+                this.userBet({move: 'raise'});
+              });
+              
             }}
           >raise</button>
           <button
@@ -228,12 +359,14 @@ class Poker extends React.Component {
               //increase the increment in state by big blind each time it is clicked
               const {bigBlind, increment} = this.state;
               this.setState({
-                increment: increment + bigBlind
-              });
+                increment: increment + bigBlind,
+                userBet: userBet + bigBlind
+              }, () => console.log('increment', this.state));
 
             }}
           >bigBlindIncrement</button>
           <button onClick={this.dealerFirstBet}>dealerFirstBet</button>
+          <button onClick={this.dealerRoundBet}>dealerRoundBet</button>
         </div>
         
       </div>

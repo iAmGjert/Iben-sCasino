@@ -38,29 +38,16 @@ const initialDeal = async (userId, buyIn, bigBlind) => {
     const dealerPile = await axios.get(`https://deckofcardsapi.com/api/deck/${deckId}/pile/dealer/add/?cards=${dealerHand.join(',')}`);
     const userPile = await axios.get(`https://deckofcardsapi.com/api/deck/${deckId}/pile/user/add/?cards=${userHand.join(',')}`);
     const flopPile = await axios.get(`https://deckofcardsapi.com/api/deck/${deckId}/pile/flop/add/?cards=${flopHand.join(',')}`);
-
-    //dealer bet single blind
-    // console.log('dealerPile', dealerPile)
-
-    //user bet dbl blind
-
     //create new game in the db
-
-    //console.log('poker games', PokerGames);
     const newGame = await PokerGames.create({deckId: deckId, buyIn: buyIn, bigBlind: bigBlind, userId: userId, hand: userHand.map(x => x.code), dealerHand: dealerHand.map(x => x.code), flop: flopHand.map(x => x.code)});
     //console.log('newGame', newGame);
 
     return {
-      
       dealerHand: dealerHand,
       userHand: userHand,
       flopHand: flopHand,
       gameId: newGame.id,
       deckId: deckId,
-
-    
-     
-      
     };
 
 
@@ -73,12 +60,18 @@ const initialDeal = async (userId, buyIn, bigBlind) => {
 //need a function to add to the flop.  called once for the turn (4th card down) and again for hte river(5th and final card down)
 const addToFlop = async (gameId) => {
 //if deckId is not passed in, will need to find in PokerGame table via the gameId, but for now assume it is passed in
-  const deckId = await PokerGames.findByPk(gameId).deckId;
+  const {deckId, flop} = await PokerGames.findByPk(gameId);
+  console.log('DECK ID !!!! !!!!! ', deckId);
   const draw = await axios.get(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`);
   const {code, image} = draw.data.cards[0];
 
   //add it to the specified player pile
   const add = await axios.get(`https://deckofcardsapi.com/api/deck/${deckId}/pile/flop/add/?cards=${code}`);
+  //Add it to the flip in the db
+  console.log('flop', flop);
+  const newFlop = flop.concat(code);
+  await PokerGames.update({flop: newFlop}, {where: {id: gameId}});
+
 
   return {
     code: code,
@@ -114,7 +107,7 @@ const putBet = async (gameId, bet) => {
  * 
  */
 
-//helper function to get the code string to be compatible with teh poker-solver library
+//helper function to get the  card code string to be compatible with teh poker-solver library
 const restring = (string) => {
   //deck of cardsApi uses a 0 for 10
   const stringArr = string.split('');
@@ -127,14 +120,13 @@ const restring = (string) => {
 
 };
 
-//for an array of codes
+//for an array of codes -> to be compatible for poker solver
 const shiftCodes = (arr) => {
   return arr.map(code => restring(code));
 };
 
 //I: hand is an array of codes
-//O: an array of codes
-//* this can also compare 2 array of hands
+//O: an object that has property bestHand which is array of codes and rank which is hte rank in hands where 0 is the lowest rank 
 const bestHand = (hand) => {
   const shiftedHand = shiftCodes(hand);
   const {rank} = Hand.solve(shiftedHand);

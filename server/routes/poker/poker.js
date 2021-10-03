@@ -3,7 +3,11 @@ const Poker = express.Router();
 const {initialDeal, putBet, bestHand, addToFlop} = require('./pokerlogic');
 const {PokerGames} = require('../../../db');
 const { dealerBet, dealerBlind } = require('./dealerLogic');
+const {Hand} = require('pokersolver');
 
+/**
+ * Tthe first function to get hte indital deal
+ */
 Poker.get('/init/:buyIn/:bigBlind', async (req, res) => {
   try {
     console.log('init');
@@ -72,10 +76,13 @@ Poker.put('/blinds/:gameId/:bet', async (req, res) => {
 
 
 //id in parameters
-Poker.put('/bestHand', async (req, res) => {
+Poker.put('/bestHand/', async (req, res) => {
+  console.log('THIS IS CALLED');
   try {
-    const gameId = 1;
+    const {gameId} = 1;
     console.log('besthand');
+    
+    //whoops this is hardcoded for testing fix this
     const test = ['AS', '9S', '8S', '0S', '7D', '6H', '4D'];
     const best = bestHand(test);
     console.log('best', best);
@@ -113,9 +120,52 @@ Poker.get('/addToFlop/:gameId', async (req, res) => {
   console.log('get addToFlop');
   try {
     const newCard = await addToFlop(gameId); //newCard will be an obj with code and image properties
+    //ALSO NEED TO ADD THIS NEW CARD TO THE DB FLOP
+    console.log('NEW CARD', newCard);
     res.status(201).send(newCard);
   } catch (err) {
-    console.log(err);
+    console.log('ERR');
+    res.sendStatus(500);
+  }
+});
+
+Poker.get('/winner/:gameId', async(req, res) => {
+  try {
+    console.log('put winner');
+    const {gameId} = req.params;
+    //retrieve both hands
+    const {flop, hand, dealerHand} = await PokerGames.findByPk(gameId);
+    //pools of 5card flop + the 2 cards drawn
+    const userPool = flop.concat(hand);
+    const dealerPool = flop.concat(dealerHand);
+    //get the user best hand and the dealers best hand
+    const bestUserHand = Hand.solve(userPool);
+    const bestDealerHand = Hand.solve(dealerPool);
+    bestUserHand.index = 'user';
+    bestDealerHand.index = 'dealer';
+    //add an index property to the hands to keep track of whats what 
+    //strings of descriptions pulled from the poker solver api,
+    //need to compare the winning and see if it is dealer or user
+    const userDescript = bestUserHand.toString();
+    const dealerDescript = bestUserHand.toString();
+    console.log('uD', userDescript, 'dD', dealerDescript);
+    //console.log('best user hand', bestUserHand)
+    // console.log('best Dealer Hand', bestDealerHand)
+
+    const winner = Hand.winners([bestUserHand, bestDealerHand]);
+    console.log('WINNER', console.log(winner[0].index));
+    // const whoWins = winner.descr === userDescript ? 'user ': 'dealer'
+    // console.log(whoWins)
+    // console.log('ww', Hand.winners([bestUserHand, bestDealerHand]));
+
+    res.status(200).send(winner[0].index);
+
+
+
+
+
+  } catch (err) {
+    console.log('winner err', err);
     res.sendStatus(500);
   }
 });
