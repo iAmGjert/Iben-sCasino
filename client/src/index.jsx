@@ -10,7 +10,7 @@ import Logout from './components/Logout.jsx';
 import Wrapper from './components/Wrapper.jsx';
 import UserContext from './contexts/UserContext.jsx';
 import PokerGame from './components/PokerGame.jsx';
-import Logout from './components/Logout.jsx';
+
 
 
 
@@ -23,6 +23,7 @@ ReactDOM.render(
       <main>
        
         <NavBar />
+        <Route exact path='/poker' component={PokerGame} />
         <Route exact path='/profile' component={Profile} />
         <Route exact path='/logout' component={Logout} />
         

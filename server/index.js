@@ -3,13 +3,8 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const session = require('express-session');
-<<<<<<< HEAD
-//const cookieSession = require('cookie-session');
-const cookieParser = require('cookie-parser');
-=======
 
 //const cookieParser = require('cookie-parser');
->>>>>>> main
 const passport = require('passport');
 const authenticate = require('./authenticate.js');
 const { Data } = require('./routes/userDatabase');
@@ -23,7 +18,6 @@ const {Profile} = require('./routes/profile');
 const port = 1337;
 
 app.use(express.json());
-app.use(cookieParser());
 
 
 
@@ -39,7 +33,6 @@ app.use(session({
 })); 
 app.use(passport.initialize());
 app.use(passport.session());
-
 
 app.use('/routes/clientId', ClientId);
 app.use('/routes/blackjack', blj.Blackjack);
@@ -66,22 +59,9 @@ app.get('/google/callback',
     // res.send(req.user);
   });
 
-<<<<<<< HEAD
-app.get('/logout', async (req, res) => {
-
-  await req.logout();
-  
-  res.redirect('/login');
-
-=======
 app.get('/logout', (req, res) => {
-
-  console.log('logout:', req.user);
   req.logout();
   res.redirect('/login');
-  
-  
->>>>>>> main
 });
 
 

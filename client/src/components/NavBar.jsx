@@ -7,17 +7,6 @@ const NavBar = (props) => {
   
 
   return (
-<<<<<<< HEAD
-    <div>
-      <p>
-        <Link to='/blackjack'>Blackjack</Link>
-        <Link to='/login'>Login</Link>
-        <Link to='/profile'>Profile</Link>
-        <Link to='/addFriends'>Interacting with Users</Link>
-        <Link to='/logout'>Logout</Link>
-        <Link to='/poker'>Poker</Link>
-      </p>
-=======
     
     <nav style={{borderStyle: 'dashed', borderColor: 'gold', borderWidth: '2px'}} className="deep-purple">
       <div style={{textShadow: '0px 0px 5px #fff, 1px 1px 2px black'}}className="nav-wrapper container">
@@ -36,7 +25,6 @@ const NavBar = (props) => {
       </div>
       
     </nav>
->>>>>>> main
         
     
   );
