@@ -49,7 +49,7 @@ class Game extends React.Component {
     });
     //need backend part to adjust the bank in the db
     axios.put(`/routes/blackjack/bet/${delta}`)
-      .then(x => console.log(x))
+      
       .catch(err => console.log(err));
   }
 
@@ -79,11 +79,12 @@ class Game extends React.Component {
       return <Blackjack 
         bet={this.state.bet}
         betOutcome={this.betOutcome}
+        changeRender={this.changeRender}
      
       />;
     }
     if (view === 'start') {
-      return <BlackjackStart monies={this.state.monies} placeBet={this.placeBet} betOutcome={this.betOutcome} changeRender={this.changeRender} />;
+      return <BlackjackStart monies={this.state.monies} name={this.state.name} placeBet={this.placeBet} betOutcome={this.betOutcome} changeRender={this.changeRender} />;
     }
 
   }

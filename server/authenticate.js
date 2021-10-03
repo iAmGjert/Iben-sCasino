@@ -5,24 +5,22 @@ require('dotenv').config();
 const { User, Friends } = require('../db/index.js');
 
 passport.serializeUser((user, done) => {
-  //console.log('serialize:', user);
-  // console.log('sub:', user.id);
-  // console.log('serializeUser', user.id);
+ 
   done(null, user.id); 
 });
 
 
-passport.deserializeUser(( id, done) => { 
+passport.deserializeUser((id, done) => { 
   
   User.findOne({
     where: { 
       id: id 
     }
   })
-    .then((id) => {
-      if (id) {
-        done(null, id);
-      }
+    .then((user) => { //id
+      // if (id) {
+      done(null, user); //id
+      // }
     
     }).catch((err) => {
       console.log('Error deserial:', err);
@@ -34,11 +32,13 @@ passport.deserializeUser(( id, done) => {
 passport.use(new GoogleStrategy({
   clientID: process.env.CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+<<<<<<< HEAD
   callbackURL: '/google/callback'//'http://localhost:1337/google/callback' //this should not be hardcoded
+=======
+  callbackURL: '/google/callback' 
+>>>>>>> main
 },
-function(accessToken, refreshToken, profile, done) { // this was cb
- 
-  // not hitting the google oauth ap
+function(accessToken, refreshToken, profile, done) { 
 
   // register user here
   const { sub, name, picture, email } = profile._json;

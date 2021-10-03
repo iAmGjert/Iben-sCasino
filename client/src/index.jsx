@@ -6,6 +6,7 @@ import Login from './components/Login.jsx';
 import Profile from './components/Profile.jsx';
 import AddFriends from './components/AddFriends.jsx';
 import NavBar from './components/NavBar.jsx';
+import Logout from './components/Logout.jsx';
 import Wrapper from './components/Wrapper.jsx';
 import UserContext from './contexts/UserContext.jsx';
 import PokerGame from './components/PokerGame.jsx';
@@ -20,14 +21,11 @@ ReactDOM.render(
     
 
       <main>
-        <UserContext.Provider>
-          <Wrapper />
-        </UserContext.Provider>
-        
-        <Route exact path='/profile' component={Profile} />
-        
+       
         <NavBar />
-        <Route exact path='/poker' component={PokerGame} />
+        <Route exact path='/profile' component={Profile} />
+        <Route exact path='/logout' component={Logout} />
+        
         <Route exact path='/login' component={Login} />
         <Route exact path='/blackjack' component={Game} />
         <Route exact path='/logout' component={Logout} />
@@ -41,3 +39,8 @@ ReactDOM.render(
 
 
 
+/*<UserContext.Provider>
+<Wrapper />
+</UserContext.Provider>
+<PrivateRoute path='/blackjack' component={MyComponent} /> 
+*/

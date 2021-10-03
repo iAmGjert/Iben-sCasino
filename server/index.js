@@ -1,9 +1,15 @@
 const express = require('express');
+
 const path = require('path');
 const app = express();
 const session = require('express-session');
+<<<<<<< HEAD
 //const cookieSession = require('cookie-session');
 const cookieParser = require('cookie-parser');
+=======
+
+//const cookieParser = require('cookie-parser');
+>>>>>>> main
 const passport = require('passport');
 const authenticate = require('./authenticate.js');
 const { Data } = require('./routes/userDatabase');
@@ -19,10 +25,7 @@ const port = 1337;
 app.use(express.json());
 app.use(cookieParser());
 
-// app.use(cookieSession({
-//   maxAge: 24 * 60 * 60 * 1000,
-//   keys: [process.env.SESSION_SECRET]
-// }));
+
 
 const frontend = path.resolve(__dirname, '..', 'client', 'dist');
 
@@ -45,7 +48,7 @@ app.use('/routes/profile', Profile);
 app.use('/routes/poker/poker', Poker);
 
 app.get('/google', passport.authenticate('google', {scope: ['profile', 'email']}), (req, res) => {
-  
+ 
 });
  
   
@@ -53,9 +56,9 @@ app.get('/google', passport.authenticate('google', {scope: ['profile', 'email']}
 app.get('/google/callback', 
   passport.authenticate('google', { failureRedirect: '/login', }),
   function(req, res, next) {
-    console.log('session:', req.session);
+    
     // Successful authentication, redirect home.
-    // res.redirect('/blackjack');// --> to the main game page
+    //res.redirect('/blackjack');// --> to the main game page
     res.redirect('/profile');
     // res.sendStatus(201)
     
@@ -63,12 +66,22 @@ app.get('/google/callback',
     // res.send(req.user);
   });
 
+<<<<<<< HEAD
 app.get('/logout', async (req, res) => {
 
   await req.logout();
   
   res.redirect('/login');
 
+=======
+app.get('/logout', (req, res) => {
+
+  console.log('logout:', req.user);
+  req.logout();
+  res.redirect('/login');
+  
+  
+>>>>>>> main
 });
 
 
