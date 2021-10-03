@@ -21,28 +21,28 @@ const dealerBet = async (gameId, call) => {
      * add randomization factor alpha here that will increase or decrease the best by a random factor to make the bettign strategy slightly less predictable, then set best += alpha
      */
 
-    
+    call = parseInt(call);
 
     let returnBet; 
     if (best > 8) {
       //raise
-      returnBet =  {move: 'raise', bet: call + bigBlind};
+      returnBet = {move: 'raise', bet: call + bigBlind};
     } else if (best >= 0) {
       //match
-      returnBet =  {move: 'call', bet: call};
+      returnBet = {move: 'call', bet: call};
       
     } else {
       //fold 
-      returnBet =  {move: 'fold', bet: 0};
+      returnBet = {move: 'fold', bet: 0};
     }
 
     //*NEED TO UPDATE MONEY ON TABLE
     const currentGame = await PokerGames.findByPk(gameId);
     const moneyOnTable = currentGame.moneyOnTable + returnBet.bet;
-    console.log('MONEYONTABLE', moneyOnTable, typeof moneyOnTable)
-    await PokerGames.update({moneyOnTable: moneyOnTable}, {where: {id: gameId}})
+    console.log('MONEYONTABLE', moneyOnTable, typeof moneyOnTable);
+    await PokerGames.update({moneyOnTable: moneyOnTable}, {where: {id: gameId}});
 
-    returnBet.moneyOnTable = moneyOnTable
+    returnBet.moneyOnTable = moneyOnTable;
     return returnBet;
 
     //find the best hand, using best hand
@@ -60,7 +60,7 @@ const dealerBlind = async (gameId, bet) => {
     const currentGame = await PokerGames.findByPk(gameId);
     //console.log('CURRENTGAME', currentGame);
     const mOT = currentGame.moneyOnTable;
-    console.log('mONEYoNTABLE', mOT, typeof mOT, )
+    console.log('mONEYoNTABLE', mOT, typeof mOT, );
 
     await PokerGames.update({moneyOnTable: mOT + parseInt(bet)}, {where: {id: gameId}});
     return mOT + bet;

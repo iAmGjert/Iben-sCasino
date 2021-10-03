@@ -71,14 +71,19 @@ const initialDeal = async (userId, buyIn, bigBlind) => {
 };
 
 //need a function to add to the flop.  called once for the turn (4th card down) and again for hte river(5th and final card down)
-const addToFlop = async (gameId, deckId) => {
+const addToFlop = async (gameId) => {
 //if deckId is not passed in, will need to find in PokerGame table via the gameId, but for now assume it is passed in
-
+  const deckId = await PokerGames.findByPk(gameId).deckId;
   const draw = await axios.get(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`);
-  const {code} = draw.data.cards[0];
+  const {code, image} = draw.data.cards[0];
 
   //add it to the specified player pile
   const add = await axios.get(`https://deckofcardsapi.com/api/deck/${deckId}/pile/flop/add/?cards=${code}`);
+
+  return {
+    code: code,
+    image: image
+  };
 };
 
 
@@ -95,10 +100,6 @@ const putBet = async (gameId, bet) => {
     const mL = await currentGame.decrement('buyIn', {by: bet});
     const moT = await currentGame.increment('moneyOnTable', {by: bet});
     // console.log(mL, moT);
-    
-
-  
-
 
   } catch (err) {
   
@@ -154,4 +155,4 @@ const bestHand = (hand) => {
 
 //need a functin to fold
 
-module.exports = {initialDeal, putBet, bestHand};
+module.exports = {initialDeal, putBet, bestHand, addToFlop};

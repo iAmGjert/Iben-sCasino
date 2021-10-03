@@ -65,7 +65,7 @@ app.get('/google/callback',
 
 app.get('/logout', async (req, res) => {
 
-  await req.logout()
+  await req.logout();
   
   res.redirect('/login');
 
