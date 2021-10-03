@@ -63,6 +63,4 @@ class Login extends React.Component {
 }
 export default Login;
 
-// set up privileged redirect for user not logged in. if not logged in, force back to login page.
-
-// conditionally render the view of whether the user is logged in. 
+ 

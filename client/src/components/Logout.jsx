@@ -23,7 +23,7 @@ const Logout = () => {
     alert('You are Logged Out!');
     return <Redirect to="/login/" />;
   };
-  //return <Redirect to={<Login />} />;
+ 
   return (
    
     <button onClick={logout} >Logout</button>
