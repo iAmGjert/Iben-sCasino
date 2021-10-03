@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 
-const PokerStart = ({changeView, setInitialMoney}) => {
+const PokerStart = ({changeView, setInitialMoney, userMoney}) => {
   const [monies, setMonies] = useState(0);
 
   const [buyIn, setBuyIn] = useState(50);
 
   const raiseBuyIn = () => {
-    //have a lessthan money in the bank && before the next statement
-    setBuyIn(buyIn + 50); //change the buy in to 100
+    //lessthan money in the bank - 50 && then set the buy in if that is true
+    buyIn <= userMoney - 50 && setBuyIn(buyIn + 50); //change the buy in to 100
   };
   const decreaseBuyIn = () => {
     buyIn && setBuyIn(buyIn - 50); //change the buy in to 100

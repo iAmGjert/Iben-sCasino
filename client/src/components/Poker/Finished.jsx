@@ -8,7 +8,8 @@ class Finished extends React.Component {
   async componentDidMount() { //here call the get winner method from Poker.jsx
     try {
       await this.props.updateMoneyOnTable();
-      this.props.findWinner();
+      await this.props.findWinner();
+      await this.props.updateResults();
     } catch (err) {
       console.log(err);
     }
@@ -18,7 +19,10 @@ class Finished extends React.Component {
 
   render() {
     return (
-      <div> game over.  winner: {this.props.winner}</div>
+      <div> 
+        game over.  winner: {this.props.winner} takeHome: {this.props.takeHome}
+        
+      </div>
     );
   }
  

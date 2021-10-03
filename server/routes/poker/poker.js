@@ -1,7 +1,7 @@
 const express = require('express');
 const Poker = express.Router();
 const {initialDeal, putBet, bestHand, addToFlop} = require('./pokerlogic');
-const {PokerGames} = require('../../../db');
+const {PokerGames, User} = require('../../../db');
 const { dealerBet, dealerBlind } = require('./dealerLogic');
 const {Hand} = require('pokersolver');
 
@@ -147,8 +147,8 @@ Poker.get('/winner/:gameId', async(req, res) => {
     //add an index property to the hands to keep track of whats what 
     //strings of descriptions pulled from the poker solver api,
     //need to compare the winning and see if it is dealer or user
-    const userDescript = bestUserHand.toString();
-    const dealerDescript = bestUserHand.toString();
+    const userDescript = bestUserHand.descr;
+    const dealerDescript = bestUserHand.descr;
     console.log('uD', userDescript, 'dD', dealerDescript);
     //console.log('best user hand', bestUserHand)
     // console.log('best Dealer Hand', bestDealerHand)
@@ -176,8 +176,35 @@ Poker.put('/moneyOnTable/:gameId/:moneyOnTable', async (req, res) => {
     console.log(err);
     res.sendStatus(500);
   }
-}
+});
 
-);
+Poker.put('/results/:gameId/:takeHome/:net', async (req, res) => {
+  try {
+    const {gameId, takeHome, net} = req.params;
+    console.log('net and pi net', net, parseInt(net));
+    await PokerGames.update({takeHome: parseInt(takeHome), netEarnings: parseInt(net)}, {where: {id: gameId}});
+    res.sendStatus(200);
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500);
+  }
+});
+
+Poker.put('/userBank/:gameId/:net', async (req, res) => {
+  try { 
+    console.log('bank put req');
+    const {gameId, net} = req.params;
+    const {userId} = await PokerGames.findByPk(gameId);
+    console.log('userId', userId);
+    //update that users money
+    const {money} = await User.findByPk(userId);
+    console.log('money', money);
+    await User.update({money: money + parseInt(net)}, {where: {id: userId}});
+    res.sendStatus(200);
+
+  } catch (err) {
+
+  }
+}); 
 
 module.exports = {Poker};

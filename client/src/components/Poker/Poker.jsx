@@ -11,6 +11,7 @@ import River from './River.jsx';
 import { thistle } from 'color-name';
 import FlopHeader from './FlopHeader.jsx';
 import Finished from './Finished.jsx';
+import { initial } from 'underscore-node';
 
 class Poker extends React.Component {
   constructor(props) {
@@ -26,16 +27,18 @@ class Poker extends React.Component {
       userMove: '',
       view: 'flop',
       userPile: 0,
+      initialBuyIn: 0, //keeps trac of initial buy in to compare.  this variable not changed
 
       turn: false, //whne this turns true, 4th card put down
       river: false, //when this turns true, 5th card put dwon
       gameOver: false, //when this is true: the game is over
       gameId: '',
       bigBlind: 0,
-      buyIn: 0,
+      buyIn: 0, //this starts at the buy in, but it changes as the usre plays.  money left would be also a good description
       gameId: 0,
       increment: 0, //this is for when raising a bet by how much-- need to set back to 0 after using this val
-      winner: ''
+      winner: '',
+      takeHome: 0 //after game ends-- if user wins this is moneyOnTable + buyIn (buyIn is also money left as game plays), if user loses, this is buy in
     };
     this.initialDeal = this.initialDeal.bind(this);
     this.userBet = this.userBet.bind(this);
@@ -45,6 +48,7 @@ class Poker extends React.Component {
     this.dealerRoundBet = this.dealerRoundBet.bind(this);
     this.findWinner = this.findWinner.bind(this);
     this.updateMoneyOnTable = this.updateMoneyOnTable.bind(this);
+    this.updateResults = this.updateResults.bind(this);
   }
 
   async initialDeal() {
@@ -83,7 +87,8 @@ class Poker extends React.Component {
         const call = dealerBet - userBet; //difference needed to call the bet
         const db = await axios.put(`/routes/poker/poker/bet/${gameId}/${call}/${0}`);
         this.setState({ //set the user move
-          userMove: 'call'
+          userMove: 'call',
+          buyIn: this.state.buyIn - call, //take out of user pot
         }, async () => {
           if (this.state.dealerMove === 'call' && this.state.userMove === 'call') {
             //if both call, then the next card is dealt
@@ -116,11 +121,13 @@ class Poker extends React.Component {
         const {dealerBet, userBet, gameId, increment} = this.state;
         const call = dealerBet - userBet; //difference needed to call the bet
         const betSize = call + increment; //amount needed to call plus the bet increment
+        console.log('betSize', userBet);
         const db = await axios.put(`/routes/poker/poker/bet/${gameId}/${betSize}/${1}`);
         this.setState({
           userMove: 'raise',
           increment: 0,
-          moneyOnTable: this.state.moneyOnTable + userBet
+          moneyOnTable: this.state.moneyOnTable + userBet,
+          buyIn: this.state.buyIn - userBet
         });
 
       }
@@ -146,7 +153,8 @@ class Poker extends React.Component {
         userHand: userHand,
         gameId: gameId,
         bigBlind: this.props.bigBlind,
-        buyIn: this.props.buyIn
+        buyIn: this.props.buyIn,
+        initialBuyIn: this.props.buyIn
       }), () => {
         console.log('thisstate after cdm: ', this.state);
         this.blindBets();
@@ -174,7 +182,8 @@ class Poker extends React.Component {
     const mOT = await axios.put(`/routes/poker/poker/blinds/${gameId}/${bigBlind}`);
     console.log('mOT', mOT);
     this.setState({
-      moneyOnTable: mOT.data
+      moneyOnTable: mOT.data,
+      buyIn: this.state.buyIn - bigBlind
     });
  
 
@@ -282,13 +291,14 @@ class Poker extends React.Component {
   async findWinner() {
     try {
       let winner;
-      const {gameId, userMove, dealerMove} = this.state;
+      const {gameId, userMove, dealerMove, buyIn, moneyOnTable} = this.state;
       //if one player folds, the other is the winner automatically
       if (userMove === 'fold') {
         console.log('user faold');
-        winner = 'dealer';
+     
         this.setState({
-          winner: winner
+          winner: 'dealer',
+          takeHome: buyIn
         });
        
    
@@ -297,7 +307,8 @@ class Poker extends React.Component {
       } else if (dealerMove === 'fold') {
         winner = 'user';
         this.setState({
-          winner: winner
+          winner: 'user',
+          takeHome: buyIn + moneyOnTable
         });
         
       } else {
@@ -305,8 +316,10 @@ class Poker extends React.Component {
         console.log('here in else');
         winner = await axios.get(`/routes/poker/poker/winner/${gameId}`);
         //set the state with the winner
+        const takeHome = winner.data === 'user' ? buyIn + moneyOnTable : buyIn;
         this.setState({
-          winner: winner.data
+          winner: winner.data,
+          takeHome: takeHome
         });
       }
       
@@ -322,23 +335,32 @@ class Poker extends React.Component {
     } catch (err) {
       console.log(err);
     }
- 
-
     
+  }
+
+
+  //this runs after the game runs.  to update earnings in the PokerGames db
+  async updateResults() {
+    const {gameId, takeHome, initialBuyIn} = this.state;
+    const net = takeHome - initialBuyIn;
+    console.log('net', net);
+    await axios.put(`/routes/poker/poker/results/${gameId}/${takeHome}/${net}`);
+    //update user bank account
+    await axios.put(`/routes/poker/poker/userBank/${gameId}/${net}`);
   }
   //have a change render function.  have hte view passed in either be 'flop', 'turn', or 'river'.  this will trigger the component mounting
   conditionalRender() {
-    const {gameOver, winner} = this.state;
+    const {gameOver, winner, takeHome} = this.state;
     if (gameOver) {
       console.log('cond render', this.state);
-      return <Finished winner={winner} findWinner={this.findWinner} updateMoneyOnTable={this.updateMoneyOnTable} />;
+      return <Finished winner={winner} findWinner={this.findWinner} updateMoneyOnTable={this.updateMoneyOnTable} takeHome={takeHome} updateResults={this.updateResults} />;
 
     } 
   }
 
 
   render() {
-    const {dealerHand, flopHand, userHand, dealerBet, dealerMove, userBet, moneyOnTable, river, turn} = this.state;
+    const {dealerHand, flopHand, userHand, dealerBet, dealerMove, userBet, moneyOnTable, river, turn, buyIn} = this.state;
 
    
 
@@ -358,7 +380,7 @@ class Poker extends React.Component {
           <UserCards userHand={userHand} />
         </div>
         <div>
-          <MoneyOnTable dealerBet={dealerBet} dealerMove={dealerMove} userBet={userBet} moneyOnTable={moneyOnTable} />
+          <MoneyOnTable dealerBet={dealerBet} dealerMove={dealerMove} userBet={userBet} moneyOnTable={moneyOnTable} buyIn={buyIn} />
         </div>
        
         <div>

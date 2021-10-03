@@ -56,11 +56,11 @@ const dealerBet = async (gameId, call) => {
 //this is for the dealer bet.  since dealer is casino and has unlimited pool of money, this will just update the PokerGames and add the bet to the money on the table
 const dealerBlind = async (gameId, bet) => {
   try {
-    console.log('dealerblind', gameId);
+ 
     const currentGame = await PokerGames.findByPk(gameId);
-    //console.log('CURRENTGAME', currentGame);
+
     const mOT = currentGame.moneyOnTable;
-    console.log('mONEYoNTABLE', mOT, typeof mOT, );
+
 
     await PokerGames.update({moneyOnTable: mOT + parseInt(bet)}, {where: {id: gameId}});
     return mOT + bet;

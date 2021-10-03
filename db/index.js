@@ -77,17 +77,7 @@ const PokerGames = orm.define('PokerGames', {
     type: Sequelize.INTEGER,
     defaultValue: 10
   },
-  bestHand: {
-    type: Sequelize.STRING,
-    defaultValue: '',
-    get() { //getters and setters required here because mysql does not handle array data types.  this converts to a string separated by commas for storage, and converts back to an array for getting from storage
-      return this.getDataValue('bestHand').split(',');
-    },
-    set(val) {
-      console.log('VAL', val);
-      return this.setDataValue('bestHand', val.join(','));
-    }
-  },
+
   hand: {
     type: Sequelize.STRING,
     defaultValue: '',
@@ -122,10 +112,15 @@ const PokerGames = orm.define('PokerGames', {
       return this.setDataValue('flop', val.join(','));
     }
   },
-  handRank: {
+  takeHome: {
+    type: Sequelize.INTEGER,
+    defaultValue: 0
+  },
+  netEarnings: {
     type: Sequelize.INTEGER,
     defaultValue: 0
   }
+
 });
 
 User.hasMany(PokerGames, {foreignKey: {
