@@ -48,7 +48,7 @@
 [] can play very basic texas hold em against the computer.  limitations are you can only raise once.  
 [] this also uses the deck of cards api.  but most of the hands are tracked on the db instead
 [] each game of poker creates an entry in PokerGames db.  
-[] finding the best hands uses a poker solver library.  be aware that the documentation can be misleading.  https://github.com/goldfire/pokersolver
+[] finding the best hands uses a poker solver library.  https://github.com/goldfire/pokersolver
 
 
 <!-- Search for Users and Add Friends -->

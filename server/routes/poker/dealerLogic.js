@@ -17,17 +17,16 @@ const dealerBet = async (gameId, call) => {
     const pool = dealerHand.concat(flop);
 
     const best = bestHand(pool).rank;
-    /**
-     * add randomization factor alpha here that will increase or decrease the best by a random factor to make the bettign strategy slightly less predictable, then set best += alpha
-     */
+  
+    //for right now, this is very simple where the dealer only raises if the hand is very good or folds if hte hand is very bad-- usually it will call.  some more thought could make this more interesting
 
     call = parseInt(call);
 
     let returnBet; 
-    if (best > 8) {
+    if (best > 7) {
       //raise
       returnBet = {move: 'raise', bet: call + bigBlind};
-    } else if (best >= 0) {
+    } else if (best > 0) {
       //match
       returnBet = {move: 'call', bet: call};
       
@@ -36,10 +35,8 @@ const dealerBet = async (gameId, call) => {
       returnBet = {move: 'fold', bet: 0};
     }
 
-    //*NEED TO UPDATE MONEY ON TABLE
     const currentGame = await PokerGames.findByPk(gameId);
     const moneyOnTable = currentGame.moneyOnTable + returnBet.bet;
-    console.log('MONEYONTABLE', moneyOnTable, typeof moneyOnTable);
     await PokerGames.update({moneyOnTable: moneyOnTable}, {where: {id: gameId}});
 
     returnBet.moneyOnTable = moneyOnTable;

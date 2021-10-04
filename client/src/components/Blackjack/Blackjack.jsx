@@ -148,7 +148,7 @@ class Blackjack extends React.Component {
     }
   }
 
-  //this is going to need to become automatic
+  //dealer hits
   async dealerHitCard() { 
     const {dealerStand, dealerBust, dealer21} = this.state;
     if (dealerStand === false && dealerBust === false && dealer21 === false) {
@@ -187,9 +187,6 @@ class Blackjack extends React.Component {
     let FinishedSpace; //this will conditionally render <FinishedSpace /> when the game finishes
 
     //conditionals for properties of finished games to be passed down to Finished component
-
-  
-
     const results = {};
     if (user21 && dealer21) {
       results.outcome = 'blackjack for both'; 
@@ -197,45 +194,30 @@ class Blackjack extends React.Component {
       results.betOutcome = betOutcome;
       results.userScore = userPoints.bestScore;
       results.dealerScore = dealerPoints.bestScore;
-      // this.setState({
-      //   finished: true //this needs to be set still to flip dealer cards
-      // });
     } else if (user21) {
       results.winner = 'user'; 
       results.betOutcome = betOutcome;
       results.userScore = userPoints.bestScore;
       results.dealerScore = dealerPoints.bestScore;
       results.outcome = 'blackjack for user';
-      // this.setState({
-      //   finished: true //this needs to be set still to flip dealer cards
-      // });
     } else if (dealer21) {
       results.winner = 'dealer'; 
       results.betOutcome = betOutcome;
       results.userScore = userPoints.bestScore; 
       results.dealerScore = dealerPoints.bestScore;
       results.outcome = 'blackjack for dealer';
-      // this.setState({
-      //   finished: true //this needs to be set still to flip dealer cards
-      // });
     } else if (userBust) {
       results.winner = 'dealer'; 
       results.betOutcome = betOutcome;
       results.userScore = userPoints.bestScore;
       results.dealerScore = dealerPoints.bestScore;
       results.outcome = 'user busts';
-      // this.setState({
-      //   finished: true //this needs to be set still to flip dealer cards
-      // });
     } else if (dealerBust) {
       results.winner = 'user'; 
       results.betOutcome = betOutcome;
       results.userScore = userPoints.bestScore; 
       results.dealerScore = dealerPoints.bestScore;
       results.outcome = 'dealer busts';
-      // this.setState({
-      //   finished: true //this needs to be set still to flip dealer cards
-      // });
     } else if (finished) {
       results.winner = (
         userPoints.bestScore > dealerPoints.bestScore ? 'user' :

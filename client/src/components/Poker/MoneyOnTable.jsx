@@ -64,7 +64,7 @@ const MoneyOnTable = ({userBet, dealerBet, moneyOnTable, dealerMove, buyIn}) => 
           <div className="money">{userBet}$</div>  
         </div>
         <div className='m'>
-         <p> money left: </p>
+          <p> money left: </p>
           <div className="money">{buyIn} </div>
         </div>
       </div>

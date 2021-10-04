@@ -1,6 +1,11 @@
 import React from 'react';
 
-const Flop = ({flopHand, turn, river, }) => {
+/**
+ * 
+ * displays the flop (and turn and river).  i.e. this displays the communal cards
+ */
+
+const Flop = ({flopHand, }) => {
 
   return (
     <div> 

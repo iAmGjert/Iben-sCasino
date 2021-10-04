@@ -13,14 +13,15 @@ class Finished extends React.Component {
     } catch (err) {
       console.log(err);
     }
-    
-
   }
 
   render() {
     return (
       <div> 
-        game over.  winner: {this.props.winner} takeHome: {this.props.takeHome}
+        <h2>Game Over</h2>
+        <h3>winner: {this.props.winner}</h3>
+        <h3>takeHome: {this.props.takeHome}</h3>
+          
         
       </div>
     );
