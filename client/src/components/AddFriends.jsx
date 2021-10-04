@@ -7,7 +7,6 @@ import FollowingBar from './FollowingBar.jsx';
 import {Link} from 'react-router-dom';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
-// import {MDCList} from '@material/list';
 
 class AddFriends extends Component {
   constructor(props) {
@@ -33,7 +32,6 @@ class AddFriends extends Component {
   getUsers() {
     axios.get('/routes/userDatabase/users')
       .then(users => {
-        // console.log(users.data);
         this.setState({
           users: users.data
         });
@@ -43,26 +41,12 @@ class AddFriends extends Component {
   getProfile() {
     axios.get('/routes/profile/user')
       .then(user => {
-        // console.log('getProfile', user.data);
         this.setState({
           currentUser: user.data
         });
       })
       .catch((err => console.log('getprof err', err)));
   }
-
-//   getFriends() {
-    
-//     const { currentUser } = this.state;
-//   console.log('GetFriendsCurrentUser: ', currentUser);
-//    axios.get(`/routes/userDatabase/friends/${currentUser.id}`)
-//    .then(data => {
-//      console.log(data);
-//      // // this.setState({
-//      //   friends: friend,
-//      // })
-//    })
-//  }
 
   //event handler for search bar to update the input value
   changeInput(name) {
@@ -83,7 +67,7 @@ class AddFriends extends Component {
   
   addFriend(friend) {
     const {friends} = this.state;
-    console.log('add friend click, friend, friends', friend, friends);
+    // console.log('add friend click, friend, friends', friend, friends);
     const newFriends = [...friends];
     if(newFriends.includes(friend)){
        newFriends.splice(1);
@@ -101,9 +85,6 @@ class AddFriends extends Component {
     
         this.getUsers();
         this.getProfile();
-        // this.getFriends();
-        // this.searchUser();
-        //  console.log('componentDidMont:', this.state)
     
   }
 
@@ -136,8 +117,6 @@ class AddFriends extends Component {
       padding: '5px',
       width: '80px',
       height: '80px',
-      // position: 'relative',
-      // left: '100px'
      }
 
      const infoStyle = {

@@ -4,12 +4,10 @@ const Data = Router(); //not sure what goes in here...
 
 // still developing sequelize database request structure
 Data.get('/users', (req, res) => {
- let recentUsers;
-  User.findAll().then((results) => {
+//  let recentUsers;
+  User.findAll({limit: 5, order: [['id', 'DESC']]}).then((results) => {
   //  console.log('req:', req.body, 'results:', results);
-  // console.log(results);
-      recentUsers = results.slice(results.length - 4, results.length - 1);
-    res.status(200).send(recentUsers);
+    res.status(200).send(results);
   }).catch((err) => {
     console.log('User Get Data:', err);
     res.status(500);
@@ -59,24 +57,7 @@ Data.get('/friends/:id', (req, res) => {
   const { id } = req.params
   // let userArr = [];
   Friends.findAll({ where: { UserId: id }}).then((results) => {
-    // User.findAll().then((data) => {
-    //   // console.log('HELLO:', data);
-    //   data.forEach(user => {
-    //     // console.log('HELLO:', user.name)
-    //   results.forEach(friend => {
-    //     if(user.name === friend.friends){
-    //     // console.log('HELLO:', user)
-    //     userArr.push(user);
-    //     // res.status(200).send([user]);
-    //     } else {
-    //       res.status(200);
-    //     }
-    //     console.log('HELLO', userArr);
-    //     // res.status(200).send(userArr);
-    //   })
-    //   res.status(200).send(userArr);
-        
-    //   })
+    
     res.status(200).send(results);
     
   }).catch((err) => {
@@ -97,8 +78,6 @@ Data.post('/friends', (req, res) => {
   let updateUser;
   
   User.findOne({ where: { id: currentUser.id } }).then(currentU => {
-    // console.log(`DATA!!`, currentU)
-    // console.log('DATA!!', user)
     updateUser = currentU;
     Friends.create({ friends: user.name })
       .then((user) => {
@@ -144,85 +123,3 @@ Data.patch('/friends/:id', (req, res) => {
 
 module.exports = { Data };
 
-/**const { User, Friends } = require('../../db/index.js');
-const { Router } = require('express');
-const Data = Router(); //not sure what goes in here...
-
-// still developing sequelize database request structure
-Data.get('/user', (req, res) => {
- 
-  User.findAll().then((results) => {
-    console.log('req:', req.body, 'results:', results);
-    res.status(200).send(results);
-  }).catch((err) => {
-    console.log('User Get Data:', err);
-    res.status(500);
-  });
-});
-
-
-
-// does this need to be /google?
-Data.post('/user', (req, res) => {
-  console.log(req.body.name);
-  const { name } = req.body;
-  User.create({name: name }).then(() => {
-    console.log('req:', req.body, 'results:', results);
-    res.sendStatus(201);
-  }).catch((err) => {
-    console.log('User Post Data:', err);
-    res.status(404);
-  });
-});
-
-
-Data.get('/friends', (req, res) => {
-  Friends.findAll().then((results) => {
-    console.log(results);
-    res.sendStatus(200).send(results);
-  }).catch((err) => {
-    console.log('Friends Get Data:', err);
-    res.status(404);
-  });
-});
-
-
-
-
-Data.post('/friends', (req, res) => {
-  // console.log(req.body.name);
-  const { friends } = req.body;
-  let user;
-  User.findOne({ where: { name: "Tre'von Mitchell" } }).then(data => {
-    //console.log(results);
-    user = data;
-    Friends.create(friends)
-    .then((friend) => {
-   
-      return user.addFriends(friend)
-     })
-     res.sendStatus(201);
-  })
-  .catch((err) => {
-    console.log('Friends Post Data:', err);
-    res.status(404);
-  });
-});
-
-Data.patch('/friends/:id', (req, res) => {
-    const { id } = req.params;
-    const { users } = req.body; 
-
-User.update(users, { where: { sub: id }})
-.then(() => {
-  res.sendStatus(201);
-})
-.catch(err => {
-  console.log(err);
-  res.status(404);
-})
-})
-
-
-module.exports = { Data };
-*/
