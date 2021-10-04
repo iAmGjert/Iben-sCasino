@@ -1,10 +1,12 @@
 import React from 'react';
+import cardBack from '../images/cardBack.png';
 
-const DealerCards = ({dealerHand}) => {
+const DealerCards = ({dealerHand, gameOver}) => {
 
   return (
-    <div>dealer
-      {dealerHand.map((card, i) => <img src={card.image} key={i} height={100}/>)}
+    <div>
+      <h4>Dealer Cards</h4>
+      {dealerHand.map((card, i) => <img src={gameOver ? card.image : cardBack} key={i} height={170}/>)}
     </div>
   );
 };

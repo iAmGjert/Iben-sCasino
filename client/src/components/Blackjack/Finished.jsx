@@ -14,7 +14,7 @@ const FinishedStyles = styled.div`
         background-color: lavender;
       }
   }
-`
+`;
 
 class Finished extends React.Component {
 

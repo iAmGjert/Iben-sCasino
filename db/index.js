@@ -35,7 +35,7 @@ const User = orm.define('User', {
   },
   money: {
     type: Sequelize.INTEGER,
-    defaultValue: 100
+    defaultValue: 1000
   },
   status: {
     type: Sequelize.STRING(255),
@@ -50,6 +50,8 @@ const Friends = orm.define('Friends', {
     Sequelize.STRING(255),
   }
 });
+
+//this is for the PokerGames table.  the userId points back to the user
 
 const PokerGames = orm.define('PokerGames', {
   id: {
@@ -165,75 +167,3 @@ exports.Friends = Friends;
 exports.PokerGames = PokerGames;
 
 
-/* 
-What we want from Google's response object:
-
-
-_json: {
-    sub: '103142624207000582841',
-    name: 'Fake Name',
-    given_name: 'Fake',
-    family_name: 'Name',
-    picture: 'https://lh3.googleusercontent.com/a/AATXAJy5P40GuxnnfVaZ-ui46btUz5Htfc7A88c6yGWQ=s96-c',
-     email: 'tangney6@gmail.com',
-    email_verified: true,
-    locale: 'en'
-  }
-
-////////////////////////////////////////////////////////////////////////////////////////
-
-full google response object:
-
-{
-  id: '103142624207000582841',
-  displayName: 'Fake Name',
-  name: { familyName: 'Name', givenName: 'Fake' },
-  photos: [
-    {
-      value: 'https://lh3.googleusercontent.com/a/AATXAJy5P40GuxnnfVaZ-ui46btUz5Htfc7A88c6yGWQ=s96-c'
-    }
-  ],
-  provider: 'google',
-  _raw: '{\n' +
-    '  "sub": "103142624207000582841",\n' +
-    '  "name": "Fake Name",\n' +
-    '  "given_name": "Fake",\n' +
-    '  "family_name": "Name",\n' +
-    '  "picture": "https://lh3.googleusercontent.com/a/AATXAJy5P40GuxnnfVaZ-ui46btUz5Htfc7A88c6yGWQ\\u003ds96-c",\n' +
-    '  "locale": "en"\n' +
-    '}',
-  _json: {
-    sub: '103142624207000582841',
-    name: 'Fake Name',
-    given_name: 'Fake',
-    family_name: 'Name',
-    picture: 'https://lh3.googleusercontent.com/a/AATXAJy5P40GuxnnfVaZ-ui46btUz5Htfc7A88c6yGWQ=s96-c',
-     email: 'tangney6@gmail.com',
-    email_verified: true,
-    locale: 'en'
-  }
-}
-  student_id: {
-      type: DataTypes.INTEGER(11),
-      primaryKey: true,
-      autoIncrement: true
-    },
-    name: {
-      type: DataTypes.STRING(255),
-      allowNull: false
-    },
-    class: {
-      type: DataTypes.STRING(50),
-      allowNull: false
-    },
-    section: {
-      type: DataTypes.STRING(50),
-      allowNull:false
-    },
-    roll_number: {
-      type: DataTypes.STRING(10),
-      allowNull: false,
-      unique:true
-    }
-
-*/

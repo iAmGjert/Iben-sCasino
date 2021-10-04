@@ -6,12 +6,15 @@ import Flop from './Flop.jsx';
 import UserCards from './UserCards.jsx';
 import DealerCards from './DealerCards.jsx';
 import MoneyOnTable from './MoneyOnTable.jsx';
-import Turn from './Turn.jsx';
-import River from './River.jsx';
-import { thistle } from 'color-name';
-import FlopHeader from './FlopHeader.jsx';
+import styled from 'styled-components';
 import Finished from './Finished.jsx';
-import { initial } from 'underscore-node';
+
+const PokerStyled = styled.div`
+  .wrapper{
+    display: flex;
+    flex-direction: row;
+  }
+`;
 
 class Poker extends React.Component {
   constructor(props) {
@@ -28,7 +31,6 @@ class Poker extends React.Component {
       view: 'flop',
       userPile: 0,
       initialBuyIn: 0, //keeps trac of initial buy in to compare.  this variable not changed
-
       turn: false, //whne this turns true, 4th card put down
       river: false, //when this turns true, 5th card put dwon
       gameOver: false, //when this is true: the game is over
@@ -344,7 +346,7 @@ class Poker extends React.Component {
 
 
   render() {
-    const {dealerHand, flopHand, userHand, dealerBet, dealerMove, userBet, moneyOnTable, river, turn, buyIn} = this.state;
+    const {dealerHand, flopHand, userHand, dealerBet, dealerMove, userBet, moneyOnTable, river, turn, buyIn, gameOver} = this.state;
 
    
 
@@ -353,50 +355,58 @@ class Poker extends React.Component {
     
 
     return (
-      <div>poker {this.conditionalRender()}
-        <div>
-          <DealerCards dealerHand={dealerHand} />
-        </div> 
-        <div>
-          <Flop flopHand={flopHand} turn={turn} river={river} />
-        </div>
-        <div>
-          <UserCards userHand={userHand} />
-        </div>
-        <div>
-          <MoneyOnTable dealerBet={dealerBet} dealerMove={dealerMove} userBet={userBet} moneyOnTable={moneyOnTable} buyIn={buyIn} />
-        </div>
+      <PokerStyled >
+        <div className="wrapper"> {this.conditionalRender()}
+
+          <div className="cardsWrapper">
+
+            <div>
+              <DealerCards gameOver={gameOver} dealerHand={dealerHand} />
+            </div> 
+            <div>
+              <Flop flopHand={flopHand} turn={turn} river={river} />
+            </div>
+            <div>
+              <UserCards userHand={userHand} />
+            </div>
+          </div>
+          <div>
+
+            <div className="moneyWrapper">
+              <MoneyOnTable dealerBet={dealerBet} dealerMove={dealerMove} userBet={userBet} moneyOnTable={moneyOnTable} buyIn={buyIn} />
+            </div>
        
-        <div>
-          <button
-            onClick={() => {
-              this.userBet({move: 'call'});
-            }}
-          >call</button><b />
-          <button
-            onClick={() => {
-              this.userBet({move: 'fold'});
-            }}
-          >fold</button> <b />
-          <button
-            onClick={() => {
-              const {bigBlind, increment} = this.state;
-              this.setState({
-                increment: increment + bigBlind,
-                userBet: userBet + bigBlind
-              }, () =>{ 
+            <div>
+              <button
+                onClick={() => {
+                  this.userBet({move: 'call'});
+                }}
+              >call</button><b />
+              <button
+                onClick={() => {
+                  this.userBet({move: 'fold'});
+                }}
+              >fold</button> <b />
+              <button
+                onClick={() => {
+                  const {bigBlind, increment} = this.state;
+                  this.setState({
+                    increment: increment + bigBlind,
+                    userBet: userBet + bigBlind
+                  }, () =>{ 
             
-                this.userBet({move: 'raise'});
-              });
+                    this.userBet({move: 'raise'});
+                  });
               
-            }}
-          >raise</button>
+                }}
+              >raise</button>
        
-          <button onClick={this.dealerFirstBet}>dealerFirstBet</button>
-          <button onClick={this.dealerRoundBet}>dealerRoundBet</button>
+              <button onClick={this.dealerFirstBet}>dealerFirstBet</button>
+              <button onClick={this.dealerRoundBet}>dealerRoundBet</button>
+            </div>
+          </div>
         </div>
-        
-      </div>
+      </PokerStyled>
     );
   }
 }

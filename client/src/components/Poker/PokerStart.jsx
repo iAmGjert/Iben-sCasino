@@ -1,4 +1,21 @@
 import React, { useState } from 'react';
+import styled from 'styled-components';
+
+const PokerStartStyled = styled.div`
+  .chip {
+    display: table-cell;
+    border: 2px solid black;
+    border-radius: 50%;
+    height: 140px;
+    width: 140px;
+    font-size: 30px;
+    color: white;
+    background-color: #2e2b17;
+    text-align: center;
+    vertical-align: middle;
+
+  }
+`;
 
 const PokerStart = ({changeView, setInitialMoney, userMoney}) => {
   const [monies, setMonies] = useState(0);
@@ -24,24 +41,26 @@ const PokerStart = ({changeView, setInitialMoney, userMoney}) => {
 
 
   return (
-    <div>
-      <p> {buyIn}
+    <PokerStartStyled>
+      <div>
+        <div className="chip">{buyIn}</div>
         <button onClick={raiseBuyIn}>increase buy in</button> 
         <button onClick={decreaseBuyIn}>decrease buy in</button> 
 
-      </p>
-      <p> {bigBlind}
+      </div>
+      <div> 
+        <div className="chip">{bigBlind}</div>
         <button onClick={raiseBigBlind}>increase big blind</button>
         <button onClick={decreaseBigBlind}>decrease big blind</button> 
-      </p>
-      <p>
+      </div>
+      <div>
         <button 
           onClick={() => {
             setInitialMoney(buyIn, bigBlind);
             changeView('poker');
           }}>play poker!</button>
-      </p>
-    </div>
+      </div>
+    </PokerStartStyled>
   );
 };
 

@@ -3,8 +3,55 @@ import React from 'react';
 import Poker from './Poker/Poker.jsx';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
-
+import styled from 'styled-components';
 import PokerStart from './Poker/PokerStart.jsx';
+
+const StyledGame = styled.div`
+   h1 {
+    color: gold;
+    background-color: purple;
+    border: 3px solid black;
+    border-radius: 3px;
+    text-align: center;
+    width: 900px;
+    margin: auto;
+    padding: 15px;
+  }
+  h2 {
+    color: purple;
+    background-color: #726730;
+    border: 3px solid black;
+    border-radius: 3px;
+    text-align: center;
+    width: 750px;
+    margin: auto;
+    padding: 15px;
+    
+  }
+  h3 {
+    color: gold;
+    background-color: purple;
+    border: 3px solid black;
+    border-radius: 3px;
+    text-align: center;
+    width: 600px;
+    margin: auto;
+    padding: 15px;
+  }
+  button {
+    background-color: purple;
+    border: 3px solid black;
+    border-radius: 5px;
+    height: 70px;
+    width: 140px;
+    margin: 10px;
+      :hover {
+        background-color: lavender;
+        cursor: pointer;
+      }
+  }
+
+`;
 
 class PokerGame extends React.Component {
   constructor(props) {
@@ -67,10 +114,10 @@ class PokerGame extends React.Component {
   render() {
     const {name} = this.state;
     return ( 
-      <div>
+      <StyledGame>
         <h1>{name}</h1>
         {this.conditionalRender()}
-      </div>);
+      </StyledGame>);
   }
 }
 
