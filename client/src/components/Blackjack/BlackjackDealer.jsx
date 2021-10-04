@@ -8,7 +8,7 @@ const BlackjackDealer = (props) => {
 
   const hand = dealerHand.map((cardObj, i) => <img 
     key={cardObj.code} 
-    height={200} 
+    height={170} 
     src={i === 0 ? cardObj.image : 
       gameOver ? cardObj.image : cardBack}/>);
   return (

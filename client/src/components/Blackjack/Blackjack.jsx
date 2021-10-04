@@ -23,6 +23,18 @@ const BljStyles = styled.div`
         cursor: pointer;
       }
   }
+  h3 {
+    background-color: purple;
+    color: gold;
+    border: 3px solid gold;
+    border-radius: 3px;
+  }
+  h4 {
+    background-color: gold;
+    color: purple;
+    border: 2px solid purple;
+    border-radius: 3px;
+  }
   
 `;
 
@@ -185,45 +197,45 @@ class Blackjack extends React.Component {
       results.betOutcome = betOutcome;
       results.userScore = userPoints.bestScore;
       results.dealerScore = dealerPoints.bestScore;
-      this.setState({
-        finished: true //this needs to be set still to flip dealer cards
-      });
+      // this.setState({
+      //   finished: true //this needs to be set still to flip dealer cards
+      // });
     } else if (user21) {
       results.winner = 'user'; 
       results.betOutcome = betOutcome;
       results.userScore = userPoints.bestScore;
       results.dealerScore = dealerPoints.bestScore;
       results.outcome = 'blackjack for user';
-      this.setState({
-        finished: true //this needs to be set still to flip dealer cards
-      });
+      // this.setState({
+      //   finished: true //this needs to be set still to flip dealer cards
+      // });
     } else if (dealer21) {
       results.winner = 'dealer'; 
       results.betOutcome = betOutcome;
       results.userScore = userPoints.bestScore; 
       results.dealerScore = dealerPoints.bestScore;
       results.outcome = 'blackjack for dealer';
-      this.setState({
-        finished: true //this needs to be set still to flip dealer cards
-      });
+      // this.setState({
+      //   finished: true //this needs to be set still to flip dealer cards
+      // });
     } else if (userBust) {
       results.winner = 'dealer'; 
       results.betOutcome = betOutcome;
       results.userScore = userPoints.bestScore;
       results.dealerScore = dealerPoints.bestScore;
       results.outcome = 'user busts';
-      this.setState({
-        finished: true //this needs to be set still to flip dealer cards
-      });
+      // this.setState({
+      //   finished: true //this needs to be set still to flip dealer cards
+      // });
     } else if (dealerBust) {
       results.winner = 'user'; 
       results.betOutcome = betOutcome;
       results.userScore = userPoints.bestScore; 
       results.dealerScore = dealerPoints.bestScore;
       results.outcome = 'dealer busts';
-      this.setState({
-        finished: true //this needs to be set still to flip dealer cards
-      });
+      // this.setState({
+      //   finished: true //this needs to be set still to flip dealer cards
+      // });
     } else if (finished) {
       results.winner = (
         userPoints.bestScore > dealerPoints.bestScore ? 'user' :
@@ -249,7 +261,7 @@ class Blackjack extends React.Component {
         <div className='allContent'>
           <BlackjackDealer dealerHand={dealerHand} gameOver={this.state.finished}/>
         
-          {FinishedSpace}
+          <h3>User Cards</h3>
           <button style={{display: userBust || userStand ? 'none' : 'block'}} className='buttons' onClick={this.userHitCard}>Hit</button>
           <button style={{display: userStand || finished ? 'none' : 'block'}} className="buttons" onClick={this.userStand}>Stand</button>
        

@@ -1,5 +1,20 @@
 import React from 'react';
 import axios from 'axios';
+import styled from 'styled-components';
+
+const FinishedStyles = styled.div`
+  .buttons {
+    height: 30px;
+    width: 100px;
+    background-color: purple;
+    color: gold;
+    border: gold solid 1px;
+    border-radius: 3px;
+      :hover {
+        background-color: lavender;
+      }
+  }
+`
 
 class Finished extends React.Component {
 
@@ -19,7 +34,7 @@ class Finished extends React.Component {
     const {outcome, userScore, dealerScore, winner} = this.props.results;
     
     return (
-      <div>
+      <FinishedStyles>
         
         <h3>{outcome}</h3>
         <div>
@@ -28,13 +43,14 @@ class Finished extends React.Component {
         </div>
         <div>
           <button 
+            className="buttons"
             onClick={()=>{
               this.props.changeRender('start');
             }}
           >new game</button>
         </div>
         
-      </div>
+      </FinishedStyles>
     );
   }
  

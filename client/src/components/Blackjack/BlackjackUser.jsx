@@ -7,14 +7,14 @@ const BlackjackUser = (props) => {
   const {userHand} = props;
   // console.log(userHand);
 
-  const hand = userHand.map(cardObj => <img key={cardObj.code} height={200} src={cardObj.image}/>);
+  const hand = userHand.map(cardObj => <img key={cardObj.code} height={170} src={cardObj.image}/>);
 
 
   
 
   return (
     <div>
-      <h3>User Cards</h3>
+      
       {hand}
  
     </div>
