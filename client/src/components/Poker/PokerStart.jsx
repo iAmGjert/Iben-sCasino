@@ -1,7 +1,14 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { isObject } from 'underscore-node';
 
 const PokerStartStyled = styled.div`
+  .wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-content: center;
+  }
   .chip {
     display: table-cell;
     border: 2px solid black;
@@ -13,11 +20,25 @@ const PokerStartStyled = styled.div`
     background-color: #2e2b17;
     text-align: center;
     vertical-align: middle;
+  }
+  .best {
+    background-color: purple;
+    color: gold;
+    border: 3px gold solid;
+    border-radius: 5px;
+    padding: 20px;
 
   }
+  .entry {
+    padding: 10px;
+  }
+  .header {
+    margin-top: 40px;
+  }
+  
 `;
 
-const PokerStart = ({changeView, setInitialMoney, userMoney, userName}) => {
+const PokerStart = ({changeView, setInitialMoney, userMoney, userName, history}) => {
   const [monies, setMonies] = useState(0);
 
   const [buyIn, setBuyIn] = useState(50);
@@ -39,6 +60,10 @@ const PokerStart = ({changeView, setInitialMoney, userMoney, userName}) => {
     bigBlind && setBigBlind(bigBlind - 10);
   };
 
+  const hist = () => {
+    return history.map(obj => <div className='entry'>Net earnings: {obj.netEarings} takeHome: {obj.takeHome} bigBlind: {obj.bigBlind} </div>);
+  };
+
   const conditionalButton = () => {
     console.log('uername ', userName);
     if (userName) {
@@ -57,19 +82,37 @@ const PokerStart = ({changeView, setInitialMoney, userMoney, userName}) => {
 
   return (
     <PokerStartStyled>
-      <div>
-        <div className="chip">{buyIn}</div>
-        <button onClick={raiseBuyIn}>increase buy in</button> 
-        <button onClick={decreaseBuyIn}>decrease buy in</button> 
+      <div className='wrapper'>
+        <div className='set'>
 
-      </div>
-      <div> 
-        <div className="chip">{bigBlind}</div>
-        <button onClick={raiseBigBlind}>increase big blind</button>
-        <button onClick={decreaseBigBlind}>decrease big blind</button> 
-      </div>
-      <div>
-        {conditionalButton()}
+          <div>
+            <div className="chip">{buyIn}</div>
+            <button onClick={raiseBuyIn}>increase buy in</button> 
+            <button onClick={decreaseBuyIn}>decrease buy in</button> 
+
+          </div>
+          <div> 
+            <div className="chip">{bigBlind}</div>
+            <button onClick={raiseBigBlind}>increase big blind</button>
+            <button onClick={decreaseBigBlind}>decrease big blind</button> 
+            {conditionalButton()}
+          </div>
+
+        </div>
+        <div className='hist'>
+          <div>
+            
+            <h4 className='header'>Best Games:</h4> 
+            <div className='best'>
+              {hist()}
+            </div>
+          
+          </div>
+
+
+        </div>
+     
+       
       </div>
     </PokerStartStyled>
   );
