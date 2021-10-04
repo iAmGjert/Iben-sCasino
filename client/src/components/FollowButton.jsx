@@ -17,14 +17,14 @@ class FollowButton extends Component {
     const {currentUser} = this.props;
 
     //should send a axios post request
-       axios.post('/routes/userDatabase/friends', {
-         currentUser: currentUser,
-         user: user
-       }).then(() => {
-         this.setState({
-           isFollow: 'Following'
-         })
-       })
+    axios.post('/routes/userDatabase/friends', {
+      currentUser: currentUser,
+      user: user
+    }).then(() => {
+      this.setState({
+        isFollow: 'Following'
+      });
+    });
        
      
   
@@ -35,10 +35,10 @@ class FollowButton extends Component {
       .then(() => {
         this.setState({
           isFollow: 'Follow'
-        })
-      })
+        });
+      });
   }
-//Where I left off
+  //Where I left off
   // getFriends(){
   //   const { currentUser } = this.props;
     
@@ -58,13 +58,13 @@ class FollowButton extends Component {
 
     return (
 
-     <a className="waves-effect purple btn" onClick={() =>  {
+      <a className="waves-effect purple btn" onClick={() => {
         this.props.addFriend(user);
-        isFollow ===  'Follow' ? this.followUser(user) : this.removeFriend(user)
+        isFollow === 'Follow' ? this.followUser(user) : this.removeFriend(user);
       }}> 
         {isFollow}
-    {/* { friend.UserId === currentUser.id ? isFollow === 'Following' : isFollow === 'Follow'} */}
-       </a>
+        {/* { friend.UserId === currentUser.id ? isFollow === 'Following' : isFollow === 'Follow'} */}
+      </a>
     );
   }
 }

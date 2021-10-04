@@ -125,7 +125,8 @@ Poker.get('/winner/:gameId', async(req, res) => {
     //add an index property to the hands to keep track of whats what 
     //strings of descriptions pulled from the poker solver api,
     //need to compare the winning and see if it is dealer or user.  
-    //the docs for the poker solverapi are inaccurate- you need to take this step
+    //the docs for the poker solverapi are inaccurate- you need to take this step to add a way to track the hands because the function does not return +/-1 like the documents suggest
+    //also i think the results it turn may occasionally be off, if i had more time after noticing, i probably would have tried to code my own or find a different library.  
     const userDescript = bestUserHand.descr;
     const dealerDescript = bestUserHand.descr;
     const winner = Hand.winners([bestUserHand, bestDealerHand]);
@@ -148,6 +149,7 @@ Poker.put('/moneyOnTable/:gameId/:moneyOnTable', async (req, res) => {
   }
 });
 
+//update takehome
 Poker.put('/results/:gameId/:takeHome/:net', async (req, res) => {
   try {
     const {gameId, takeHome, net} = req.params;
@@ -158,6 +160,7 @@ Poker.put('/results/:gameId/:takeHome/:net', async (req, res) => {
   }
 });
 
+//update the user bank act
 Poker.put('/userBank/:gameId/:net', async (req, res) => {
   try { 
     const {gameId, net} = req.params;
@@ -172,6 +175,7 @@ Poker.put('/userBank/:gameId/:net', async (req, res) => {
   }
 }); 
 
+//get game stats, 10 best games, ranked by net earnings. 
 Poker.get('/history', async (req, res) => {
   try {
     const {id} = req.user;

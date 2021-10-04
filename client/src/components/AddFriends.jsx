@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import FollowButton from './FollowButton.jsx'
+import FollowButton from './FollowButton.jsx';
 import Search from './Search.jsx';
 import UserPreview from './UserPreview.jsx';
 import FollowingBar from './FollowingBar.jsx';
@@ -51,26 +51,26 @@ class AddFriends extends Component {
   //event handler for search bar to update the input value
   changeInput(name) {
     this.setState({
-       value: name
-    })
+      value: name
+    });
   }
   
   //event handler to search for the given input value and get back the user that matches the input val.
   searchUser(user) {
-      return axios.get(`/routes/userDatabase/${user}`)
+    return axios.get(`/routes/userDatabase/${user}`)
       .then(user => {
         this.setState({
           userSearched: user.data
-        })
-      })
+        });
+      });
   }
   
   addFriend(friend) {
     const {friends} = this.state;
     // console.log('add friend click, friend, friends', friend, friends);
     const newFriends = [...friends];
-    if(newFriends.includes(friend)){
-       newFriends.splice(1);
+    if (newFriends.includes(friend)) {
+      newFriends.splice(1);
     } else {
 
       newFriends.push(friend);
@@ -83,8 +83,8 @@ class AddFriends extends Component {
   
   componentDidMount() {
     
-        this.getUsers();
-        this.getProfile();
+    this.getUsers();
+    this.getProfile();
     
   }
 
@@ -94,47 +94,47 @@ class AddFriends extends Component {
   render() {
     const { users, currentUser, value, userSearched, friends } = this.state;
     // console.log('ADDFRIENDS:', this.state)
-     const style = {
+    const style = {
       position: 'absolute', 
       right: '30px',
       fontSize: '20px',
       fontWeight: 'bold',
       color: 'white',
       textShadow: '2px 2px 4px #000000'
-     }
+    };
 
-     const styleRecent = { 
+    const styleRecent = { 
       fontSize: '20px',
       fontWeight: 'bold',
       color: 'white',
       textShadow: '2px 2px 4px #000000',
       position: 'relative',
       left: '100px'
-     }
-     const imageStyle = {
+    };
+    const imageStyle = {
       border: '3px solid #ddd',
       borderRadius: '50%',
       padding: '5px',
       width: '80px',
       height: '80px',
-     }
+    };
 
-     const infoStyle = {
+    const infoStyle = {
       position: 'relative',
       left: '100px'
-     }
-     const textStyle = {
-       fontFamily: 'Merriweather Sans, sans-serif',
-       fontSize: '20px',
-       color: 'black',
+    };
+    const textStyle = {
+      fontFamily: 'Merriweather Sans, sans-serif',
+      fontSize: '20px',
+      color: 'black',
       padding: '10px',
       fontWeight: '900',
-      }
+    };
     return (
       
       <div className='currentFriend'>
         
-         <Link  to='/Leaderboard'> <a className="waves-effect purple btn">Black Jack Leaderboard </a></Link>
+        <Link to='/Leaderboard'> <a className="waves-effect purple btn">Black Jack Leaderboard </a></Link>
         
         <h1 className='active-player' style={style}><i className="material-icons" style={{color: 'white', fontSize: '30px'}}>account_circle</i>Active Player: {currentUser.name}</h1> 
         
@@ -143,28 +143,28 @@ class AddFriends extends Component {
         <h3 className='recent-players' style={styleRecent}>Recent Players</h3>
          
         <ul className="collection" style={{backgroundColor: 'white', width: '600px', border: '3px solid'}}>
-        { users.map( (user, i) => (
-          <li class="collection-item avatar">
-            <img src={user.picture} alt="" className="circle" style={imageStyle}  /> 
-          <div className='user-info' key={i} style={infoStyle}> 
+          { users.map( (user, i) => (
+            <li class="collection-item avatar">
+              <img src={user.picture} alt="" className="circle" style={imageStyle} /> 
+              <div className='user-info' key={i} style={infoStyle}> 
         
-        <span className="title" style={textStyle}>{user.name}</span>   
-        <p style={textStyle}>Email: {user.email} <br />
-        </p>
-        <FollowButton user={user} currentUser={currentUser} addFriend={this.addFriend}
-            key={i} />
+                <span className="title" style={textStyle}>{user.name}</span>   
+                <p style={textStyle}>Email: {user.email} <br />
+                </p>
+                <FollowButton user={user} currentUser={currentUser} addFriend={this.addFriend}
+                  key={i} />
            
-          </div> 
+              </div> 
           
-          </li>
-        ))
-        }
+            </li>
+          ))
+          }
         
-       </ul>
-         <Search changeInput={this.changeInput} searchUser={this.searchUser} value={value} />
-          <UserPreview  userSearched={userSearched} addFriend={this.addFriend} />
-          <FollowingBar latestFriends={friends}/>
-          <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"></link>
+        </ul>
+        <Search changeInput={this.changeInput} searchUser={this.searchUser} value={value} />
+        <UserPreview userSearched={userSearched} addFriend={this.addFriend} />
+        <FollowingBar latestFriends={friends}/>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"></link>
       </div>
     );
   }

@@ -67,7 +67,8 @@ class Poker extends React.Component {
   }
 
 
-  //for when the usre bets.  takes in object bet, which = {move: ___} and possibly has a raise property if the move is a raise.  
+  //for when the user bets.  takes in object bet, which = {move: ___} and possibly has a raise property if the move is a raise.  
+  //right now, this only is good for if the user raises once , unlimited raises will probably require additional logic
   async userBet(bet) {
     try { //user place the bet
       //if the bet is  (0) -- set the state to over. game over
