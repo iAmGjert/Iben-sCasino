@@ -13,7 +13,7 @@ Poker.get('/init/:buyIn/:bigBlind', async (req, res) => {
     const {buyIn, bigBlind} = req.params;
     //**need to not hardcode hte userId */.  get it from req.user.id
     // console.log('REQ USER', req.user)
-    const {id} = req.user
+    const {id} = req.user;
  
     const logic = await initialDeal(id, buyIn, bigBlind); //this userId is hardcoded...grab it from req.user
 

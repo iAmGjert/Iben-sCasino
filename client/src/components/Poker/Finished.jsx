@@ -21,7 +21,7 @@ class Finished extends React.Component {
         <h2>Game Over</h2>
         <h3>winner: {this.props.winner}</h3>
         <h3>takeHome: {this.props.takeHome}</h3>
-          
+        <button onClick={() => this.props.changeView('start')}>New Game!</button>
         
       </div>
     );

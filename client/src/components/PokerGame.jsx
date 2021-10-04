@@ -63,7 +63,8 @@ class PokerGame extends React.Component {
       },
       bigBlind: 10,
       buyIn: 50,
-      userMoney: 0
+      userMoney: 0,
+      userName: ''
     };
     this.changeView = this.changeView.bind(this);
     this.conditionalRender = this.conditionalRender.bind(this);
@@ -75,7 +76,8 @@ class PokerGame extends React.Component {
     try {
       const user = await axios.get('/routes/profile/user'); 
       this.setState({
-        userMoney: user.data.money //set with the usermoney in the bank
+        userMoney: user.data.money, //set with the usermoney in the bank
+        userName: user.data.name
       }, );
     } catch (err) {
       console.log('PokerGame mount err', err );
@@ -101,12 +103,12 @@ class PokerGame extends React.Component {
 
 
   conditionalRender() {
-    const {view, bigBlind, buyIn, userMoney} = this.state;
+    const {view, bigBlind, buyIn, userMoney, userName} = this.state;
     if (view === 'start') {
-      return <PokerStart setInitialMoney={this.setInitialMoney} changeView={this.changeView} userMoney={userMoney} />;
+      return <PokerStart setInitialMoney={this.setInitialMoney} changeView={this.changeView} userMoney={userMoney} userName={userName} />;
     }
     if (view === 'poker') {
-      return <Poker bigBlind={bigBlind} buyIn={buyIn} />;
+      return <Poker bigBlind={bigBlind} buyIn={buyIn} changeView={this.changeView} />;
     }
   }
 

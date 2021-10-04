@@ -175,9 +175,6 @@ class Poker extends React.Component {
     });
 
     await this.dealerFirstBet();
- 
-
-
   }
 
   /*for the dealers first bet.  dealer is small blind, user is bB, so to call, dealer needs to place amount of small blind.  can also raise or fold */
@@ -226,10 +223,8 @@ class Poker extends React.Component {
       //send down what is needed to call
       const diff = this.state.userBet - this.state.dealerBet;
 
-
       const {data} = await axios.get(`/routes/poker/poker/dealerBet/${gameId}/${diff}`);
       
-
       this.setState({
         dealerBet: data.bet,
         dealerMove: data.move,
@@ -295,9 +290,6 @@ class Poker extends React.Component {
         this.setState({gameOver: true});
       }
 
-     
-
-      
 
     } catch (err) {
       console.log(err);
@@ -364,7 +356,7 @@ class Poker extends React.Component {
   conditionalRender() {
     const {gameOver, winner, takeHome} = this.state;
     if (gameOver) {
-      return <Finished winner={winner} findWinner={this.findWinner} updateMoneyOnTable={this.updateMoneyOnTable} takeHome={takeHome} updateResults={this.updateResults} />;
+      return <Finished winner={winner} findWinner={this.findWinner} updateMoneyOnTable={this.updateMoneyOnTable} takeHome={takeHome} updateResults={this.updateResults} changeView={this.props.changeView} />;
 
     } 
   }

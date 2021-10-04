@@ -17,7 +17,7 @@ const PokerStartStyled = styled.div`
   }
 `;
 
-const PokerStart = ({changeView, setInitialMoney, userMoney}) => {
+const PokerStart = ({changeView, setInitialMoney, userMoney, userName}) => {
   const [monies, setMonies] = useState(0);
 
   const [buyIn, setBuyIn] = useState(50);
@@ -39,6 +39,21 @@ const PokerStart = ({changeView, setInitialMoney, userMoney}) => {
     bigBlind && setBigBlind(bigBlind - 10);
   };
 
+  const conditionalButton = () => {
+    console.log('uername ', userName);
+    if (userName) {
+      return (
+        <button 
+          onClick={() => {
+            setInitialMoney(buyIn, bigBlind);
+            changeView('poker');
+          }}>play poker!</button>
+      );
+    } else {
+      return <h3>please log in!</h3>;
+    }
+  };
+
 
   return (
     <PokerStartStyled>
@@ -54,11 +69,7 @@ const PokerStart = ({changeView, setInitialMoney, userMoney}) => {
         <button onClick={decreaseBigBlind}>decrease big blind</button> 
       </div>
       <div>
-        <button 
-          onClick={() => {
-            setInitialMoney(buyIn, bigBlind);
-            changeView('poker');
-          }}>play poker!</button>
+        {conditionalButton()}
       </div>
     </PokerStartStyled>
   );
