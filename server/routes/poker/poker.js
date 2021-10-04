@@ -172,4 +172,20 @@ Poker.put('/userBank/:gameId/:net', async (req, res) => {
   }
 }); 
 
+Poker.get('/history', async (req, res) => {
+  try {
+    const {id} = req.user;
+
+    //get the 10 games with best net earnings
+    const games = await PokerGames.findAll({where: {userId: id}, limit: 10, order: [['netEarnings', 'DESC']]});
+
+    res.status(201).send(games);
+
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500);
+  }
+
+});
+
 module.exports = {Poker};
