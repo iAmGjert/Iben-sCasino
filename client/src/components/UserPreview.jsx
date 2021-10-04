@@ -3,6 +3,13 @@ import FollowButton from './FollowButton.jsx'
 const stylePreview = {
   position: 'relative',
       left: '880px',
+      fontFamily: 'Merriweather Sans, sans-serif',
+  fontSize: '20px',
+  color: 'black',
+ padding: '10px',
+ fontWeight: '900',
+ position: 'relative',
+      left: '880px',
 }
 const imgStyle = {
   border: '1px solid #ddd',
@@ -13,9 +20,10 @@ const imgStyle = {
   position: 'relative',
       left: '880px',
 }
+
 const UserPreview = ({userSearched, addFriend }) => { 
   return (
-    <div className='preview'>
+    <div className='preview' style={{backgroundColor: 'white', border: '3px solid', }}>
       {
         userSearched.map( user => (
     <div key={user.id}>
@@ -24,7 +32,6 @@ const UserPreview = ({userSearched, addFriend }) => {
       
       <span>Email: {user.email} </span> <FollowButton user={user}  addFriend={addFriend} /> 
     </div>
-  
     </div>
         )
         )

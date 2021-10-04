@@ -40,11 +40,11 @@ followUser(user) {
     const { isFollow } = this.state;
     const { user } = this.props;
     return (
-      <button onClick={() =>  {
+      <a className="waves-effect purple btn" onClick={() =>  {
         isFollow ===  'Following' ? this.removeFriend(user) : this.followUser(user)
       }}>
         {isFollow}
-      </button>
+      </a>
     )
   }
 }

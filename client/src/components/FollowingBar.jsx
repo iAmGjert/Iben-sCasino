@@ -70,7 +70,7 @@ componentDidMount(){
       }
       console.log(latestFriends);
     return (
-      <div className='following-bar' style={{height: '300px',width: '300px', backgroundColor: "#2F4050", marginTop: '-30px'}}>
+      <div className='following-bar' style={{height: '300px',width: '300px', backgroundColor: "#2F4050", marginTop: '255px'}}>
         <ul className="list-bar" style={{height: 'auto', padding: '0', width: '100%'}}>
         <h5 className='following-header' style={stylesHeader}>Following {latestFriends.length} </h5>
       {latestFriends.map((friend, key) => {

@@ -25,17 +25,17 @@ this.getPlayers();
     const { players } = this.state;
     return (
       <div>
-        <h5> Black Jack Leaderboard </h5>
+        <a className="waves-effect purple btn">Black Jack Leaderboard </a>
         <div className='card'>
           <div className='card-body'>
-            <table className="table-boarder"> 
+            <table className="table-boarder" style={{backgroundColor:"#FFBE0F", fontWeight: 'bold', color: 'black', fontSize: '30px'}}> 
             Position: 
             <col style={{width: '10%'} } />
             <col style={{width: '80%'} } />
             <col style={{width: '10%'} } />
            <tbody>
          {
-           players.map((player, i) => {
+           players.map((player, i) => { 
              return (
 
    <tr key={player.id}>
@@ -45,9 +45,9 @@ this.getPlayers();
                  </td>
                <td className="border-0">
                  <div className="d-flex"> 
-                 <img src={player.picture} style={{width: "50px", height: "50px", borderRadius: '50%' }} alt="image-thumbnail" />
+                 <img src={player.picture} style={{width: "70px", height: "70px", borderRadius: '50%' }} alt="image-thumbnail" />
                  <div className="align self-center p1-3">
-                   <span className="font-weight-bold">{player.name}</span>
+                   <span className="font-weight-bold"><a className="waves-effect purple btn">{player.name} </a></span>
                  </div>
                  </div>
                </td>

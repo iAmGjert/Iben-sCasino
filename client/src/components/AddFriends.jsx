@@ -7,9 +7,8 @@ import FollowingBar from './FollowingBar.jsx';
 import {Link} from 'react-router-dom';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
-// import List from '@mui/material/List';
-// import ListItem from '@mui/material/ListItem';
-// import ListItemText from '@mui/material/ListItemText';
+// import {MDCList} from '@material/list';
+
 class AddFriends extends Component {
   constructor(props) {
     super(props);
@@ -132,7 +131,7 @@ class AddFriends extends Component {
       left: '100px'
      }
      const imageStyle = {
-      border: '1px solid #ddd',
+      border: '3px solid #ddd',
       borderRadius: '50%',
       padding: '5px',
       width: '80px',
@@ -145,31 +144,48 @@ class AddFriends extends Component {
       position: 'relative',
       left: '100px'
      }
+     const textStyle = {
+       fontFamily: 'Merriweather Sans, sans-serif',
+       fontSize: '20px',
+       color: 'black',
+      padding: '10px',
+      fontWeight: '900',
+      }
     return (
       
       <div className='currentFriend'>
-        <Link  to='/Leaderboard'>Black Jack Leaderboard </Link>
-        <h1 className='active-player' style={style}>Active Player: {currentUser.name}</h1> 
+        
+         <Link  to='/Leaderboard'> <a className="waves-effect purple btn">Black Jack Leaderboard </a></Link>
+        
+        <h1 className='active-player' style={style}><i className="material-icons" style={{color: 'white', fontSize: '30px'}}>account_circle</i>Active Player: {currentUser.name}</h1> 
         
           
         
         <h3 className='recent-players' style={styleRecent}>Recent Players</h3>
          
+        <ul className="collection" style={{backgroundColor: 'white', width: '600px', border: '3px solid'}}>
         { users.map( (user, i) => (
-
+          <li class="collection-item avatar">
+            <img src={user.picture} alt="" className="circle" style={imageStyle}  /> 
           <div className='user-info' key={i} style={infoStyle}> 
-        <img src={user.picture} style={imageStyle} /> {user.name}    Email: {user.email} 
-            <FollowButton user={user} currentUser={currentUser} addFriend={this.addFriend}
+        
+        <span className="title" style={textStyle}>{user.name}</span>   
+        <p style={textStyle}>Email: {user.email} <br />
+        </p>
+        <FollowButton user={user} currentUser={currentUser} addFriend={this.addFriend}
             key={i} />
-            
+           
           </div> 
-
+          
+          </li>
         ))
         }
-       
+        
+       </ul>
          <Search changeInput={this.changeInput} searchUser={this.searchUser} value={value} />
           <UserPreview  userSearched={userSearched} addFriend={this.addFriend} />
-        <FollowingBar latestFriends={friends}/>
+          <FollowingBar latestFriends={friends}/>
+          <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"></link>
       </div>
     );
   }

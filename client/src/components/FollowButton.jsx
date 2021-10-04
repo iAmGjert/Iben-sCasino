@@ -57,13 +57,14 @@ class FollowButton extends Component {
     const { user, currentUser } = this.props;
 
     return (
-      <button onClick={() =>  {
+
+     <a className="waves-effect purple btn" onClick={() =>  {
         this.props.addFriend(user);
         isFollow ===  'Follow' ? this.followUser(user) : this.removeFriend(user)
-      }}>
+      }}> 
         {isFollow}
     {/* { friend.UserId === currentUser.id ? isFollow === 'Following' : isFollow === 'Follow'} */}
-      </button>
+       </a>
     );
   }
 }
