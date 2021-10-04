@@ -61,11 +61,10 @@ const PokerStart = ({changeView, setInitialMoney, userMoney, userName, history})
   };
 
   const hist = () => {
-    return history.map(obj => <div className='entry'>Net earnings: {obj.netEarings} takeHome: {obj.takeHome} bigBlind: {obj.bigBlind} </div>);
+    return history.map((obj, i) => <div key={i} className='entry'>Net earnings: {obj.netEarnings} takeHome: {obj.takeHome} bigBlind: {obj.bigBlind} </div>);
   };
 
   const conditionalButton = () => {
-    console.log('uername ', userName);
     if (userName) {
       return (
         <button 

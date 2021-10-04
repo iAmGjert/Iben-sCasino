@@ -131,20 +131,11 @@ const bestHand = (hand) => {
   const shiftedHand = shiftCodes(hand);
   const {rank} = Hand.solve(shiftedHand);
   const best = Hand.solve(shiftedHand).cards.map(card => card.value + card.suit);
-  //console.log(best.cards[0].value + best.cards[0].suit)
-  // console.log(rank);
   return {
     bestHand: best,
     rank: rank
   };
 };
 
-//need a function to place dbl blind
-
-//need a function to bet/raise
-
-//need a function to stay
-
-//need a functin to fold
 
 module.exports = {initialDeal, putBet, bestHand, addToFlop};

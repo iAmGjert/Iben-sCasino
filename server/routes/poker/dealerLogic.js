@@ -17,9 +17,7 @@ const dealerBet = async (gameId, call) => {
     const pool = dealerHand.concat(flop);
 
     const best = bestHand(pool).rank;
-  
     //for right now, this is very simple where the dealer only raises if the hand is very good or folds if hte hand is very bad-- usually it will call.  some more thought could make this more interesting
-
     call = parseInt(call);
 
     let returnBet; 
@@ -53,21 +51,13 @@ const dealerBet = async (gameId, call) => {
 //this is for the dealer bet.  since dealer is casino and has unlimited pool of money, this will just update the PokerGames and add the bet to the money on the table
 const dealerBlind = async (gameId, bet) => {
   try {
- 
     const currentGame = await PokerGames.findByPk(gameId);
-
     const mOT = currentGame.moneyOnTable;
-
-
     await PokerGames.update({moneyOnTable: mOT + parseInt(bet)}, {where: {id: gameId}});
     return mOT + bet;
-  
-
-
   } catch (err) {
     console.log(err);
   }
-
 };
 
 module.exports = {dealerBet, dealerBlind};

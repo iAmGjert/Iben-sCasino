@@ -100,10 +100,10 @@ class PokerGame extends React.Component {
     
   }
 
+  //get the top 10 prev poker games from the db
   async getHist () {
     try {
       const {data} = await axios.get('/routes/poker/poker/history');
-      // console.log(hist.data)
       const gameData = data.map(gameObj => {
         return {
           netEarnings: gameObj.netEarnings, 

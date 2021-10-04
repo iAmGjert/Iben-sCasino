@@ -15,28 +15,28 @@ Data.get('/users', (req, res) => {
 });
 
 Data.get('/users/leaderboard', (req, res) => {
-   User.findAll().then((results) => {
-   //  console.log('req:', req.body, 'results:', results);
+  User.findAll().then((results) => {
+    //  console.log('req:', req.body, 'results:', results);
   //  console.log(results);
-     res.status(200).send(results);
-   }).catch((err) => {
-     console.log('User Get Data:', err);
-     res.status(500);
-   });
- });
+    res.status(200).send(results);
+  }).catch((err) => {
+    console.log('User Get Data:', err);
+    res.status(500);
+  });
+});
 
 Data.get('/:user', (req, res) => {
-  const { user } = req.params
+  const { user } = req.params;
   User.findAll({ where: { name: user } })
-  .then(user => {
+    .then(user => {
     // console.log(user);
-    res.status(200).send(user);
-  })
-  .catch(err => {
-    console.log(err);
-    res.status(500);
-  })
-})
+      res.status(200).send(user);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500);
+    });
+});
 
 
 // does this need to be /google?
@@ -54,7 +54,7 @@ Data.post('/user', (req, res) => {
 
 
 Data.get('/friends/:id', (req, res) => {
-  const { id } = req.params
+  const { id } = req.params;
   // let userArr = [];
   Friends.findAll({ where: { UserId: id }}).then((results) => {
     
@@ -94,16 +94,16 @@ Data.post('/friends', (req, res) => {
 
 //delete a friend by id when the user is clicked on the following button to unfollow
 Data.delete('/friends/:id', (req, res) => {
-   const { id } = req.params;
+  const { id } = req.params;
   Friends.destroy({ where: { id: id }})
-  .then(() => {
-    res.sendStatus(201);
-  })
-  .catch(err => {
-    console.log(err);
-  })
+    .then(() => {
+      res.sendStatus(201);
+    })
+    .catch(err => {
+      console.log(err);
+    });
 
-})
+});
 
 
 Data.patch('/friends/:id', (req, res) => {

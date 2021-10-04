@@ -55,6 +55,7 @@
 [] Button to click for User Searchbar
 [] Display Searchbar for Users
 [] Check database to see if user exists, Add friend to friend database if it does not exist
+[] Leaderboard displays each users name and amount of money
 [] Delete broke friends from friend list and database
 
 
@@ -68,6 +69,9 @@
 
 
 <!-- Deployment w/ AWS -->
+[] make sure to do an .env file on the server isntance
+[] do not deploy out of Virginia if using aws or google oauth will not be okay with the redirect uri.  The links from the ohio aws servers work as of now though. 
+[] see steps for setup and dependencies for the walkthrough on how to get the app up and running
 
 
 

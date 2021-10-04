@@ -1,6 +1,7 @@
 import React from 'react';
 import cardBack from '../images/cardBack.png';
 
+//displays dealers cards.  front only is displayed at end of game, otherwise is backs of cards
 const DealerCards = ({dealerHand, gameOver}) => {
 
   return (

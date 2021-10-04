@@ -2,6 +2,8 @@ import React from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 
+//the finished component that is rendered when the game is over
+
 const FinishedStyles = styled.div`
   .buttons {
     height: 30px;
