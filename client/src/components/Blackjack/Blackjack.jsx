@@ -2,10 +2,41 @@ import React from 'react';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import axios from 'axios';
-
 import BlackjackDealer from './BlackjackDealer.jsx';
 import BlackjackUser from './BlackjackUser.jsx';
 import Finished from './Finished.jsx';
+import styled from 'styled-components';
+
+const BljStyles = styled.div`
+  .allContent {
+    margin: auto;
+    margin: 50px;
+  }
+  .buttons {
+    height: 50px;
+    width: 150px; 
+    background-color: purple;
+    border: 2px solid black;
+    border-radius: 5px;
+      :hover {
+        background-color: lavender;
+        cursor: pointer;
+      }
+  }
+  h3 {
+    background-color: purple;
+    color: gold;
+    border: 3px solid gold;
+    border-radius: 3px;
+  }
+  h4 {
+    background-color: gold;
+    color: purple;
+    border: 2px solid purple;
+    border-radius: 3px;
+  }
+  
+`;
 
 
 class Blackjack extends React.Component {
@@ -117,7 +148,7 @@ class Blackjack extends React.Component {
     }
   }
 
-  //this is going to need to become automatic
+  //dealer hits
   async dealerHitCard() { 
     const {dealerStand, dealerBust, dealer21} = this.state;
     if (dealerStand === false && dealerBust === false && dealer21 === false) {
@@ -201,26 +232,27 @@ class Blackjack extends React.Component {
     if (finished) {
       FinishedSpace = <Finished results={results} betOutcome={this.props.betOutcome} changeRender={this.props.changeRender}/>;
     }
+
+
+ 
   
-    const style = {
-      //backgroundColor: '#35654d',
-      // padding: '10px',
-      // textShadow: '2px 2px 5px #fff',
-      // textAlign: 'center',
-      // fontWeight: '900',
-      
-    };
+ 
 
     return (
-      <div style={style}>blackjack div
-        <div>cards</div>
-        <button style={{display: userBust || userStand ? 'none' : 'block'}} onClick={this.userHitCard}>user hit card</button>
-        <button style={{display: userStand || finished ? 'none' : 'block'}} onClick={this.userStand}>user stand</button>
-        <BlackjackDealer dealerHand={dealerHand} />
-        <BlackjackUser userHand={userHand} />
-        {FinishedSpace}
+      <BljStyles>
+        <div className='allContent'>
+          <BlackjackDealer dealerHand={dealerHand} gameOver={this.state.finished}/>
         
-      </div>
+          <h3>User Cards</h3>
+          <button style={{display: userBust || userStand ? 'none' : 'block'}} className='buttons' onClick={this.userHitCard}>Hit</button>
+          <button style={{display: userStand || finished ? 'none' : 'block'}} className="buttons" onClick={this.userStand}>Stand</button>
+       
+          <BlackjackUser userHand={userHand} />
+          {FinishedSpace}
+      
+        </div>
+        
+      </BljStyles>
     );
   }
 }
