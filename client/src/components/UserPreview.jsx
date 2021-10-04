@@ -9,7 +9,7 @@ const stylePreview = {
  padding: '10px',
  fontWeight: '900',
  position: 'relative',
-      left: '880px',
+      left: '850px',
 }
 const imgStyle = {
   border: '1px solid #ddd',
@@ -29,8 +29,7 @@ const UserPreview = ({userSearched, addFriend }) => {
     <div key={user.id}>
     <img className='user-picture' src={user.picture} style={imgStyle}/>
     <div style={stylePreview}>{user.name} <br />
-      
-      <span>Email: {user.email} </span> <FollowButton user={user}  addFriend={addFriend} /> 
+<span>Email: {user.email} <FollowButton user={user}  addFriend={addFriend} /> </span>
     </div>
     </div>
         )

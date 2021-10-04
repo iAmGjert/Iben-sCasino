@@ -25,12 +25,12 @@ const headerStyle = {
 const Search = ({ changeInput, searchUser, value }) => {
   
   return (
-    <div className='search-div' style={{backgroundColor: "#FFBE0F", marginTop: "-350px"}}>
+    <div className='search-div' style={{backgroundColor: "#FFBE0F", marginTop: "-250px"}}>
       <h5 style={headerStyle}>Look for a Player </h5>
    <input type="text" className="search-bar" style={style} placeholder="Find a Player..." value={value} onChange={(e) => changeInput(e.target.value)}/>
    <a className="waves-effect purple btn" style={buttonStyle} onClick={() => searchUser(value)}> Search </a>
   </div>
   )
 }
-
+ 
 export default Search;

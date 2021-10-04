@@ -11,7 +11,6 @@ constructor(props){
 }
 
 followUser(user) {
-  console.log(user);
   const {currentUser} = this.props;
 
   //should send a axios post request
