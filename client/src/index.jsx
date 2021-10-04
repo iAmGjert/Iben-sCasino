@@ -9,6 +9,7 @@ import NavBar from './components/NavBar.jsx';
 import Logout from './components/Logout.jsx';
 import Wrapper from './components/Wrapper.jsx';
 import UserContext from './contexts/UserContext.jsx';
+import Leaderboard from './components/Leaderboard.jsx'
 import PokerGame from './components/PokerGame.jsx';
 
 
@@ -32,6 +33,7 @@ ReactDOM.render(
         <Route exact path='/logout' component={Logout} />
         
         <Route exact path='/addFriends' component={AddFriends} />
+        <Route exact path='/Leaderboard' component={Leaderboard} />
       </main>
     </div>
   </Router>,

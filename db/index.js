@@ -37,10 +37,6 @@ const User = orm.define('User', {
     type: Sequelize.INTEGER,
     defaultValue: 1000
   },
-  status: {
-    type: Sequelize.STRING(255),
-    defaultValue: 'noRequest'
-  }
 
 });
 
@@ -51,6 +47,8 @@ const Friends = orm.define('Friends', {
   }
 });
 
+User.hasMany(Friends, { onDelete: 'CASCADE'});
+Friends.belongsTo(User, {onDelete: 'CASCADE'});
 //this is for the PokerGames table.  the userId points back to the user
 
 const PokerGames = orm.define('PokerGames', {
@@ -137,6 +135,48 @@ Friends.belongsTo(User);
 
 User.sync()
   .then(() => {
+  //       User.create(
+  //         {
+  //             sub: '37893',
+  //             name: 'Maason Smith',
+  //             picture: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvHH4XQ0CG0o5Msww62eqifaQ43TIxnBe3FQ&usqp=CAU',
+  //             email: 'smithM292@gmail.com',
+  //             money: 100,
+              
+  //         })
+  //         User.create({
+  //           sub: '38475',
+  //           name: 'Eli Ricks',
+  //           picture: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfUA-d1SWiTeLurM3CSzh5o9Gal6jj6uWiZA&usqp=CAU'  ,
+  //           email: 'eRicks195@gmail.com',
+  //           money: 60
+            
+  //       })
+  //       User.create({
+  //         sub: '29842',
+  //         name: 'John Emery',
+  //         picture: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR2e4s_Oo_WEggvY6bcvOOBCAF4zKTXrrcNlg&usqp=CAU',
+  //         email: 'johnJr215@gmail.com',
+  //         money: 30
+          
+  //     })
+  //     User.create({
+  //       sub: '34387',
+  //       name: 'Max Johnson',
+  //       picture: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_r4IV6pUdB3mmLy4hgWrwoJmSqqMIdDElcQ&usqp=CAU',
+  //       email: 'maxQB14@gmail.com',
+  //       money: 50
+        
+  //   })
+  //   User.create({
+  //     sub: '29845',
+  //     name: 'Avery Atkins',
+  //     picture: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTs2SVlmdrhn4NQpjj2OdPx1Rr1huqB5eXDuQ&usqp=CAU',
+  //     email: 'aatkins18@gmail.com',
+  //     money: 40
+      
+  // })
+        
     console.log('Connection has been established successfully.');
   })
   .catch((err) => {

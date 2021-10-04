@@ -3,17 +3,42 @@ const { Router } = require('express');
 const Data = Router(); //not sure what goes in here...
 
 // still developing sequelize database request structure
-Data.get('/user', (req, res) => {
- 
+Data.get('/users', (req, res) => {
+ let recentUsers;
   User.findAll().then((results) => {
   //  console.log('req:', req.body, 'results:', results);
-    res.status(200).send(results);
+  // console.log(results);
+      recentUsers = results.slice(results.length - 4, results.length - 1);
+    res.status(200).send(recentUsers);
   }).catch((err) => {
     console.log('User Get Data:', err);
     res.status(500);
   });
 });
 
+Data.get('/users/leaderboard', (req, res) => {
+   User.findAll().then((results) => {
+   //  console.log('req:', req.body, 'results:', results);
+  //  console.log(results);
+     res.status(200).send(results);
+   }).catch((err) => {
+     console.log('User Get Data:', err);
+     res.status(500);
+   });
+ });
+
+Data.get('/:user', (req, res) => {
+  const { user } = req.params
+  User.findAll({ where: { name: user } })
+  .then(user => {
+    // console.log(user);
+    res.status(200).send(user);
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(500);
+  })
+})
 
 
 // does this need to be /google?
@@ -30,10 +55,30 @@ Data.post('/user', (req, res) => {
 });
 
 
-Data.get('/friends', (req, res) => {
-  Friends.findAll().then((results) => {
-    // console.log(results);
-    res.sendStatus(200).send(results);
+Data.get('/friends/:id', (req, res) => {
+  const { id } = req.params
+  // let userArr = [];
+  Friends.findAll({ where: { UserId: id }}).then((results) => {
+    // User.findAll().then((data) => {
+    //   // console.log('HELLO:', data);
+    //   data.forEach(user => {
+    //     // console.log('HELLO:', user.name)
+    //   results.forEach(friend => {
+    //     if(user.name === friend.friends){
+    //     // console.log('HELLO:', user)
+    //     userArr.push(user);
+    //     // res.status(200).send([user]);
+    //     } else {
+    //       res.status(200);
+    //     }
+    //     console.log('HELLO', userArr);
+    //     // res.status(200).send(userArr);
+    //   })
+    //   res.status(200).send(userArr);
+        
+    //   })
+    res.status(200).send(results);
+    
   }).catch((err) => {
     console.log('Friends Get Data:', err);
     res.status(404);
@@ -53,8 +98,9 @@ Data.post('/friends', (req, res) => {
   
   User.findOne({ where: { id: currentUser.id } }).then(currentU => {
     // console.log(`DATA!!`, currentU)
+    // console.log('DATA!!', user)
     updateUser = currentU;
-    Friends.create(user)
+    Friends.create({ friends: user.name })
       .then((user) => {
    
         return updateUser.addFriends(user);
@@ -66,6 +112,20 @@ Data.post('/friends', (req, res) => {
       res.status(404);
     });
 });
+
+//delete a friend by id when the user is clicked on the following button to unfollow
+Data.delete('/friends/:id', (req, res) => {
+   const { id } = req.params;
+  Friends.destroy({ where: { id: id }})
+  .then(() => {
+    res.sendStatus(201);
+  })
+  .catch(err => {
+    console.log(err);
+  })
+
+})
+
 
 Data.patch('/friends/:id', (req, res) => {
   const { id } = req.params;
