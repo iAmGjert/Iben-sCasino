@@ -6,12 +6,18 @@ import Flop from './Flop.jsx';
 import UserCards from './UserCards.jsx';
 import DealerCards from './DealerCards.jsx';
 import MoneyOnTable from './MoneyOnTable.jsx';
-import Turn from './Turn.jsx';
-import River from './River.jsx';
-import { thistle } from 'color-name';
-import FlopHeader from './FlopHeader.jsx';
+import styled from 'styled-components';
 import Finished from './Finished.jsx';
-import { initial } from 'underscore-node';
+
+const PokerStyled = styled.div`
+  .wrapper{
+    display: flex;
+    flex-direction: row;
+  }
+  .finished {
+    margin: 20px;
+  }
+`;
 
 class Poker extends React.Component {
   constructor(props) {
@@ -28,7 +34,6 @@ class Poker extends React.Component {
       view: 'flop',
       userPile: 0,
       initialBuyIn: 0, //keeps trac of initial buy in to compare.  this variable not changed
-
       turn: false, //whne this turns true, 4th card put down
       river: false, //when this turns true, 5th card put dwon
       gameOver: false, //when this is true: the game is over
@@ -54,16 +59,11 @@ class Poker extends React.Component {
   async initialDeal() {
     try {
       const {bigBlind, buyIn} = this.props;
-
       const cards = await axios.get(`/routes/poker/poker/init/${buyIn}/${bigBlind}`);
-  
       return cards.data;
-
-
     } catch (err) {
       console.log(err);
     }
-
   }
 
 
@@ -89,7 +89,7 @@ class Poker extends React.Component {
         }, async () => {
           if (this.state.dealerMove === 'call' && this.state.userMove === 'call') {
             //if both call, then the next card is dealt
-            await setTimeout(() =>{ console.log('')}, 100); //pauses to make game a bit more like 2 ppl instead of computer
+            await setTimeout(() =>{ console.log(''); }, 100); //pauses to make game a bit more like 2 ppl instead of computer
             this.nextCard();
           }
         });
@@ -108,9 +108,6 @@ class Poker extends React.Component {
           turn: true
         });
 
-       
-
-        
       }
 
       if (bet.move === 'raise') {
@@ -125,10 +122,10 @@ class Poker extends React.Component {
           buyIn: this.state.buyIn - userBet
         });
 
+        await setTimeout(()=>console.log(''), 100);
+        this.dealerRoundBet();
+
       }
-     
-
-
     } catch (err) {
       console.log(err);
     }
@@ -176,14 +173,15 @@ class Poker extends React.Component {
       moneyOnTable: mOT.data,
       buyIn: this.state.buyIn - bigBlind
     });
- 
 
-
+    await this.dealerFirstBet();
   }
 
   /*for the dealers first bet.  dealer is small blind, user is bB, so to call, dealer needs to place amount of small blind.  can also raise or fold */
   async dealerFirstBet () {
     try {
+
+      console.log('dealer first bet');
 
       
       const {bigBlind, gameId} = this.state;
@@ -192,17 +190,19 @@ class Poker extends React.Component {
       //summon to back end, see best hand, decide if call/fold/raise
       const {data} = await axios.get(`/routes/poker/poker/dealerBet/${gameId}/${call}`);
 
-      console.log('DFB.DATA', data.bet, data.move);
-      //call -> 1 more small blind to match the big blind
-      
-      //--> raise 
-      //fold --> game over, moneyOnTable goes to users buy in
+    
 
       this.setState({
         dealerBet: data.bet,
         dealerMove: data.move,
         moneyOnTable: data.moneyOnTable
       });
+      //if dealer folds: game is over
+      if (data.move === 'fold') {
+        this.setState({
+          gameOver: true
+        });
+      }
 
     } catch (err) {
 
@@ -213,28 +213,41 @@ class Poker extends React.Component {
    * other bets: the dealer bets first after the card is turned, they can check(call), raise, or fold
    */
   async dealerRoundBet () {
+    console.log('dealer round bet');
 
     try {
 
       //summon to back end, see best hand, decide if call/fold/raise
-      const {bigBlind, gameId} = this.state;
+      const {bigBlind, gameId, userMove} = this.state;
       
       //send down what is needed to call
       const diff = this.state.userBet - this.state.dealerBet;
 
-
       const {data} = await axios.get(`/routes/poker/poker/dealerBet/${gameId}/${diff}`);
-
-      //call -> 1 more small blind to match the big blind
       
-      //--> raise 
-      //fold --> game over, moneyOnTable goes to users buy in
-
       this.setState({
         dealerBet: data.bet,
         dealerMove: data.move,
         moneyOnTable: this.state.moneyOnTable + data.bet
       });
+
+      //if dealer folds: game is over
+      if (data.move === 'fold') {
+        console.log('fold');
+        this.setState({
+          gameOver: true
+        }, () => console.log('fold', this.state));
+      }
+      //if the dealer is calling a users raise: 
+      if (data.move === 'call' && userMove === 'raise') {
+        //put the moves back
+        this.setState({
+          userMove: '',
+          dealerMove: ''
+        });
+        await setTimeout(() => { console.log('reset state move'); }, 300);
+        this.nextCard();
+      }
 
     } catch (err) {
 
@@ -245,32 +258,38 @@ class Poker extends React.Component {
   /**function to draw the next card for the communal pile.  resets the dealers and users moves */
   async nextCard() {
     try {
-      const {gameId, turn, gameOver} = this.state;
-      if (gameOver) { 
+      const {gameId, turn, gameOver, flopHand} = this.state;
+      if (gameOver ) { 
 
         return;
       }
-
-     
       await setTimeout(() => { console.log(''); }, 100); //pause for a bit more realism
-      const {data} = await axios.get(`/routes/poker/poker/addToFlop/${gameId}`);
-
-      //find the next view:
+      if (flopHand.length < 5) {
+        const {data} = await axios.get(`/routes/poker/poker/addToFlop/${gameId}`);
       
-      const nextView = this.state.view === 'flop' ? 'turn' :
-        this.state.view === 'turn' ? 'river' : 'fin';
-      //need to add this next card to the array of current cards in the flop
-      this.setState({
-        flopHand: this.state.flopHand.concat(data),
-        dealerMove: '',
-        userMove: '',
-        view: nextView,
-        dealerBet: 0,
-        userBet: 0
+      
+
+        //find the next view:
+      
+        const nextView = this.state.view === 'flop' ? 'turn' :
+          this.state.view === 'turn' ? 'river' : 'fin';
+        //need to add this next card to the array of current cards in the flop
+        this.setState({
+          flopHand: this.state.flopHand.concat(data),
+          dealerMove: '',
+          userMove: '',
+          view: nextView,
+          dealerBet: 0,
+          userBet: 0
        
-      },);
-
+        },);
+ 
+        this.dealerRoundBet();
       
+      } else {
+        this.setState({gameOver: true});
+      }
+
 
     } catch (err) {
       console.log(err);
@@ -337,14 +356,14 @@ class Poker extends React.Component {
   conditionalRender() {
     const {gameOver, winner, takeHome} = this.state;
     if (gameOver) {
-      return <Finished winner={winner} findWinner={this.findWinner} updateMoneyOnTable={this.updateMoneyOnTable} takeHome={takeHome} updateResults={this.updateResults} />;
+      return <Finished winner={winner} findWinner={this.findWinner} updateMoneyOnTable={this.updateMoneyOnTable} takeHome={takeHome} updateResults={this.updateResults} changeView={this.props.changeView} />;
 
     } 
   }
 
 
   render() {
-    const {dealerHand, flopHand, userHand, dealerBet, dealerMove, userBet, moneyOnTable, river, turn, buyIn} = this.state;
+    const {dealerHand, flopHand, userHand, dealerBet, dealerMove, userBet, moneyOnTable, river, turn, buyIn, gameOver} = this.state;
 
    
 
@@ -353,50 +372,67 @@ class Poker extends React.Component {
     
 
     return (
-      <div>poker {this.conditionalRender()}
-        <div>
-          <DealerCards dealerHand={dealerHand} />
-        </div> 
-        <div>
-          <Flop flopHand={flopHand} turn={turn} river={river} />
-        </div>
-        <div>
-          <UserCards userHand={userHand} />
-        </div>
-        <div>
-          <MoneyOnTable dealerBet={dealerBet} dealerMove={dealerMove} userBet={userBet} moneyOnTable={moneyOnTable} buyIn={buyIn} />
-        </div>
+      <PokerStyled >
+        <div className="wrapper"> 
+
+          <div className="cardsWrapper">
+
+            <div>
+              <DealerCards gameOver={gameOver} dealerHand={dealerHand} />
+            </div> 
+            <div>
+              <Flop flopHand={flopHand} turn={turn} river={river} />
+            </div>
+            <div>
+              <UserCards userHand={userHand} />
+            </div>
+          </div>
+          <div>
+
+            <div className="moneyWrapper">
+              <MoneyOnTable dealerBet={dealerBet} dealerMove={dealerMove} userBet={userBet} moneyOnTable={moneyOnTable} buyIn={buyIn} />
+            </div>
        
-        <div>
-          <button
-            onClick={() => {
-              this.userBet({move: 'call'});
-            }}
-          >call</button><b />
-          <button
-            onClick={() => {
-              this.userBet({move: 'fold'});
-            }}
-          >fold</button> <b />
-          <button
-            onClick={() => {
-              const {bigBlind, increment} = this.state;
-              this.setState({
-                increment: increment + bigBlind,
-                userBet: userBet + bigBlind
-              }, () =>{ 
+            <div>
+              <div className='btnsFinishedWrap'>
+                <div className="moveBtns">
+                  <button
+                    onClick={() => {
+                      this.userBet({move: 'call'});
+                    }}
+                  >call</button><b />
+                  <button
+                    onClick={() => {
+                      this.userBet({move: 'fold'});
+                    }}
+                  >fold</button> <b />
+                  <button
+                    onClick={() => {
+                      const {bigBlind, increment} = this.state;
+                      this.setState({
+                        increment: increment + bigBlind,
+                        userBet: userBet + bigBlind
+                      }, () =>{ 
             
-                this.userBet({move: 'raise'});
-              });
+                        this.userBet({move: 'raise'});
+                      });
               
-            }}
-          >raise</button>
+                    }}
+                  >raise</button>
+                </div>
+                <div className="finished">
+                  {this.conditionalRender()}
+                </div>
+
+              </div>
+           
        
-          <button onClick={this.dealerFirstBet}>dealerFirstBet</button>
-          <button onClick={this.dealerRoundBet}>dealerRoundBet</button>
+
+            </div>
+          </div>
+    
         </div>
-        
-      </div>
+      </PokerStyled>
     );
   }
 }

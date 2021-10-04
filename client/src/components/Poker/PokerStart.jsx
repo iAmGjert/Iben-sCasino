@@ -1,6 +1,23 @@
 import React, { useState } from 'react';
+import styled from 'styled-components';
 
-const PokerStart = ({changeView, setInitialMoney, userMoney}) => {
+const PokerStartStyled = styled.div`
+  .chip {
+    display: table-cell;
+    border: 2px solid black;
+    border-radius: 50%;
+    height: 140px;
+    width: 140px;
+    font-size: 30px;
+    color: white;
+    background-color: #2e2b17;
+    text-align: center;
+    vertical-align: middle;
+
+  }
+`;
+
+const PokerStart = ({changeView, setInitialMoney, userMoney, userName}) => {
   const [monies, setMonies] = useState(0);
 
   const [buyIn, setBuyIn] = useState(50);
@@ -22,26 +39,39 @@ const PokerStart = ({changeView, setInitialMoney, userMoney}) => {
     bigBlind && setBigBlind(bigBlind - 10);
   };
 
-
-  return (
-    <div>
-      <p> {buyIn}
-        <button onClick={raiseBuyIn}>increase buy in</button> 
-        <button onClick={decreaseBuyIn}>decrease buy in</button> 
-
-      </p>
-      <p> {bigBlind}
-        <button onClick={raiseBigBlind}>increase big blind</button>
-        <button onClick={decreaseBigBlind}>decrease big blind</button> 
-      </p>
-      <p>
+  const conditionalButton = () => {
+    console.log('uername ', userName);
+    if (userName) {
+      return (
         <button 
           onClick={() => {
             setInitialMoney(buyIn, bigBlind);
             changeView('poker');
           }}>play poker!</button>
-      </p>
-    </div>
+      );
+    } else {
+      return <h3>please log in!</h3>;
+    }
+  };
+
+
+  return (
+    <PokerStartStyled>
+      <div>
+        <div className="chip">{buyIn}</div>
+        <button onClick={raiseBuyIn}>increase buy in</button> 
+        <button onClick={decreaseBuyIn}>decrease buy in</button> 
+
+      </div>
+      <div> 
+        <div className="chip">{bigBlind}</div>
+        <button onClick={raiseBigBlind}>increase big blind</button>
+        <button onClick={decreaseBigBlind}>decrease big blind</button> 
+      </div>
+      <div>
+        {conditionalButton()}
+      </div>
+    </PokerStartStyled>
   );
 };
 

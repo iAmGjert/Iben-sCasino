@@ -4,6 +4,20 @@ import 'regenerator-runtime/runtime';
 import axios from 'axios';
 import Blackjack from './Blackjack/Blackjack.jsx';
 import BlackjackStart from './Blackjack/BlackjackStart.jsx';
+import styled from 'styled-components';
+
+const StyledGame = styled.div`
+   h1 {
+    color: gold;
+    background-color: purple;
+    border: 3px solid black;
+    border-radius: 3px;
+    text-align: center;
+    width: 900px;
+    margin: auto;
+    padding: 15px;
+  }
+`;
 
 
 
@@ -95,10 +109,10 @@ class Game extends React.Component {
 
   render() {
     return (
-      <div>
+      <StyledGame>
         <h1>{this.state.name}</h1>
         {this.conditionalRender()}
-      </div>
+      </StyledGame>
     );
   }
 

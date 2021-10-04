@@ -1,15 +1,22 @@
 import React from 'react';
 import axios from 'axios';
+import cardBack from '../images/cardBack.png';
 
+//component holds the dealer cards.  only first card is face up, after game finishes all are turned up
 const BlackjackDealer = (props) => {
+  const {dealerHand, gameOver} = props;
 
-  //console.log('bjd props', props);
-  const {dealerHand} = props;
-  // console.log('dh', dealerHand);
-  const hand = dealerHand.map(cardObj => <img key={cardObj.code} height={100} src={cardObj.image}/>);
+  const hand = dealerHand.map((cardObj, i) => <img 
+    key={cardObj.code} 
+    height={170} 
+    src={i === 0 ? cardObj.image : 
+      gameOver ? cardObj.image : cardBack}/>);
   return (
-    <div>blackjack dealer
+    <div>
+      <h3>Dealer Cards</h3>
       {hand}
+
+   
     </div>
   );
 };
