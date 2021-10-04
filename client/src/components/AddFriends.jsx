@@ -108,7 +108,7 @@ class AddFriends extends Component {
   }
 
 
-
+ 
   
   render() {
     const { users, currentUser, value, userSearched, friends } = this.state;
