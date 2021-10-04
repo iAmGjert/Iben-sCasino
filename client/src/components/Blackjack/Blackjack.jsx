@@ -2,10 +2,29 @@ import React from 'react';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import axios from 'axios';
-
 import BlackjackDealer from './BlackjackDealer.jsx';
 import BlackjackUser from './BlackjackUser.jsx';
 import Finished from './Finished.jsx';
+import styled from 'styled-components';
+
+const BljStyles = styled.div`
+  .allContent {
+    margin: auto;
+    margin: 50px;
+  }
+  .buttons {
+    height: 50px;
+    width: 150px; 
+    background-color: purple;
+    border: 2px solid black;
+    border-radius: 5px;
+      :hover {
+        background-color: lavender;
+        cursor: pointer;
+      }
+  }
+  
+`;
 
 
 class Blackjack extends React.Component {
@@ -156,6 +175,9 @@ class Blackjack extends React.Component {
     let FinishedSpace; //this will conditionally render <FinishedSpace /> when the game finishes
 
     //conditionals for properties of finished games to be passed down to Finished component
+
+  
+
     const results = {};
     if (user21 && dealer21) {
       results.outcome = 'blackjack for both'; 
@@ -163,30 +185,45 @@ class Blackjack extends React.Component {
       results.betOutcome = betOutcome;
       results.userScore = userPoints.bestScore;
       results.dealerScore = dealerPoints.bestScore;
+      this.setState({
+        finished: true //this needs to be set still to flip dealer cards
+      });
     } else if (user21) {
       results.winner = 'user'; 
       results.betOutcome = betOutcome;
       results.userScore = userPoints.bestScore;
       results.dealerScore = dealerPoints.bestScore;
       results.outcome = 'blackjack for user';
+      this.setState({
+        finished: true //this needs to be set still to flip dealer cards
+      });
     } else if (dealer21) {
       results.winner = 'dealer'; 
       results.betOutcome = betOutcome;
       results.userScore = userPoints.bestScore; 
       results.dealerScore = dealerPoints.bestScore;
       results.outcome = 'blackjack for dealer';
+      this.setState({
+        finished: true //this needs to be set still to flip dealer cards
+      });
     } else if (userBust) {
       results.winner = 'dealer'; 
       results.betOutcome = betOutcome;
       results.userScore = userPoints.bestScore;
       results.dealerScore = dealerPoints.bestScore;
       results.outcome = 'user busts';
+      this.setState({
+        finished: true //this needs to be set still to flip dealer cards
+      });
     } else if (dealerBust) {
       results.winner = 'user'; 
       results.betOutcome = betOutcome;
       results.userScore = userPoints.bestScore; 
       results.dealerScore = dealerPoints.bestScore;
       results.outcome = 'dealer busts';
+      this.setState({
+        finished: true //this needs to be set still to flip dealer cards
+      });
     } else if (finished) {
       results.winner = (
         userPoints.bestScore > dealerPoints.bestScore ? 'user' :
@@ -201,26 +238,27 @@ class Blackjack extends React.Component {
     if (finished) {
       FinishedSpace = <Finished results={results} betOutcome={this.props.betOutcome} changeRender={this.props.changeRender}/>;
     }
+
+
+ 
   
-    const style = {
-      //backgroundColor: '#35654d',
-      // padding: '10px',
-      // textShadow: '2px 2px 5px #fff',
-      // textAlign: 'center',
-      // fontWeight: '900',
-      
-    };
+ 
 
     return (
-      <div style={style}>blackjack div
-        <div>cards</div>
-        <button style={{display: userBust || userStand ? 'none' : 'block'}} onClick={this.userHitCard}>user hit card</button>
-        <button style={{display: userStand || finished ? 'none' : 'block'}} onClick={this.userStand}>user stand</button>
-        <BlackjackDealer dealerHand={dealerHand} />
-        <BlackjackUser userHand={userHand} />
-        {FinishedSpace}
+      <BljStyles>
+        <div className='allContent'>
+          <BlackjackDealer dealerHand={dealerHand} gameOver={this.state.finished}/>
         
-      </div>
+          {FinishedSpace}
+          <button style={{display: userBust || userStand ? 'none' : 'block'}} className='buttons' onClick={this.userHitCard}>Hit</button>
+          <button style={{display: userStand || finished ? 'none' : 'block'}} className="buttons" onClick={this.userStand}>Stand</button>
+       
+          <BlackjackUser userHand={userHand} />
+          {FinishedSpace}
+      
+        </div>
+        
+      </BljStyles>
     );
   }
 }

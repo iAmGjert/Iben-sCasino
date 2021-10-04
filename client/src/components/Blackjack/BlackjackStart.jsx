@@ -1,6 +1,56 @@
 import React from 'react';
 import { render } from 'react-dom';
 import axios from 'axios';
+import styled from 'styled-components';
+
+
+const BljStartStyles = styled.div`
+ 
+  .buttons {
+    font-size: 20px;
+    margin: auto;
+    margin: 10px;
+    height: 150px;
+    width: 150px; 
+    background-color: purple;
+    border: 2px solid black;
+    border-radius: 50%;
+      :hover {
+        background-color: lavender;
+        cursor: pointer;
+      }
+  }
+  .chipWrapper {
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+    margin: 10px;
+    justify-content: center;
+  }
+  .chip {
+    border-radius: 50%;
+    height: 150px;
+    width: 150px;
+    background-color: #3a3416;
+    font-size: 40px;
+    color: white;
+    margin: 10px;
+    
+  }
+  .betting {
+    font-size: 30px;
+    background-color: gold;
+    color: purple;
+    border: 5px dashed purple;
+    border-radius: 5px;
+    width: 700px;
+    margin: auto;
+  }
+  .placeBet {
+    margin: 40px;
+    margin: auto;
+  }
+`;
 
 class BlackjackStart extends React.Component {
   
@@ -21,7 +71,6 @@ class BlackjackStart extends React.Component {
    * O: n/a but adjusts available money and changes the current bet
    */
   increaseBet(x) {
-    //console.log('incbet', x, this.props.monies)
     if (x < this.props.monies) {
       this.setState({
         available: this.props.monies - x,
@@ -55,25 +104,34 @@ class BlackjackStart extends React.Component {
     } else {
       return (
         <div>
-          <button 
-            style={{display: 5 < monies ? 'block' : 'none'}} 
-            value={5} 
-            onClick={()=>this.increaseBet(5)}
-          >5</button>
-          <button 
-            style={{display: 10 < monies ? 'block' : 'none'}} 
-            value={10}
-            onClick={()=>this.increaseBet(10)}
-          >10</button>
-          <button 
-            style={{display: 100 < available ? 'block' : 'none'}} 
-            onClick={()=>this.increaseBet(100)}
-            value={100}
-          >100</button>
-          <button bet={currentBet} onClick={()=> {
-            changeRender('blackjack');
-            placeBet(currentBet);
-          }}>place bet </button>
+          <div className="chipWrapper">
+            <button className="buttons chip"
+              style={{display: 5 < monies ? 'block' : 'none'}} 
+              value={5} 
+              onClick={()=>this.increaseBet(5)}
+            >5</button>
+            <button 
+              className="buttons chip"
+              style={{display: 10 < monies ? 'block' : 'none'}} 
+              value={10}
+              onClick={()=>this.increaseBet(10)}
+            >10</button>
+          
+            <button 
+              className="buttons chip"
+              style={{display: 100 < available ? 'block' : 'none'}} 
+              onClick={()=>this.increaseBet(100)}
+              value={100}
+            >100</button>
+            <button 
+              className="buttons"
+     
+              bet={currentBet} onClick={()=> {
+                changeRender('blackjack');
+                placeBet(currentBet);
+            
+              }}>place bet </button>
+          </div>
         </div>
       );
     }
@@ -92,12 +150,15 @@ class BlackjackStart extends React.Component {
     
     const { available, currentBet} = this.state;
     return (
-      <div>
-        <p>current bet: {currentBet}</p>
-        <p>available monies left: {available}</p>
+      <BljStartStyles>
+        <div className="betting">
+          <p>current bet: {currentBet}</p>
+          <p>available monies left: {available}</p>
+        </div>
+        
         
         {this.conditionalRender()}
-      </div>
+      </BljStartStyles>
     );
   }
  

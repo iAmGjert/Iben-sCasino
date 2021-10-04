@@ -89,7 +89,7 @@ class Poker extends React.Component {
         }, async () => {
           if (this.state.dealerMove === 'call' && this.state.userMove === 'call') {
             //if both call, then the next card is dealt
-            await setTimeout(() =>{ console.log('')}, 100); //pauses to make game a bit more like 2 ppl instead of computer
+            await setTimeout(() =>{ console.log(''); }, 100); //pauses to make game a bit more like 2 ppl instead of computer
             this.nextCard();
           }
         });
