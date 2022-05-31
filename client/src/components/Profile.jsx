@@ -2,6 +2,7 @@ import React from 'react';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import axios from 'axios';
+import Rewards from './Rewards.jsx';
 
 class Profile extends React.Component {
   
@@ -11,6 +12,20 @@ class Profile extends React.Component {
       user: [] 
     };
     this.getUser = this.getUser.bind(this);
+  }
+
+  updateUser = () => {
+    axios.put(`/routes/userDatabase/users/${this.state.user[0][0]}`, {
+      users: {
+        money: this.state.user[0][5] + 200
+      }
+    })
+    .then(() => {
+      console.log('put worked');
+    })
+    .catch((err) => {
+      console.error(err);
+    })
   }
 
 
@@ -27,7 +42,7 @@ class Profile extends React.Component {
     this.setState({
       user: [Object.values(userData)] 
     });
-    
+    this.updateUser();
   }
 
   render() {
@@ -67,6 +82,7 @@ class Profile extends React.Component {
                 <h3>{info[4]}</h3>
                 <h4>Baller Status: {info[5] > 75 ? 'Baller' : info[5] <= 75 && info[5] >= 35 ? 'Bum' : 'Broke!!!'}</h4>
                 <h3>$: {info[5]}</h3>
+                <h2><Rewards user={this.state.user} /></h2>
               </div>
             );
           })

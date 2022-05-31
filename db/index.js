@@ -1,7 +1,8 @@
 const sequelize = require('sequelize');
 const { Sequelize } = require('sequelize');
-const orm = new Sequelize('poker_database', 'root', '', {
-  host: 'localhost',
+const orm = new Sequelize('poker_database', 'root', 'rootroot', {
+  host: 'legacydb.cwaf3uqxq8lt.us-west-2.rds.amazonaws.com',
+  port:'3306',
   dialect: 'mysql',
 });
 
