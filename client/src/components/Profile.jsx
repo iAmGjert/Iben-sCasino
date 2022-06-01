@@ -82,7 +82,7 @@ class Profile extends React.Component {
                 <h3>{info[4]}</h3>
                 <h4>Baller Status: {info[5] > 75 ? 'Baller' : info[5] <= 75 && info[5] >= 35 ? 'Bum' : 'Broke!!!'}</h4>
                 <h3>$: {info[5]}</h3>
-                <h2><Rewards user={this.state.user} /></h2>
+                <div><Rewards user={this.state.user} /></div>
               </div>
             );
           })

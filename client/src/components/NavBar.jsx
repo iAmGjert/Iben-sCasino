@@ -17,6 +17,7 @@ const NavBar = (props) => {
           <div className="col s2.5"><Link to='/addFriends'>Interacting with Players</Link></div>
           <div className="col s2.5"><Link to='/poker'>Poker</Link></div>
           <div className="col s2.5"><Link to='/logout'>Logout</Link></div>
+          <div className='col s2.5'><Link to='/roulette'>Roulette</Link></div>
         </div>
           
           

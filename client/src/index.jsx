@@ -11,6 +11,7 @@ import Wrapper from './components/Wrapper.jsx';
 import UserContext from './contexts/UserContext.jsx';
 import Leaderboard from './components/Leaderboard.jsx';
 import PokerGame from './components/PokerGame.jsx';
+import RouletteGame from './components/RouletteGame.jsx';
 
 
 
@@ -18,7 +19,6 @@ import PokerGame from './components/PokerGame.jsx';
 ReactDOM.render(
   <Router>
     <div>
-      
     
 
       <main>
@@ -30,10 +30,11 @@ ReactDOM.render(
         
         <Route exact path='/login' component={Login} />
         <Route exact path='/blackjack' component={Game} />
-        <Route exact path='/logout' component={Logout} />
         
         <Route exact path='/addFriends' component={AddFriends} />
         <Route exact path='/Leaderboard' component={Leaderboard} />
+        <Route exact path='/roulette' component={RouletteGame} />
+        
       </main>
     </div>
   </Router>,
