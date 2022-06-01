@@ -4,51 +4,42 @@ const orm = new Sequelize('poker_database', 'root', '', {
   host: 'localhost',
   dialect: 'mysql',
 });
-
 const User = orm.define('User', {
   id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
-    autoIncrement: true
+    autoIncrement: true,
   },
   sub: {
-    type: 
-    Sequelize.STRING,
+    type: Sequelize.STRING,
     primaryKey: true,
-    
-  
-  }, 
+  },
   name: {
-    type: 
-    Sequelize.STRING(255),
+    type: Sequelize.STRING(255),
     allowNull: false,
   },
   picture: {
-    type: 
-    Sequelize.STRING(255),
+    type: Sequelize.STRING(255),
     allowNull: false,
   },
   email: {
-    type: 
-    Sequelize.STRING(255),
+    type: Sequelize.STRING(255),
     allowNull: false,
   },
   money: {
     type: Sequelize.INTEGER,
-    defaultValue: 1000
+    defaultValue: 1000,
   },
-
 });
 
-const Friends = orm.define('Friends', {
-  friends: {
-    type: 
-    Sequelize.STRING(255),
-  }
-});
-
-User.hasMany(Friends, { onDelete: 'CASCADE'});
-Friends.belongsTo(User, {onDelete: 'CASCADE'});
+// const Friends = orm.define('Friends', {
+//   friends: {
+//     type: Sequelize.STRING(255),
+//   },
+// });
+//foreignKey: "userId"
+// User.hasMany(Friends, { onDelete: 'CASCADE' });
+// Friends.belongsTo(User, { onDelete: 'CASCADE' });
 //this is for the PokerGames table.  the userId points back to the user
 
 const PokerGames = orm.define('PokerGames', {
@@ -58,24 +49,23 @@ const PokerGames = orm.define('PokerGames', {
     primaryKey: true,
   },
   deckId: {
-    type: Sequelize.STRING(255)
+    type: Sequelize.STRING(255),
   },
   userId: {
     type: Sequelize.STRING(255),
-    
   },
   buyIn: {
     type: Sequelize.INTEGER,
-    defaultValue: 50
+    defaultValue: 50,
   },
 
   moneyOnTable: {
     type: Sequelize.INTEGER,
-    defaultValue: 0
+    defaultValue: 0,
   },
   bigBlind: {
     type: Sequelize.INTEGER,
-    defaultValue: 10
+    defaultValue: 10,
   },
 
   hand: {
@@ -85,10 +75,8 @@ const PokerGames = orm.define('PokerGames', {
       return this.getDataValue('hand').split(',');
     },
     set(val) {
-      
       return this.setDataValue('hand', val.join(','));
-    }
-
+    },
   },
   dealerHand: {
     type: Sequelize.STRING,
@@ -97,9 +85,8 @@ const PokerGames = orm.define('PokerGames', {
       return this.getDataValue('dealerHand').split(',');
     },
     set(val) {
-      
       return this.setDataValue('dealerHand', val.join(','));
-    }
+    },
   },
   flop: {
     type: Sequelize.STRING,
@@ -108,60 +95,117 @@ const PokerGames = orm.define('PokerGames', {
       return this.getDataValue('flop').split(',');
     },
     set(val) {
-     
       return this.setDataValue('flop', val.join(','));
-    }
+    },
   },
   takeHome: {
     type: Sequelize.INTEGER,
-    defaultValue: 0
+    defaultValue: 0,
   },
   netEarnings: {
     type: Sequelize.INTEGER,
-    defaultValue: 0
-  }
-
+    defaultValue: 0,
+  },
 });
 
-User.hasMany(PokerGames, {foreignKey: {
-  name: 'userId'
-}});
+User.hasMany(PokerGames, {
+  foreignKey: {
+    name: 'userId',
+  },
+});
 
-User.hasMany(Friends);
-Friends.belongsTo(User);
-
-
+// User.hasMany(Friends);
+// Friends.belongsTo(User);
+User.belongsToMany(User, {
+  through: 'friendList',
+  as: 'Friends',
+});
 // Somehow use this to drop the database
 
-User.sync()
+// User.sync()
+// .then(() => {
+//   console.log('Connection has been established successfully.');
+// })
+// .catch((err) => {
+//   console.error('Unable to connect to the database:', err);
+// });
+// Friends.sync()
+//   .then(() => {
+//     console.log('Connection has been established successfully.');
+//   })
+//   .catch((err) => {
+//     console.error('Unable to connect to the database:', err);
+//   });
+
+// PokerGames.sync()
+//   .then(() => {
+//     console.log('PokerGames.Sync');
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
+
+// name: {
+//   type: Sequelize.STRING(255),
+//   allowNull: false,
+// },
+// picture: {
+//   type: Sequelize.STRING(255),
+//   allowNull: false,
+// },
+// email: {
+//   type: Sequelize.STRING(255),
+//   allowNull: false,
+// },
+
+// User.belongsToMany(User, {
+//   as: 'Friends',
+//   foreignKey: 'FriendId',
+//   through: 'friends',
+// });
+
+// User.bulkCreate([
+//   {
+//     sub: 'ad453aewqesd43asd',
+//     name: 'bam',
+//     email: 'dadaPOODd@gmail.com',
+//     picture: 'das.com',
+//   },
+//   {
+//     sub: 'ad4aadsd43asd',
+//     name: 'Henry',
+//     email: 'dqed@gmail.com',
+//     picture: 'ddsdsat.com',
+//   },
+//   {
+//     sub: 'ad4dadsad3asdqq43asd',
+//     name: 'Ale',
+//     email: 'dasadadsad@gmail.com',
+//     picture: 'ddqqet.com',
+//   },
+//   {
+//     sub: 'ad4qeq31asd',
+//     name: 'Steve',
+//     email: 'dadaqqqq655d@gmail.com',
+//     picture: 'ddsasadas423dasdqwt.com',
+//   },
+//   {
+//     sub: 'ad453asd43asd',
+//     name: 'John',
+//     email: 'dadadad@gmail.com',
+//     picture: 'ddsasadasdasdqwt.com',
+//   },
+// ]);
+
+orm
+  .sync()
   .then(() => {
     console.log('Connection has been established successfully.');
   })
   .catch((err) => {
     console.error('Unable to connect to the database:', err);
   });
-
-
-Friends.sync()
-  .then(() => {
-    console.log('Connection has been established successfully.');
-  })
-  .catch((err) => {
-    console.error('Unable to connect to the database:', err);
-  });
-
-PokerGames.sync()
-  .then(() => {
-    console.log('PokerGames.Sync');
-  })
-  .catch((err) => {
-    console.log(err);
-  });
-
-
 
 exports.User = User;
-exports.Friends = Friends;
+// exports.Friends = Friends;
 exports.PokerGames = PokerGames;
-
-
