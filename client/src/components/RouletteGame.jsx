@@ -2,9 +2,12 @@ import React, {useState, useEffect} from 'react';
 import RouletteWheel from './Roulette/RouletteWheel.jsx';
 import RouletteTable from './Roulette/RouletteTable.jsx';
 import axios from 'axios';
+import { Button } from '@mui/material';
+import { Redirect } from 'react-router-dom';
 
 
 const RouletteGame = () => {
+  //const redirect = Redirect();
   console.log('Roulette Game');
   const [user, setUser] = useState(null);
   useEffect(()=>{
@@ -24,8 +27,8 @@ const RouletteGame = () => {
       <span>
         {
           user ?
-            <div>User exists</div> :
-            <div>User does not exist</div>
+            <span><RouletteWheel /><RouletteTable/><Button/></span> :
+            <span>Please <Button href='/login'>Login</Button> to play.</span>
         }
       </span>
     </div>
