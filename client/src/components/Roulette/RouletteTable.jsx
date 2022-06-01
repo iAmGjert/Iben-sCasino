@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
-const RouletteWheel = () => {
+const RouletteTable = () => {
   return (
     <div>
-      Roulette Wheel
+      Roulette Table
     </div>
   );
 };
 
-export default RouletteWheel;
+export default RouletteTable;
