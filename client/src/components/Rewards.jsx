@@ -1,16 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
-import RewardsPage from './RewardsPage.jsx';
-
-const Rewards = ({ user }) => {
 
 
+const Rewards = ({ initUser }) => {
+
+  const [user, setUser] = useState(initUser)
+
+  const getProfile = () => {
+    axios.get('/routes/profile/user')
+      .then(user => {
+        setUser(user.data)
+      })
+      .catch((err => console.log('getprof err', err)));
+  }
 
   const updateUser = () => {
-    axios.put(`/routes/userDatabase/users/${user[0][0]}`, {
+    axios.put(`/routes/userDatabase/users/${initUser[0]}`, {
       users: {
-        money: user[0][5] + 200
+        money: initUser[5] + 200
       }
     })
     .then(() => {
@@ -22,31 +30,27 @@ const Rewards = ({ user }) => {
   }
 
   // useEffect(() => {
-    
   //   updateUser();
+  //   getProfile();
   // }, []);
 
 console.log(user);
+
 
   return (
     <h3>
       <div>
         {
-          user[5] === 9600 ? <Link to='/rewards'><button className='rewardButton'>New Reward!</button></Link> : ''
+          user.money === 9600 ? <Link to='/rewards'><button className='rewardButton'>New Reward!</button></Link> : ''
         }
         </div>
       <div>Welcome back!</div>
       <div>As a thank you, $200 has been added to your account!</div>
       <div>
         {
-          user[5] > 9600 ? <Link to='/rewards'><button className='rewardButton'>Check Rewards</button></Link> : ''
+          user.money > 9600 ? <Link to='/rewards'><button className='rewardButton'>Check Rewards</button></Link> : ''
         }
       </div>
-      <Router>
-        <main>
-          <Route path='/rewards' element={<RewardsPage user={user} />} />
-        </main>
-      </Router>
     </h3>
   )
 }

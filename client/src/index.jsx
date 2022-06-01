@@ -25,10 +25,9 @@ ReactDOM.render(
       <main>
        
         <NavBar />
-        <Route path='/rewards' element={<RewardsPage />} />
+        <Route exact path='/rewards' component={RewardsPage} />
         <Route exact path='/poker' component={PokerGame} />
         <Route exact path='/profile' component={Profile} />
-        <Route exact path='/logout' component={Logout} />
         
         <Route exact path='/login' component={Login} />
         <Route exact path='/blackjack' component={Game} />
