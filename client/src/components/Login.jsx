@@ -12,6 +12,7 @@ class Login extends React.Component {
     };
   }
 
+
   componentDidMount() {
     
     axios.get('/routes/clientId')
@@ -49,7 +50,7 @@ class Login extends React.Component {
         <div className="col s12 m6 offset-m3 left-align">
           <a className="oauth-container btn darken-4 white black-text" href='/google' style={{textTransform: 'none'}}>
             <div className="left">
-              <img width="20px" style={inlineStyle} alt="Google sign-in" 
+              <img width="20px" style={inlineStyle} alt="Google sign-in"
                 src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" />
             </div>
         Login with Google
