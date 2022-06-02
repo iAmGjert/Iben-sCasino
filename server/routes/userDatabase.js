@@ -5,7 +5,8 @@ const Data = Router(); //not sure what goes in here...
 // still developing sequelize database request structure
 Data.get('/users', (req, res) => {
   //  let recentUsers;
-  User.findAll({ limit: 5, order: [['id', 'DESC']] })
+  // How it was before iben change* inside of findAll{ limit: 5, order: [['id', 'DESC']] }
+  User.findAll()
     .then((results) => {
       //  console.log('req:', req.body, 'results:', results);
       res.status(200).send(results);
@@ -16,21 +17,19 @@ Data.get('/users', (req, res) => {
     });
 });
 
-
 Data.put('/users/:id', (req, res) => {
   const { id } = req.params;
   const { users } = req.body;
 
-  User.update(users, { where: { id: id }})
+  User.update(users, { where: { id: id } })
     .then(() => {
       res.sendStatus(201);
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
       res.status(404);
     });
 });
-
 
 Data.get('/users/leaderboard', (req, res) => {
   User.findAll()

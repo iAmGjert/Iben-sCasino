@@ -1,9 +1,15 @@
 const sequelize = require('sequelize');
 const { Sequelize } = require('sequelize');
-const orm = new Sequelize('poker_database', 'root', '', {
-  host: 'localhost',
-  dialect: 'mysql',
-});
+const orm = new Sequelize(
+  'poker_database',
+  process.env.DB_USERNAME,
+  process.env.DB_PASSWORD,
+  {
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    dialect: 'mysql',
+  }
+);
 const User = orm.define('User', {
   id: {
     type: Sequelize.INTEGER,

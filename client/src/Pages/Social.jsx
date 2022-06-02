@@ -95,6 +95,7 @@ const Social = () => {
     };
     const getUsers = () => {
       axios.get('/routes/userDatabase/users').then((users) => {
+        console.log(users);
         setUsers(users.data);
       });
     };
@@ -129,8 +130,8 @@ const Social = () => {
           <div className='friendsListWrapper'>
             <div className='friendList'>
               <h6 style={{ fontWeight: 'bold' }}>Friends</h6>
-              {friends ? (
-                friends.map((f) => {
+              {friends?.length !== 0 ? (
+                friends?.map((f) => {
                   return (
                     <Conversation
                       user={f}
@@ -150,18 +151,15 @@ const Social = () => {
 
               {friends &&
                 users?.map((u) => {
-                  for (let i = 0; i < friends.length; i++) {
-                    if (friends[i].id !== u.id) {
-                      if (u.id !== currentUser?.id) {
-                        return (
-                          <PossibleFriend
-                            user={u}
-                            key={u.sub}
-                            currentUser={currentUser}
-                          />
-                        );
-                      }
-                    }
+                  const isFriend = friends.every((f) => f.id !== u.id);
+                  if (u.id !== currentUser?.id && isFriend) {
+                    return (
+                      <PossibleFriend
+                        user={u}
+                        key={u.sub}
+                        currentUser={currentUser}
+                      />
+                    );
                   }
                 })}
             </div>

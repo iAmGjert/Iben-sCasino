@@ -12,6 +12,7 @@ import UserContext from './contexts/UserContext.jsx';
 import Leaderboard from './components/Leaderboard.jsx';
 import PokerGame from './components/PokerGame.jsx';
 import Social from './Pages/Social.jsx';
+import RouletteGame from './components/RouletteGame.jsx';
 import RewardsPage from './components/RewardsPage.jsx';
 
 ReactDOM.render(
@@ -26,6 +27,7 @@ ReactDOM.render(
     <Route exact path='/Leaderboard' component={Leaderboard} />
     <Route exact path='/social' component={Social} />
     <Route exact path='/rewards' component={RewardsPage} />
+    <Route exact path='/roulette' component={RouletteGame} />
   </Router>,
   document.getElementById('app')
 );
