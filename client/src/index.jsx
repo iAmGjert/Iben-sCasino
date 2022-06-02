@@ -11,6 +11,7 @@ import Wrapper from './components/Wrapper.jsx';
 import UserContext from './contexts/UserContext.jsx';
 import Leaderboard from './components/Leaderboard.jsx';
 import PokerGame from './components/PokerGame.jsx';
+import RewardsPage from './components/RewardsPage.jsx';
 
 
 
@@ -24,9 +25,9 @@ ReactDOM.render(
       <main>
        
         <NavBar />
+        <Route exact path='/rewards' component={RewardsPage} />
         <Route exact path='/poker' component={PokerGame} />
         <Route exact path='/profile' component={Profile} />
-        <Route exact path='/logout' component={Logout} />
         
         <Route exact path='/login' component={Login} />
         <Route exact path='/blackjack' component={Game} />
