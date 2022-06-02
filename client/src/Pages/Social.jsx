@@ -91,8 +91,6 @@ const Social = () => {
   useEffect(() => {
     const getUser = async () => {
       const { data } = await axios.get('/routes/profile/user');
-      // console.log(user);
-      // user = user.data;
       setCurrentUser(data);
     };
     const getUsers = () => {

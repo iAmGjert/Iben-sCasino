@@ -43,7 +43,6 @@ const PossibleFriend = ({ user, currentUser }) => {
   const [showComp, setShowComp] = useState(true);
 
   const addFriend = () => {
-    // send a post request to the server to add a friend to a user;
     axios.post(`/routes/userDatabase/friends/${currentUser.id}/${user.id}`);
     console.log('click');
     setShowComp(false);

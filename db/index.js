@@ -32,16 +32,6 @@ const User = orm.define('User', {
   },
 });
 
-// const Friends = orm.define('Friends', {
-//   friends: {
-//     type: Sequelize.STRING(255),
-//   },
-// });
-//foreignKey: "userId"
-// User.hasMany(Friends, { onDelete: 'CASCADE' });
-// Friends.belongsTo(User, { onDelete: 'CASCADE' });
-//this is for the PokerGames table.  the userId points back to the user
-
 const PokerGames = orm.define('PokerGames', {
   id: {
     type: Sequelize.INTEGER,
@@ -114,55 +104,10 @@ User.hasMany(PokerGames, {
   },
 });
 
-// User.hasMany(Friends);
-// Friends.belongsTo(User);
 User.belongsToMany(User, {
   through: 'friendList',
   as: 'Friends',
 });
-// Somehow use this to drop the database
-
-// User.sync()
-// .then(() => {
-//   console.log('Connection has been established successfully.');
-// })
-// .catch((err) => {
-//   console.error('Unable to connect to the database:', err);
-// });
-// Friends.sync()
-//   .then(() => {
-//     console.log('Connection has been established successfully.');
-//   })
-//   .catch((err) => {
-//     console.error('Unable to connect to the database:', err);
-//   });
-
-// PokerGames.sync()
-//   .then(() => {
-//     console.log('PokerGames.Sync');
-//   })
-//   .catch((err) => {
-//     console.log(err);
-//   });
-
-// name: {
-//   type: Sequelize.STRING(255),
-//   allowNull: false,
-// },
-// picture: {
-//   type: Sequelize.STRING(255),
-//   allowNull: false,
-// },
-// email: {
-//   type: Sequelize.STRING(255),
-//   allowNull: false,
-// },
-
-// User.belongsToMany(User, {
-//   as: 'Friends',
-//   foreignKey: 'FriendId',
-//   through: 'friends',
-// });
 
 // User.bulkCreate([
 //   {

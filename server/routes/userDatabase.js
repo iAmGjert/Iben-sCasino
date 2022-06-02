@@ -120,6 +120,7 @@ Data.post('/user', (req, res) => {
 //     });
 // });
 //`/routes/userDatabase/users/${initUser[0]}`
+
 Data.get('/friends/:id', (req, res) => {
   const { id } = req.params;
   User.findByPk(id)
