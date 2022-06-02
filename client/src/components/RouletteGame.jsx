@@ -8,6 +8,7 @@ import { Button } from '@mui/material';
 const RouletteGame = () => {
   //const redirect = Redirect();
   const [user, setUser] = useState(null);
+  const [readyToPlay, setReadyToPlay] = useState(false);
   useEffect(()=>{
     axios.get('/routes/profile/user')
       .then(( data )=>{
@@ -18,13 +19,16 @@ const RouletteGame = () => {
       }); 
     
   }, []);
+  const handleClick = () => {
+    setReadyToPlay(!readyToPlay);
+  };
   return (
     <div className='rouletteComponent'>
       <h1>Welcome to the roulette table!</h1>
       {
         user ?
-          <span><RouletteWheel /><RouletteTable/><Button/></span> :
-          <span>Please <Button href='/login'>Login</Button> to play.</span>
+          <div>{ readyToPlay ? <RouletteWheel handleClick={handleClick} /> : <RouletteTable/> } { <Button variant='contained' onClick={handleClick}>{ readyToPlay ? 'Back to table for bets' : 'To the wheel for spin' }</Button> }</div> :
+          <span>Please <Button variant='contained' href='/login'>Login</Button> to play.</span>
       }
     </div>
   );
