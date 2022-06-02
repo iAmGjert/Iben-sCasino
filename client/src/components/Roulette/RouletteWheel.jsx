@@ -25,9 +25,9 @@ const RouletteWheel = () => {
       contrastColor='white'
       buttonText='Spin!'
       isOnlyOnce={true}
-      size={200}
-      upDuration={50}
-      downDuration={400}
+      size={150}
+      upDuration={250}
+      downDuration={0}
       fontFamily='Arial'
     />
   );
