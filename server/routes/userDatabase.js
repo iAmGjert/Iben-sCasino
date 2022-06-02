@@ -170,6 +170,7 @@ Data.post('/friends/:userId/:friendId', (req, res) => {
       res.sendStatus(200);
     })
     .catch((err) => {
+      res.sendStatus(404);
       console.error(err, 'add friends request');
     });
 });
