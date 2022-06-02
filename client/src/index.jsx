@@ -13,9 +13,15 @@ import Leaderboard from './components/Leaderboard.jsx';
 import PokerGame from './components/PokerGame.jsx';
 import Social from './Pages/Social.jsx';
 import RouletteGame from './components/RouletteGame.jsx';
-import RewardsPage from './components/RewardsPage.jsx';
+import RewardsPage from './Pages/RewardsPage.jsx';
+import Layout from './components/Layout.jsx';
+import ThemeContext, { themes } from './theme-context.js';
 
 ReactDOM.render(
+  
+  <div>
+    <ThemeContext.Provider value={themes.dark}>
+
   <Router>
     <NavBar />
     <Route exact path='/poker' component={PokerGame} />
@@ -28,7 +34,13 @@ ReactDOM.render(
     <Route exact path='/social' component={Social} />
     <Route exact path='/rewards' component={RewardsPage} />
     <Route exact path='/roulette' component={RouletteGame} />
-  </Router>,
+
+  </Router>
+
+    </ThemeContext.Provider>
+  </div>,
+
+
   document.getElementById('app')
 );
 
