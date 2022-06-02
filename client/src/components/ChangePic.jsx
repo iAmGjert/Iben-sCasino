@@ -19,7 +19,25 @@ const [imageSelected, setImageSelected] = useState(null);
           picture: res.data.url
         }
       })
-    });
+    })
+    .then(() => {
+      alert('New Profile Image Set!')
+    })
+  };
+
+  const makeDefault = () => {
+    const defaultUrl = 'https://www.kindpng.com/picc/m/24-248253_user-profile-default-image-png-clipart-png-download.png';
+    axios.put(`/routes/userDatabase/users/${user.id}`, {
+      users: {
+        picture: defaultUrl
+      }
+    })
+    .then(() => {
+      setImageSelected(defaultUrl)
+    })
+    .then(() => {
+      alert('Default Image Set!')
+    })
   };
 
 
@@ -28,13 +46,19 @@ const [imageSelected, setImageSelected] = useState(null);
   }
 
 
+
   return (
     <div>
+
+      <div>
       <input
         type='file'
         onChange={onImageChange}
         />
-        <button onClick={uploadImage}>Upload Image</button>
+        <button style={{marginRight: '50px'}} onClick={uploadImage}>Upload Image</button>
+      </div>
+      
+        <button style={{ fontSize: '9px'}} onClick={makeDefault}>Set Default Image</button>
     </div>
   )
 }

@@ -62,11 +62,11 @@ class Profile extends React.Component {
                 <div className='row'>
                   <h2>{info[2]}</h2>
                 </div>
+                <div><Rewards initUser={info} /></div>
                 <img className='circle responsive-img z-depth-4' src={info[3]} style={{width: 200}} />
                 <h3>{info[4]}</h3>
                 <h4>Baller Status: {info[5] > 75 ? 'Baller' : info[5] <= 75 && info[5] >= 35 ? 'Bum' : 'Broke!!!'}</h4>
                 <h3>$: {info[5]}</h3>
-                <div><Rewards initUser={info} /></div>
               </div>
             );
           })

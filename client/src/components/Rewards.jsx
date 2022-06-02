@@ -34,7 +34,6 @@ const Rewards = ({ initUser }) => {
   //   getProfile();
   // }, []);
 
-console.log(user);
 
 
   return (
