@@ -83,10 +83,10 @@ const SocialStyles = styled.div`
 `;
 
 const Social = () => {
-  const [currentUser, setCurrentUser] = useState();
-  const [users, setUsers] = useState();
-  const [matches, setMatches] = useState();
-  const [friends, setFriends] = useState();
+  const [currentUser, setCurrentUser] = useState(null);
+  const [users, setUsers] = useState(null);
+  const [matches, setMatches] = useState(null);
+  const [friends, setFriends] = useState(null);
 
   useEffect(() => {
     const getUser = async () => {
@@ -150,17 +150,22 @@ const Social = () => {
             <div className='addFriends'>
               <h6 style={{ fontWeight: 'bold' }}>Add Friends</h6>
 
-              {users?.map((u) => {
-                if (u.id !== currentUser?.id) {
-                  return (
-                    <PossibleFriend
-                      user={u}
-                      key={u.sub}
-                      currentUser={currentUser}
-                    />
-                  );
-                }
-              })}
+              {friends &&
+                users?.map((u) => {
+                  for (let i = 0; i < friends.length; i++) {
+                    if (friends[i].id !== u.id) {
+                      if (u.id !== currentUser?.id) {
+                        return (
+                          <PossibleFriend
+                            user={u}
+                            key={u.sub}
+                            currentUser={currentUser}
+                          />
+                        );
+                      }
+                    }
+                  }
+                })}
             </div>
           </div>
         </div>

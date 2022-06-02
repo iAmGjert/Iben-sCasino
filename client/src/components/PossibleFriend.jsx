@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
+
 const PFStyles = styled.div`
   .pf {
     display: flex;
@@ -38,18 +40,27 @@ const PFStyles = styled.div`
 `;
 
 const PossibleFriend = ({ user, currentUser }) => {
+  const [showComp, setShowComp] = useState(true);
+
   const addFriend = () => {
     // send a post request to the server to add a friend to a user;
+    axios.post(`/routes/userDatabase/friends/${currentUser.id}/${user.id}`);
+    console.log('click');
+    setShowComp(false);
   };
 
   return (
     <PFStyles>
-      <div className='pf'>
-        <img className='pfImage' src={user.picture} />
-        <span className='pfName'> {user.name}</span>
-        <span className='monies'> Monies: {user.money}</span>
-        <button className='addFriend'>Add Friend</button>
-      </div>
+      {showComp && (
+        <div className='pf'>
+          <img className='pfImage' src={user.picture} />
+          <span className='pfName'> {user.name}</span>
+          <span className='monies'> Monies: {user.money}</span>
+          <button className='addFriend' onClick={addFriend}>
+            Add Friend
+          </button>
+        </div>
+      )}
     </PFStyles>
   );
 };
