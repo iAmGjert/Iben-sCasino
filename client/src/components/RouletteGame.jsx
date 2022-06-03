@@ -43,17 +43,25 @@ const RouletteGame = () => {
             </div>
             <div>
               <div>
-                Current bets: {bets && Object.entries(bets).map((bet, index)=>
-                  <p key={`bet#${index}`}>
-                    Space: {bet[0]} Bet: ${bet[1]}
-                  </p>)}
+                Current bets: {
+                  Object.values(bets).some((bet)=>bet > 0) ?
+                    Object.entries(bets).map((bet, index)=>
+                      <p key={`bet#${index}`}>
+                        {
+                          bet[1] > 0 ?
+                            `Space: ${bet[0]} Bet: $${bet[1]}` :
+                            ''
+                        }
+                      </p>) :
+                    'No Bets'
+                }
               </div>
               <div>
-                Current Total Bets: ${totalBets}
+                Current total bets: ${totalBets}
               </div>
             </div>
             { readyToPlay ? 
-              <RouletteWheel bets={bets} setBets={setBets}/> : 
+              <RouletteWheel bets={bets} totalBets={totalBets}/> : 
               <RouletteTable bets={bets} setBets={setBets}/>
             } 
             { 
