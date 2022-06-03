@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { format } from 'timeago.js';
 
 const MessageStyles = styled.div`
   .message {
@@ -38,19 +39,19 @@ const MessageStyles = styled.div`
   }
 `;
 
-const Message = ({ own }) => {
+const Message = ({ own, message, recipient, currentUser }) => {
   return (
     <MessageStyles>
       <div className={own ? 'message own' : 'message'}>
         <div className='messageTop'>
-          <img
-            className='messageImg'
-            src='https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fstatic.onecms.io%2Fwp-content%2Fuploads%2Fsites%2F20%2F2021%2F09%2F04%2FBeyonce-1.jpg'
-            alt=''
-          />
-          <p className='messageText'>Hello this is a message</p>
+          {own ? (
+            <img className='messageImg' src={currentUser.picture} alt='' />
+          ) : (
+            <img className='messageImg' src={recipient.picture} alt='' />
+          )}
+          <p className='messageText'>{message.text}</p>
         </div>
-        <div className='messageBottom'>1 hour ago</div>
+        <div className='messageBottom'>{format(message.createdAt)}</div>
       </div>
     </MessageStyles>
   );

@@ -44,7 +44,6 @@ const PossibleFriend = ({ user, currentUser }) => {
 
   const addFriend = () => {
     axios.post(`/routes/userDatabase/friends/${currentUser.id}/${user.id}`);
-    console.log('click');
     setShowComp(false);
   };
 
