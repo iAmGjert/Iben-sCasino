@@ -95,7 +95,6 @@ const Social = () => {
   const scrollRef = useRef();
 
   const handleMessageChange = (e) => {
-    console.log(e.target.value);
     setMessageText(e.target.value);
   };
 
@@ -116,14 +115,12 @@ const Social = () => {
   };
 
   const getMessages = async () => {
-    console.log('running');
     const res = await axios.get('/routes/message', {
       params: {
         // change to currentConversation
         conversationId: currentConversation,
       },
     });
-    console.log(res);
     setMessages(res.data);
   };
 
@@ -134,7 +131,6 @@ const Social = () => {
     };
     const getUsers = () => {
       axios.get('/routes/userDatabase/users').then((users) => {
-        console.log(users);
         setUsers(users.data);
       });
     };
@@ -143,7 +139,7 @@ const Social = () => {
         const { data } = await axios.get('/routes/poker/poker/history');
         setMatches(data);
       } catch (err) {
-        console.log(err);
+        console.error(err, 'get hist social page');
       }
     };
     getHist();

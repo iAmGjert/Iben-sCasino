@@ -143,7 +143,6 @@ Data.get('/friends/:id', (req, res) => {
       return user.getFriends();
     })
     .then((data) => {
-      console.log(data);
       res.status(200).send(data);
     })
     .catch((err) => {
@@ -153,7 +152,6 @@ Data.get('/friends/:id', (req, res) => {
 Data.post('/friends/:userId/:friendId', (req, res) => {
   const { userId } = req.params;
   const { friendId } = req.params;
-  console.log(req.params);
   let user, friend;
   User.findByPk(userId)
     .then((data) => {
@@ -162,7 +160,6 @@ Data.post('/friends/:userId/:friendId', (req, res) => {
     })
     .then((data) => {
       friend = data;
-      console.log(user, friend);
       user.addFriends(friend);
       friend.addFriends(user);
     })

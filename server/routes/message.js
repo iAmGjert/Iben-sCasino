@@ -14,7 +14,6 @@ message.get('/', (req, res) => {
       conversationId: conversationId,
     },
   }).then((messages) => {
-    // console.log(messages);
     res.status(200).send(messages);
   });
 });

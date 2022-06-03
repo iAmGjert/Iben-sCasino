@@ -44,8 +44,6 @@ const Message = ({ own, message, recipient, currentUser }) => {
     <MessageStyles>
       <div className={own ? 'message own' : 'message'}>
         <div className='messageTop'>
-          {console.log(recipient)}
-          {/* Image needs to change based on owner */}
           {own ? (
             <img className='messageImg' src={currentUser.picture} alt='' />
           ) : (

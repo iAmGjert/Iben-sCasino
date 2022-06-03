@@ -21,7 +21,6 @@ conversation.get('/', (req, res) => {
           res.status(200).send({
             conversationId: data.id,
           });
-          console.log(data);
         }
       );
     } else {
