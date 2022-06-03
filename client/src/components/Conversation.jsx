@@ -40,7 +40,9 @@ const Conversation = ({
       },
     });
     setRecipient(user);
-    setCurrentConversation(res.data.conversationId);
+    setTimeout(() => {
+      setCurrentConversation(res.data.conversationId);
+    }, 200);
   };
 
   return (

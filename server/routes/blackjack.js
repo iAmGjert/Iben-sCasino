@@ -13,7 +13,6 @@ const {initialDeal, hit} = require('./blackjackLogic');
  * this is for the initial deal.   calls the initialDeal function in blackjack logic, sends those cards back to the front end
  */
 Blackjack.get('/', async (req, res) => {
-  console.log('req.user', req.user);
 
   try {
     const start = await initialDeal();
