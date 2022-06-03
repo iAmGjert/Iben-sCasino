@@ -1,9 +1,16 @@
 const sequelize = require('sequelize');
 const { Sequelize, Op } = require('sequelize');
-const orm = new Sequelize('poker_database', 'root', '', {
-  host: 'localhost',
-  dialect: 'mysql',
-});
+const orm = new Sequelize(
+  'poker_database',
+  process.env.DB_USERNAME,
+  process.env.DB_PASSWORD,
+  {
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    dialect: 'mysql',
+    logging: false,
+  }
+);
 const User = orm.define('User', {
   id: {
     type: Sequelize.INTEGER,
@@ -174,41 +181,8 @@ User.belongsToMany(User, {
 //     picture: 'ddsasadasdasdqwt.com',
 //   },
 // ]);
-let sender, receiver, message, conversation;
 orm
   .sync()
-  .then(() => {
-    return User.findByPk(3);
-  })
-  .then((data) => {
-    receiver = data;
-    return User.findByPk(4);
-  })
-  .then((data) => {
-    sender = data;
-    return Message.create({ text: 'Melly, World' });
-  })
-  .then((data) => {
-    message = data;
-    // return Conversation.create({ user1: sender.id, user2: receiver.id });
-    return Conversation.findByPk(1);
-  })
-  .then((data) => {
-    conversation = data;
-    message.setSender(sender);
-    message.setReceiver(receiver);
-    message.setConversation(conversation);
-  })
-  // .then(() => {
-  //   return Conversation.findAll({
-  //     where: {
-  //       [Op.or]: [{ name: 'John & Heny' }],
-  //     },
-  //   });
-  // })
-  // .then((data) => {
-  //   console.log(data);
-  // })
   .then(() => {
     console.log('Connection has been established successfully.');
   })
