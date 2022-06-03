@@ -39,11 +39,12 @@ const PFStyles = styled.div`
   }
 `;
 
-const PossibleFriend = ({ user, currentUser }) => {
+const PossibleFriend = ({ user, currentUser, setFriends }) => {
   const [showComp, setShowComp] = useState(true);
 
   const addFriend = () => {
     axios.post(`/routes/userDatabase/friends/${currentUser.id}/${user.id}`);
+    setFriends((prev) => [...prev, user]);
     setShowComp(false);
   };
 

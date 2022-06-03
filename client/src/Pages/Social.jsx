@@ -5,6 +5,7 @@ import Conversation from '../components/Conversation.jsx';
 import PossibleFriend from '../components/PossibleFriend.jsx';
 import Match from '../components/Match.jsx';
 import Message from '../components/Message.jsx';
+import { io } from 'socket.io-client';
 
 const SocialStyles = styled.div`
   html,
@@ -90,9 +91,41 @@ const Social = () => {
   const [messages, setMessages] = useState(null);
   const [messageText, setMessageText] = useState('');
   const [friends, setFriends] = useState(null);
+  const [arrivalMessage, setArrivalMessage] = useState(null);
+  // const [socket, setSocket] = useState(null);
   const [recipient, setRecipient] = useState(null);
   const [currentConversation, setCurrentConversation] = useState(null);
   const scrollRef = useRef();
+  const socket = useRef();
+
+  useEffect(() => {
+    socket.current = io('ws://localhost:8900');
+    socket.current.on('getMessage', (data) => {
+      setArrivalMessage({
+        senderId: data.senderId,
+        receiverId: data.receiverId,
+        text: data.text,
+        conversationId: data.conversationId,
+        createdAt: Date.now(),
+      });
+    });
+  }, []);
+
+  useEffect(() => {
+    if (
+      arrivalMessage &&
+      currentConversation === arrivalMessage.conversationId
+    ) {
+      setMessages((prev) => [...prev, arrivalMessage]);
+    }
+  }, [arrivalMessage]);
+
+  useEffect(() => {
+    socket.current.emit('addUser', currentUser?.id);
+    socket.current.on('getUsers', (users) => {
+      // console.log(users);
+    });
+  }, [currentUser]);
 
   const handleMessageChange = (e) => {
     setMessageText(e.target.value);
@@ -100,6 +133,21 @@ const Social = () => {
 
   const sendMessage = () => {
     if (messageText) {
+      socket.current.emit('sendMessage', {
+        senderId: currentUser.id,
+        receiverId: recipient.id,
+        text: messageText,
+        conversationId: currentConversation,
+      });
+      setMessages((prev) => [
+        ...prev,
+        {
+          senderId: currentUser.id,
+          receiverId: recipient.id,
+          text: messageText,
+          conversationId: currentConversation,
+        },
+      ]);
       axios
         .post('/routes/message', {
           senderId: currentUser.id,
@@ -109,7 +157,6 @@ const Social = () => {
         })
         .then(() => {
           setMessageText('');
-          setTimeout(getMessages, 1000);
         });
     }
   };
@@ -148,14 +195,16 @@ const Social = () => {
   }, []);
 
   useEffect(() => {
-    const getFriends = () => {
-      axios
-        .get(`/routes/userDatabase/friends/${currentUser?.id}`)
-        .then((friends) => {
-          setFriends(friends.data);
-        });
-    };
-    getFriends();
+    if (currentUser) {
+      const getFriends = () => {
+        axios
+          .get(`/routes/userDatabase/friends/${currentUser?.id}`)
+          .then((friends) => {
+            setFriends(friends.data);
+          });
+      };
+      getFriends();
+    }
   }, [currentUser]);
 
   useEffect(() => {
@@ -203,8 +252,9 @@ const Social = () => {
                     return (
                       <PossibleFriend
                         user={u}
-                        key={u.sub}
+                        key={u.sub + 'pf'}
                         currentUser={currentUser}
+                        setFriends={setFriends}
                       />
                     );
                   }
@@ -227,6 +277,7 @@ const Social = () => {
                             message={m}
                             recipient={recipient}
                             currentUser={currentUser}
+                            key={m.id}
                           />
                         </div>
                       );
@@ -237,6 +288,7 @@ const Social = () => {
                             message={m}
                             recipient={recipient}
                             currentUser={currentUser}
+                            key={m.id}
                           />
                         </div>
                       );
