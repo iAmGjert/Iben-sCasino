@@ -87,9 +87,43 @@ const Social = () => {
   const [users, setUsers] = useState(null);
   const [matches, setMatches] = useState(null);
   const [messages, setMessages] = useState(null);
+  const [messageText, setMessageText] = useState('');
   const [friends, setFriends] = useState(null);
   const [recipient, setRecipient] = useState(null);
   const [currentConversation, setCurrentConversation] = useState(null);
+
+  const handleMessageChange = (e) => {
+    console.log(e.target.value);
+    setMessageText(e.target.value);
+  };
+
+  const sendMessage = () => {
+    if (messageText) {
+      axios
+        .post('/routes/message', {
+          senderId: currentUser.id,
+          receiverId: recipient.id,
+          text: messageText,
+          conversationId: currentConversation,
+        })
+        .then(() => {
+          setMessageText('');
+          setTimeout(getMessages, 1000);
+        });
+    }
+  };
+
+  const getMessages = async () => {
+    console.log('running');
+    const res = await axios.get('/routes/message', {
+      params: {
+        // change to currentConversation
+        conversationId: currentConversation,
+      },
+    });
+    console.log(res);
+    setMessages(res.data);
+  };
 
   useEffect(() => {
     const getUser = async () => {
@@ -128,18 +162,6 @@ const Social = () => {
 
   useEffect(() => {
     if (currentConversation && recipient) {
-      console.log(recipient, currentConversation);
-      const getMessages = async () => {
-        console.log('running');
-        const res = await axios.get('/routes/message', {
-          params: {
-            // change to currentConversation
-            conversationId: 5,
-          },
-        });
-        console.log(res);
-        setMessages(res.data);
-      };
       getMessages();
     }
     // get messages
@@ -216,10 +238,14 @@ const Social = () => {
             </div>
             <div className='messagesBottom'>
               <textarea
+                value={messageText}
+                onChange={handleMessageChange}
                 className='messagesInput'
                 placeholder='Write something ...'
               ></textarea>
-              <button className='messagesSubmit'>Send</button>
+              <button className='messagesSubmit' onClick={sendMessage}>
+                Send
+              </button>
             </div>
           </div>
         </div>
