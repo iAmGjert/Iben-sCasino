@@ -62,6 +62,7 @@ class Profile extends React.Component {
       marginLeft: '80px',
       borderShadow: '4px',
       boxShadow: '3px 3px 3px',
+      textAlign: 'center'
       
     };
 
@@ -82,13 +83,12 @@ class Profile extends React.Component {
                 }        
                 </div>
 
-                <div className='row'>
-                  <h2>Welcome back, {info[2]}!</h2>
-                  <h3>${info[5]}</h3>
+                <div className='row' style={{textAlign: 'center'}}>
+                  <h5 style={{textAlign: 'right'}}>${info[5]}</h5>
+                  <h2>Welcome back, {info[2]}! <img className='circle responsive-img z-depth-4' src={info[3]} style={{width: 60}} /></h2>
                 </div>
                 <div><Rewards user={info} /></div>
-                <img className='circle responsive-img z-depth-4' src={info[3]} style={{width: 200}} />
-                <h4>Baller Status: {info[5] > 75 ? 'Baller' : info[5] <= 75 && info[5] >= 35 ? 'Bum' : 'Broke!!!'}</h4>
+                <h4 style={{textAlign: 'center'}}>Baller Status: {info[5] > 75 ? 'Baller' : info[5] <= 75 && info[5] >= 35 ? 'Bum' : 'Broke!!!'}</h4>
               </div>
             );
           })

@@ -7,14 +7,6 @@ const Rewards = ({ user }) => {
 
   const [rewardClaimed, setRewardClaimed] = useState(false);
 
-  // const getProfile = () => {
-  //   axios.get('/routes/profile/user')
-  //     .then(user => {
-  //       setUserUpdated(user.data)
-  //       console.log(user, 'getProfile');
-  //     })
-  //     .catch((err => console.log('getprof err', err)));
-  // }
 
   const updateUser = () => {
     axios.put(`/routes/userDatabase/users/${user[0]}`, {
@@ -30,9 +22,6 @@ const Rewards = ({ user }) => {
       console.error(err);
     })
   }
-  
-  
-
 
 
   return (
@@ -48,13 +37,13 @@ const Rewards = ({ user }) => {
 
       <div>
         {
-          rewardClaimed ? <button>Reward Claimed</button> : <button onClick={updateUser}>Claim Reward</button>
+          rewardClaimed ? <button>Reward Claimed</button> : <button style ={{fontSize: '25px', lineHeight: '25px'}} onClick={updateUser}>Claim Reward</button>
         }
       </div>
 
       <div>
         {
-          user[5] > 8400 ? <Link to='/rewards'><button className='rewardButton'>Check Rewards</button></Link> : ''
+          user[5] > 8400 ? <Link to='/rewards'><button className='rewardButton' style={{fontSize: '13px', lineHeight: '13px'}}>See Earned Rewards</button></Link> : ''
         }
       </div>
 

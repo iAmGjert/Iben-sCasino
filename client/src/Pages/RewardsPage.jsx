@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import ChangePic from '../components/ChangePic.jsx';
 import ChangeTheme from '../components/ChangeTheme.jsx';
@@ -6,9 +6,14 @@ import ThemeContext, { themes } from '../theme-context.js';
 
 const RewardsPage = () => {
 
+  const test = useRef(theme);
+  console.log(test);
+
   const [user, setUser] = useState({});
 
-  const [theme, setTheme] = useState(themes.light);
+  const [theme, setTheme] = useState(themes.dark);
+
+
 
   const getProfile = () => {
     axios
