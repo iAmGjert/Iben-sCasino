@@ -39,7 +39,6 @@ const User = orm.define('User', {
   },
   theme: {
     type: Sequelize.STRING(255),
-    allowNull: false,
   },
 });
 
