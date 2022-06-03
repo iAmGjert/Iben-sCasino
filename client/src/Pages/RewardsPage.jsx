@@ -8,7 +8,7 @@ const RewardsPage = () => {
 
   const [user, setUser] = useState({});
 
-  const [theme, setTheme] = useState(themes.dark);
+  const [theme, setTheme] = useState(themes.light);
 
   const getProfile = () => {
     axios

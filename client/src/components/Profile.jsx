@@ -10,7 +10,8 @@ class Profile extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: [] 
+      user: [],
+      theme: themes.dark
     };
     this.getUser = this.getUser.bind(this);
   }
@@ -29,6 +30,19 @@ class Profile extends React.Component {
       user: [Object.values(userData)] 
     });
   }
+
+  toggleTheme = () => {
+    if (this.state.theme === themes.dark) {
+      this.setState({
+        theme: themes.light
+      });
+    } else {
+      this.setState({
+        theme: themes.dark
+      });
+    }
+  };
+
 
   render() {
     const style = {
@@ -54,13 +68,20 @@ class Profile extends React.Component {
     //map over user profile from database and render to profile page
     return (
       
-      <div style={style}>
+      <div style={this.state.theme}>
         <div className='card-panel green darken-2' style={border}><h1>Player's Room</h1></div>
         
         {
           this.state.user.map((info, i) => {
             return (
               <div key={i}>
+
+                <div>
+                {
+                  info[5] >= 10200 ? <button onClick={this.toggleTheme}>Change Theme</button> : ''
+                }        
+                </div>
+
                 <div className='row'>
                   <h2>Welcome back, {info[2]}!</h2>
                   <h3>${info[5]}</h3>
