@@ -1,15 +1,9 @@
 const sequelize = require('sequelize');
-const { Sequelize } = require('sequelize');
-const orm = new Sequelize(
-  'poker_database',
-  process.env.DB_USERNAME,
-  process.env.DB_PASSWORD,
-  {
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
-    dialect: 'mysql',
-  }
-);
+const { Sequelize, Op } = require('sequelize');
+const orm = new Sequelize('poker_database', 'root', '', {
+  host: 'localhost',
+  dialect: 'mysql',
+});
 const User = orm.define('User', {
   id: {
     type: Sequelize.INTEGER,
@@ -104,10 +98,43 @@ const PokerGames = orm.define('PokerGames', {
   },
 });
 
+const Conversation = orm.define('Conversation', {
+  id: {
+    type: Sequelize.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  },
+  user1: {
+    type: Sequelize.INTEGER,
+  },
+  user2: {
+    type: Sequelize.INTEGER,
+  },
+});
+
+const Message = orm.define('Message', {
+  text: {
+    type: Sequelize.STRING(255),
+  },
+});
+
 User.hasMany(PokerGames, {
   foreignKey: {
     name: 'userId',
   },
+});
+
+Message.belongsTo(Conversation, {
+  foreignKey: 'conversationId',
+  as: 'Conversation',
+});
+Message.belongsTo(User, {
+  foreignKey: 'receiverId',
+  as: 'Receiver',
+});
+Message.belongsTo(User, {
+  foreignKey: 'senderId',
+  as: 'Sender',
 });
 
 User.belongsToMany(User, {
@@ -147,9 +174,41 @@ User.belongsToMany(User, {
 //     picture: 'ddsasadasdasdqwt.com',
 //   },
 // ]);
-
+let sender, receiver, message, conversation;
 orm
   .sync()
+  .then(() => {
+    return User.findByPk(3);
+  })
+  .then((data) => {
+    receiver = data;
+    return User.findByPk(4);
+  })
+  .then((data) => {
+    sender = data;
+    return Message.create({ text: 'Melly, World' });
+  })
+  .then((data) => {
+    message = data;
+    // return Conversation.create({ user1: sender.id, user2: receiver.id });
+    return Conversation.findByPk(1);
+  })
+  .then((data) => {
+    conversation = data;
+    message.setSender(sender);
+    message.setReceiver(receiver);
+    message.setConversation(conversation);
+  })
+  // .then(() => {
+  //   return Conversation.findAll({
+  //     where: {
+  //       [Op.or]: [{ name: 'John & Heny' }],
+  //     },
+  //   });
+  // })
+  // .then((data) => {
+  //   console.log(data);
+  // })
   .then(() => {
     console.log('Connection has been established successfully.');
   })
@@ -160,3 +219,5 @@ orm
 exports.User = User;
 // exports.Friends = Friends;
 exports.PokerGames = PokerGames;
+exports.Conversation = Conversation;
+exports.Message = Message;

@@ -86,7 +86,10 @@ const Social = () => {
   const [currentUser, setCurrentUser] = useState(null);
   const [users, setUsers] = useState(null);
   const [matches, setMatches] = useState(null);
+  const [messages, setMessages] = useState(null);
   const [friends, setFriends] = useState(null);
+  const [recipient, setRecipient] = useState(null);
+  const [currentConversation, setCurrentConversation] = useState(null);
 
   useEffect(() => {
     const getUser = async () => {
@@ -123,13 +126,32 @@ const Social = () => {
     getFriends();
   }, [currentUser]);
 
+  useEffect(() => {
+    if (currentConversation && recipient) {
+      console.log(recipient, currentConversation);
+      const getMessages = async () => {
+        console.log('running');
+        const res = await axios.get('/routes/message', {
+          params: {
+            // change to currentConversation
+            conversationId: 5,
+          },
+        });
+        console.log(res);
+        setMessages(res.data);
+      };
+      getMessages();
+    }
+    // get messages
+  }, [currentConversation, recipient]);
+
   return (
     <SocialStyles className='wut' style={{ height: '0%' }}>
       <div className='social' style={{ maxWidth: '100%', display: 'flex' }}>
         <div className='friends'>
           <div className='friendsListWrapper'>
+            <h6 style={{ fontWeight: 'bold' }}>Friends</h6>
             <div className='friendList'>
-              <h6 style={{ fontWeight: 'bold' }}>Friends</h6>
               {friends?.length !== 0 ? (
                 friends?.map((f) => {
                   return (
@@ -137,6 +159,8 @@ const Social = () => {
                       user={f}
                       key={f.sub}
                       currentUser={currentUser}
+                      setCurrentConversation={setCurrentConversation}
+                      setRecipient={setRecipient}
                     />
                   );
                 })
@@ -146,9 +170,8 @@ const Social = () => {
             </div>
           </div>
           <div className='addFriendsWrapper'>
+            <h6 style={{ fontWeight: 'bold' }}>Add Friends</h6>
             <div className='addFriends'>
-              <h6 style={{ fontWeight: 'bold' }}>Add Friends</h6>
-
               {friends &&
                 users?.map((u) => {
                   const isFriend = friends.every((f) => f.id !== u.id);
@@ -167,22 +190,29 @@ const Social = () => {
         </div>
         <div className='messages'>
           <div className='messagesWrapper'>
+            <h4 style={{ textAlign: 'center' }}> Conversation Name</h4>
             <div className='messagesTop'>
-              <Message own={true} />
-              <Message />
-              <Message own={true} />
-              <Message />
-              <Message />
-              <Message own={true} />
-              <Message own={true} />
-              <Message own={true} />
-              <Message own={true} />
-              <Message own={true} />
-              <Message own={true} />
-              <Message own={true} />
-              <Message own={true} />
-              <Message own={true} />
-              <Message own={true} />
+              {messages &&
+                messages.map((m) => {
+                  if (m.senderId === currentUser.id) {
+                    return (
+                      <Message
+                        own={true}
+                        message={m}
+                        recipient={recipient}
+                        currentUser={currentUser}
+                      />
+                    );
+                  } else {
+                    return (
+                      <Message
+                        message={m}
+                        recipient={recipient}
+                        currentUser={currentUser}
+                      />
+                    );
+                  }
+                })}
             </div>
             <div className='messagesBottom'>
               <textarea
