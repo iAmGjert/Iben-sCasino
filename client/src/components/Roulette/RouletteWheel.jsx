@@ -13,7 +13,6 @@ const RouletteWheel = ({bets, setBets}) => {
     'red', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'red'
   ];
   const onFinished = (winner) => {
-    console.log(winner);
     setWinNum(winner);
   };
   useEffect(()=>{
@@ -22,7 +21,7 @@ const RouletteWheel = ({bets, setBets}) => {
       return;
     }
     for (const bet in bets) {
-      bets[bet] > 0 ? console.log(`You bet on ${bet} and ${winNum === bet ? 'won' : 'lost'}`) : null;
+      bets[bet] > 0 ? console.log(`You bet on ${bet} and ${winNum === bet ? `won $${bets[bet] * 35}` : 'lost'}`) : null;
     }
     
   }, [winNum]);
@@ -33,8 +32,7 @@ const RouletteWheel = ({bets, setBets}) => {
       <WheelComponent
         segments={segments}
         segColors={segColors}
-        winningSegment='00'
-        //winningSegment={ nextWinner.toString() }
+        winningSegment='00'// { nextWinner.toString() }
         onFinished={(winner) => onFinished(winner)}
         primaryColor='black'
         contrastColor='white'

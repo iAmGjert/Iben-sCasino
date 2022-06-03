@@ -10,12 +10,12 @@ const RouletteTable = ( {bets, setBets} ) => {
   ];
   const addBet = (segment) => {
     const tempObj = Object.assign(bets);
-    tempObj[segment] ? tempObj[segment] += 10 : tempObj[segment] = 10;
+    tempObj[segment] ? tempObj[segment] += 5 : tempObj[segment] = 5;
     setBets(tempObj);
   };
   const subBet = (segment) => {
     const tempObj = Object.assign(bets);
-    tempObj[segment] > 0 ? tempObj[segment] -= 10 : tempObj[segment] = 0;
+    tempObj[segment] > 0 ? tempObj[segment] -= 5 : tempObj[segment] = 0;
     setBets(tempObj);
   };
   return (

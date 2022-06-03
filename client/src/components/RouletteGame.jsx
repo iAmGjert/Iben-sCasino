@@ -9,7 +9,7 @@ const RouletteGame = () => {
   const [user, setUser] = useState(null);
   const [readyToPlay, setReadyToPlay] = useState(false);
   const [bets, setBets] = useState({});
-  const hasBet = false;
+  const [totalBets, setTotalBets] = useState(0);
   useEffect(()=>{
     axios.get('/routes/profile/user')
       .then(( data )=>{
@@ -25,11 +25,16 @@ const RouletteGame = () => {
     setReadyToPlay(!readyToPlay);
   };
   useEffect(()=>{
-
+    let total = 0;
+    for (const bet in bets) {
+      total += bets[bet];
+    }
+    setTotalBets(total);
   }, [Object.values(bets)]);
   return (
     <div className='rouletteComponent'>
       <h1>Welcome to the roulette table!</h1>
+      <h4>All bets are in increments of $5! Good luck!</h4>
       {
         user ?
           <div>
@@ -37,10 +42,15 @@ const RouletteGame = () => {
               {`${user.name}'s money: $${user.money}`}
             </div>
             <div>
-              Current bets: {bets && Object.entries(bets).map((bet, index)=>
-                <p key={`bet#${index}`}>
-                  Number: {bet[0]} Bet: {bet[1]}
-                </p>)}
+              <div>
+                Current bets: {bets && Object.entries(bets).map((bet, index)=>
+                  <p key={`bet#${index}`}>
+                    Space: {bet[0]} Bet: ${bet[1]}
+                  </p>)}
+              </div>
+              <div>
+                Current Total Bets: ${totalBets}
+              </div>
             </div>
             { readyToPlay ? 
               <RouletteWheel bets={bets} setBets={setBets}/> : 
