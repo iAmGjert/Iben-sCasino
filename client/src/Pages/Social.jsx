@@ -5,6 +5,7 @@ import Conversation from '../components/Conversation.jsx';
 import PossibleFriend from '../components/PossibleFriend.jsx';
 import Match from '../components/Match.jsx';
 import Message from '../components/Message.jsx';
+import { themes } from '../theme-context.js';
 
 const SocialStyles = styled.div`
   html,
@@ -92,6 +93,7 @@ const Social = () => {
   const [friends, setFriends] = useState(null);
   const [recipient, setRecipient] = useState(null);
   const [currentConversation, setCurrentConversation] = useState(null);
+  const [theme, setTheme] = useState(themes.light);
   const scrollRef = useRef();
 
   const handleMessageChange = (e) => {
@@ -128,6 +130,10 @@ const Social = () => {
     const getUser = async () => {
       const { data } = await axios.get('/routes/profile/user');
       setCurrentUser(data);
+      setTheme(data.theme === null ? themes.light 
+        : data.theme === 'light' ? themes.light 
+        : data.theme === 'dark' ? themes.dark 
+        : themes.light)
     };
     const getUsers = () => {
       axios.get('/routes/userDatabase/users').then((users) => {
@@ -170,7 +176,7 @@ const Social = () => {
   }, [messages]);
 
   return (
-    <SocialStyles className='wut' style={{ height: '0%' }}>
+    <SocialStyles className='wut' style={theme}>
       <div className='social' style={{ maxWidth: '100%', display: 'flex' }}>
         <div className='friends'>
           <div className='friendsListWrapper'>

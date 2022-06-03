@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ChangePic from '../components/ChangePic.jsx';
 import ChangeTheme from '../components/ChangeTheme.jsx';
-import ThemeContext, { themes } from '../theme-context.js';
+import { themes } from '../theme-context.js';
 
 const RewardsPage = () => {
 
