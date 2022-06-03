@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ChangePic from '../components/ChangePic.jsx';
 import ChangeTheme from '../components/ChangeTheme.jsx';
@@ -8,7 +8,7 @@ const RewardsPage = () => {
 
   const [user, setUser] = useState({});
 
-  const [theme, setTheme] = useState(themes.dark);
+  const [theme, setTheme] = useState(themes.light);
 
 
   const getProfile = () => {
@@ -16,30 +16,36 @@ const RewardsPage = () => {
       .get('/routes/profile/user')
       .then((user) => {
         setUser(user.data);
+        setTheme(user.data.theme === null ? themes.light 
+          : user.data.theme === 'light' ? themes.light 
+          : user.data.theme === 'dark' ? themes.dark 
+          : themes.light);
       })
       .catch((err) => console.log('getprof err', err));
   };
 
 
   const toggleTheme = () => {
-    if (theme === themes.dark) {
-      setTheme(themes.light);
-    } else {
-      setTheme(themes.dark);
-    }
+    axios.put(`/routes/userDatabase/users/${user.id}`, {
+      users: {
+        theme: user.theme === null ? 'dark' 
+        : user.theme === 'dark' ? 'light' 
+        : user.theme === 'light' ? 'dark' 
+        : null
+      }
+    })
+    .then(() => {
+      console.log('changed theme');
+    })
   }
 
+  console.log(user);
 
   useEffect(() => {
     getProfile();
-    // const storedTheme = JSON.stringify(window.sessionStorage.getItem(theme));
-    // console.log(storedTheme);
-    // setTheme(storedTheme);
-  }, []);
+  }, [theme]);
 
-  // useEffect(() => {
-  //   window.sessionStorage.setItem('theme', theme);
-  // }, [theme])
+
 
   return (
     <div style={theme}>
@@ -58,20 +64,20 @@ const RewardsPage = () => {
 
       <div>
         {
-          user.money >= 8400 ? <h5>Rewards:</h5> : ''
+          user.money >= 1400 ? <h5>Rewards:</h5> : ''
         }
       </div>
 
       <div style={{ width: '400px', marginBottom: '50px' }}>
         {
-          user.money >= 9000 ? 
+          user.money >= 1400 ? 
           <><h6>You can now change your profile picture!</h6><ChangePic user={user} /></> : <h6>Earn More Money To Earn Rewards</h6>
         }
       </div>
 
       <div style={{ width: '400px' }}>
         {
-          user.money >= 9400 ?
+          user.money >= 1600 ?
           <><h6>You can now change your theme!</h6><ChangeTheme toggleTheme={toggleTheme} user={user} /></> : ''
         }
       </div>

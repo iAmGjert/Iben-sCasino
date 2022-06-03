@@ -11,7 +11,7 @@ class Profile extends React.Component {
     super(props);
     this.state = {
       user: [],
-      theme: themes.dark
+      theme: themes.light
     };
     this.getUser = this.getUser.bind(this);
   }
@@ -27,21 +27,14 @@ class Profile extends React.Component {
     const userData = await this.getUser(); 
     
     this.setState({
-      user: [Object.values(userData)] 
+      user: [Object.values(userData)],
+      theme: userData.theme === null ? themes.light 
+      : userData.theme === 'light' ? themes.light 
+      : userData.theme === 'dark' ? themes.dark 
+      : themes.light
     });
   }
 
-  toggleTheme = () => {
-    if (this.state.theme === themes.dark) {
-      this.setState({
-        theme: themes.light
-      });
-    } else {
-      this.setState({
-        theme: themes.dark
-      });
-    }
-  };
 
 
   render() {
@@ -77,11 +70,11 @@ class Profile extends React.Component {
             return (
               <div key={i}>
 
-                <div>
+                {/* <div>
                 {
                   info[5] >= 10200 ? <button onClick={this.toggleTheme}>Change Theme</button> : ''
                 }        
-                </div>
+                </div> */}
 
                 <div className='row' style={{textAlign: 'center'}}>
                   <h5 style={{textAlign: 'right'}}>${info[5]}</h5>

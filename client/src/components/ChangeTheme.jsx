@@ -5,7 +5,7 @@ const ChangeTheme = ({ user, toggleTheme }) => {
 
   return (
     <div>
-      <button onClick={toggleTheme}>Change Theme</button>
+      <button onClick={toggleTheme}>{user.theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}</button>
       </div>
   )
 }
