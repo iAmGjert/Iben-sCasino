@@ -25,8 +25,8 @@ const RouletteGame = () => {
     setReadyToPlay(!readyToPlay);
   };
   useEffect(()=>{
-    console.log(bets);
-  }, [bets]);
+
+  }, [Object.values(bets)]);
   return (
     <div className='rouletteComponent'>
       <h1>Welcome to the roulette table!</h1>
@@ -43,14 +43,14 @@ const RouletteGame = () => {
                 </p>)}
             </div>
             { readyToPlay ? 
-              <RouletteWheel /> : 
+              <RouletteWheel bets={bets} setBets={setBets}/> : 
               <RouletteTable bets={bets} setBets={setBets}/>
             } 
             { 
-              <Button variant='contained' disabled={Object.keys(bets).length > 0 ? false : true} onClick={handleClick}>
+              <Button variant='contained' disabled={Object.values(bets).some((bet)=>bet > 0) ? false : true} onClick={handleClick}>
                 { readyToPlay ?
                   'Back to table for bets' : 
-                  Object.keys(bets).length > 0 ?
+                  Object.values(bets).some((bet)=>bet > 0) ?
                     'To the wheel for spin' : 
                     'Place your bets'
                 }
