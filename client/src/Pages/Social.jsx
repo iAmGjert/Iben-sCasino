@@ -254,6 +254,7 @@ const Social = () => {
                         user={u}
                         key={u.sub + 'pf'}
                         currentUser={currentUser}
+                        setFriends={setFriends}
                       />
                     );
                   }
