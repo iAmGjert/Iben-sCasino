@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { format } from 'timeago.js';
 
 const MessageStyles = styled.div`
   .message {
@@ -52,7 +53,7 @@ const Message = ({ own, message, recipient, currentUser }) => {
           )}
           <p className='messageText'>{message.text}</p>
         </div>
-        <div className='messageBottom'>{message.createdAt}</div>
+        <div className='messageBottom'>{format(message.createdAt)}</div>
       </div>
     </MessageStyles>
   );

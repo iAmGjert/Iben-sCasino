@@ -76,6 +76,7 @@
     "rimraf": "^3.0.2",
     "sequelize": "^6.6.5",
     "styled-components": "^5.3.5",
+    "timeago.js": "^4.0.2",
     "underscore-node": "^0.1.2"
   }
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import Conversation from '../components/Conversation.jsx';
@@ -47,6 +47,7 @@ const SocialStyles = styled.div`
   }
   .messagesTop {
     overflow-y: auto;
+    height: 70%;
     padding-right: 10px;
   }
   .friendsListWrapper {
@@ -91,6 +92,7 @@ const Social = () => {
   const [friends, setFriends] = useState(null);
   const [recipient, setRecipient] = useState(null);
   const [currentConversation, setCurrentConversation] = useState(null);
+  const scrollRef = useRef();
 
   const handleMessageChange = (e) => {
     console.log(e.target.value);
@@ -167,6 +169,10 @@ const Social = () => {
     // get messages
   }, [currentConversation, recipient]);
 
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
   return (
     <SocialStyles className='wut' style={{ height: '0%' }}>
       <div className='social' style={{ maxWidth: '100%', display: 'flex' }}>
@@ -211,43 +217,53 @@ const Social = () => {
           </div>
         </div>
         <div className='messages'>
-          <div className='messagesWrapper'>
-            <h4 style={{ textAlign: 'center' }}> Conversation Name</h4>
-            <div className='messagesTop'>
-              {messages &&
-                messages.map((m) => {
-                  if (m.senderId === currentUser.id) {
-                    return (
-                      <Message
-                        own={true}
-                        message={m}
-                        recipient={recipient}
-                        currentUser={currentUser}
-                      />
-                    );
-                  } else {
-                    return (
-                      <Message
-                        message={m}
-                        recipient={recipient}
-                        currentUser={currentUser}
-                      />
-                    );
-                  }
-                })}
+          {messages ? (
+            <div className='messagesWrapper'>
+              <h4 style={{ textAlign: 'center' }}>{recipient?.name}</h4>
+              <div className='messagesTop'>
+                {messages &&
+                  messages.map((m) => {
+                    if (m.senderId === currentUser.id) {
+                      return (
+                        <div ref={scrollRef}>
+                          <Message
+                            own={true}
+                            message={m}
+                            recipient={recipient}
+                            currentUser={currentUser}
+                          />
+                        </div>
+                      );
+                    } else {
+                      return (
+                        <div ref={scrollRef}>
+                          <Message
+                            message={m}
+                            recipient={recipient}
+                            currentUser={currentUser}
+                          />
+                        </div>
+                      );
+                    }
+                  })}
+              </div>
+              <div className='messagesBottom'>
+                <textarea
+                  value={messageText}
+                  onChange={handleMessageChange}
+                  className='messagesInput'
+                  placeholder='Write something ...'
+                ></textarea>
+                <button className='messagesSubmit' onClick={sendMessage}>
+                  Send
+                </button>
+              </div>
             </div>
-            <div className='messagesBottom'>
-              <textarea
-                value={messageText}
-                onChange={handleMessageChange}
-                className='messagesInput'
-                placeholder='Write something ...'
-              ></textarea>
-              <button className='messagesSubmit' onClick={sendMessage}>
-                Send
-              </button>
-            </div>
-          </div>
+          ) : (
+            <h1 style={{ textAlign: 'center', color: 'lightgoldenrodyellow' }}>
+              Click a friend to chat!
+            </h1>
+          )}
         </div>
         <div className='matches'>
           <div className='matchesWrapper'>
