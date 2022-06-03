@@ -6,13 +6,9 @@ import ThemeContext, { themes } from '../theme-context.js';
 
 const RewardsPage = () => {
 
-  const test = useRef(theme);
-  console.log(test);
-
   const [user, setUser] = useState({});
 
   const [theme, setTheme] = useState(themes.dark);
-
 
 
   const getProfile = () => {
@@ -36,7 +32,14 @@ const RewardsPage = () => {
 
   useEffect(() => {
     getProfile();
+    // const storedTheme = JSON.stringify(window.sessionStorage.getItem(theme));
+    // console.log(storedTheme);
+    // setTheme(storedTheme);
   }, []);
+
+  // useEffect(() => {
+  //   window.sessionStorage.setItem('theme', theme);
+  // }, [theme])
 
   return (
     <div style={theme}>
