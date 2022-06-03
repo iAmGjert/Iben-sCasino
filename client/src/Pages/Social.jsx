@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import Conversation from '../components/Conversation.jsx';
@@ -47,6 +47,7 @@ const SocialStyles = styled.div`
   }
   .messagesTop {
     overflow-y: auto;
+    height: 70%;
     padding-right: 10px;
   }
   .friendsListWrapper {
@@ -86,7 +87,42 @@ const Social = () => {
   const [currentUser, setCurrentUser] = useState(null);
   const [users, setUsers] = useState(null);
   const [matches, setMatches] = useState(null);
+  const [messages, setMessages] = useState(null);
+  const [messageText, setMessageText] = useState('');
   const [friends, setFriends] = useState(null);
+  const [recipient, setRecipient] = useState(null);
+  const [currentConversation, setCurrentConversation] = useState(null);
+  const scrollRef = useRef();
+
+  const handleMessageChange = (e) => {
+    setMessageText(e.target.value);
+  };
+
+  const sendMessage = () => {
+    if (messageText) {
+      axios
+        .post('/routes/message', {
+          senderId: currentUser.id,
+          receiverId: recipient.id,
+          text: messageText,
+          conversationId: currentConversation,
+        })
+        .then(() => {
+          setMessageText('');
+          setTimeout(getMessages, 1000);
+        });
+    }
+  };
+
+  const getMessages = async () => {
+    const res = await axios.get('/routes/message', {
+      params: {
+        // change to currentConversation
+        conversationId: currentConversation,
+      },
+    });
+    setMessages(res.data);
+  };
 
   useEffect(() => {
     const getUser = async () => {
@@ -95,7 +131,6 @@ const Social = () => {
     };
     const getUsers = () => {
       axios.get('/routes/userDatabase/users').then((users) => {
-        console.log(users);
         setUsers(users.data);
       });
     };
@@ -104,7 +139,7 @@ const Social = () => {
         const { data } = await axios.get('/routes/poker/poker/history');
         setMatches(data);
       } catch (err) {
-        console.log(err);
+        console.error(err, 'get hist social page');
       }
     };
     getHist();
@@ -123,13 +158,24 @@ const Social = () => {
     getFriends();
   }, [currentUser]);
 
+  useEffect(() => {
+    if (currentConversation && recipient) {
+      getMessages();
+    }
+    // get messages
+  }, [currentConversation, recipient]);
+
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
   return (
     <SocialStyles className='wut' style={{ height: '0%' }}>
       <div className='social' style={{ maxWidth: '100%', display: 'flex' }}>
         <div className='friends'>
           <div className='friendsListWrapper'>
+            <h6 style={{ fontWeight: 'bold' }}>Friends</h6>
             <div className='friendList'>
-              <h6 style={{ fontWeight: 'bold' }}>Friends</h6>
               {friends?.length !== 0 ? (
                 friends?.map((f) => {
                   return (
@@ -137,6 +183,8 @@ const Social = () => {
                       user={f}
                       key={f.sub}
                       currentUser={currentUser}
+                      setCurrentConversation={setCurrentConversation}
+                      setRecipient={setRecipient}
                     />
                   );
                 })
@@ -146,9 +194,8 @@ const Social = () => {
             </div>
           </div>
           <div className='addFriendsWrapper'>
+            <h6 style={{ fontWeight: 'bold' }}>Add Friends</h6>
             <div className='addFriends'>
-              <h6 style={{ fontWeight: 'bold' }}>Add Friends</h6>
-
               {friends &&
                 users?.map((u) => {
                   const isFriend = friends.every((f) => f.id !== u.id);
@@ -166,32 +213,53 @@ const Social = () => {
           </div>
         </div>
         <div className='messages'>
-          <div className='messagesWrapper'>
-            <div className='messagesTop'>
-              <Message own={true} />
-              <Message />
-              <Message own={true} />
-              <Message />
-              <Message />
-              <Message own={true} />
-              <Message own={true} />
-              <Message own={true} />
-              <Message own={true} />
-              <Message own={true} />
-              <Message own={true} />
-              <Message own={true} />
-              <Message own={true} />
-              <Message own={true} />
-              <Message own={true} />
+          {messages ? (
+            <div className='messagesWrapper'>
+              <h4 style={{ textAlign: 'center' }}>{recipient?.name}</h4>
+              <div className='messagesTop'>
+                {messages &&
+                  messages.map((m) => {
+                    if (m.senderId === currentUser.id) {
+                      return (
+                        <div ref={scrollRef}>
+                          <Message
+                            own={true}
+                            message={m}
+                            recipient={recipient}
+                            currentUser={currentUser}
+                          />
+                        </div>
+                      );
+                    } else {
+                      return (
+                        <div ref={scrollRef}>
+                          <Message
+                            message={m}
+                            recipient={recipient}
+                            currentUser={currentUser}
+                          />
+                        </div>
+                      );
+                    }
+                  })}
+              </div>
+              <div className='messagesBottom'>
+                <textarea
+                  value={messageText}
+                  onChange={handleMessageChange}
+                  className='messagesInput'
+                  placeholder='Write something ...'
+                ></textarea>
+                <button className='messagesSubmit' onClick={sendMessage}>
+                  Send
+                </button>
+              </div>
             </div>
-            <div className='messagesBottom'>
-              <textarea
-                className='messagesInput'
-                placeholder='Write something ...'
-              ></textarea>
-              <button className='messagesSubmit'>Send</button>
-            </div>
-          </div>
+          ) : (
+            <h1 style={{ textAlign: 'center', color: 'lightgoldenrodyellow' }}>
+              Click a friend to chat!
+            </h1>
+          )}
         </div>
         <div className='matches'>
           <div className='matchesWrapper'>

@@ -1,5 +1,5 @@
 const sequelize = require('sequelize');
-const { Sequelize } = require('sequelize');
+const { Sequelize, Op } = require('sequelize');
 const orm = new Sequelize(
   'poker_database',
   process.env.DB_USERNAME,
@@ -8,6 +8,7 @@ const orm = new Sequelize(
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
     dialect: 'mysql',
+    logging: false,
   }
 );
 const User = orm.define('User', {
@@ -35,6 +36,10 @@ const User = orm.define('User', {
   money: {
     type: Sequelize.INTEGER,
     defaultValue: 1000,
+  },
+  theme: {
+    type: Sequelize.STRING(255),
+    allowNull: false,
   },
 });
 
@@ -104,10 +109,43 @@ const PokerGames = orm.define('PokerGames', {
   },
 });
 
+const Conversation = orm.define('Conversation', {
+  id: {
+    type: Sequelize.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  },
+  user1: {
+    type: Sequelize.INTEGER,
+  },
+  user2: {
+    type: Sequelize.INTEGER,
+  },
+});
+
+const Message = orm.define('Message', {
+  text: {
+    type: Sequelize.STRING(255),
+  },
+});
+
 User.hasMany(PokerGames, {
   foreignKey: {
     name: 'userId',
   },
+});
+
+Message.belongsTo(Conversation, {
+  foreignKey: 'conversationId',
+  as: 'Conversation',
+});
+Message.belongsTo(User, {
+  foreignKey: 'receiverId',
+  as: 'Receiver',
+});
+Message.belongsTo(User, {
+  foreignKey: 'senderId',
+  as: 'Sender',
 });
 
 User.belongsToMany(User, {
@@ -147,7 +185,6 @@ User.belongsToMany(User, {
 //     picture: 'ddsasadasdasdqwt.com',
 //   },
 // ]);
-
 orm
   .sync()
   .then(() => {
@@ -160,3 +197,5 @@ orm
 exports.User = User;
 // exports.Friends = Friends;
 exports.PokerGames = PokerGames;
+exports.Conversation = Conversation;
+exports.Message = Message;

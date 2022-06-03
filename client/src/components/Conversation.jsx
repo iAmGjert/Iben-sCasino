@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
 
 const ConversationStyles = styled.div`
   .conversation {
@@ -25,10 +26,26 @@ const ConversationStyles = styled.div`
     font-weight: 500;
   }
 `;
-const Conversation = ({ user }) => {
+const Conversation = ({
+  user,
+  currentUser,
+  setCurrentConversation,
+  setRecipient,
+}) => {
+  const handleClick = async () => {
+    const res = await axios.get('/routes/conversation', {
+      params: {
+        senderId: currentUser.id,
+        receiverId: user.id,
+      },
+    });
+    setRecipient(user);
+    setCurrentConversation(res.data.conversationId);
+  };
+
   return (
     <ConversationStyles>
-      <div className='conversation'>
+      <div className='conversation' onClick={handleClick}>
         <img className='conversationImage' src={user.picture} />
         <span className='conversationName'>{user.name}</span>
       </div>
