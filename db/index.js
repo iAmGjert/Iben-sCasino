@@ -37,6 +37,10 @@ const User = orm.define('User', {
     type: Sequelize.INTEGER,
     defaultValue: 1000,
   },
+  theme: {
+    type: Sequelize.STRING(255),
+    allowNull: false,
+  },
 });
 
 const PokerGames = orm.define('PokerGames', {
