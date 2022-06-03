@@ -15,7 +15,6 @@ const RouletteWheel = () => {
     console.log(winner);
     setWinNum(winner);
   };
-  const resetGame = () => {};
   useEffect(()=>{
     setNextWinner(segments[Math.floor(Math.random() * segments.length)]);
     
