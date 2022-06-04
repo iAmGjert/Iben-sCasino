@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
@@ -177,10 +178,15 @@ const Social = () => {
     const getUser = async () => {
       const { data } = await axios.get('/routes/profile/user');
       setCurrentUser(data);
-      setTheme(data.theme === null ? themes.light 
-        : data.theme === 'light' ? themes.light 
-        : data.theme === 'dark' ? themes.dark 
-        : themes.light)
+      setTheme(
+        data.theme === null
+          ? themes.light
+          : data.theme === 'light'
+          ? themes.light
+          : data.theme === 'dark'
+          ? themes.dark
+          : themes.light
+      );
     };
     const getUsers = () => {
       axios.get('/routes/userDatabase/users').then((users) => {

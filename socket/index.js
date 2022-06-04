@@ -1,6 +1,9 @@
 const io = require('socket.io')(8900, {
   cors: {
-    origin: 'http://localhost:1337',
+    origin: [
+      'http://localhost:1337',
+      'http://ec2-54-202-187-31.us-west-2.compute.amazonaws.com:1337',
+    ],
   },
 });
 
