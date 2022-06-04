@@ -50,28 +50,9 @@ const RouletteGame = () => {
       <h4>All bets are in increments of $5! Good luck!</h4>
       {
         user ?
-          <div>
-            <div>
+          <div className='rouletteTable/Wheel'>
+            <div className='currUserAndMoney'>
               {`${user.name}'s money: $${userMoney}`}
-            </div>
-            <div>
-              <div>
-                Current bets: {
-                  Object.values(bets).some((bet)=>bet > 0) ?
-                    Object.entries(bets).map((bet, index)=>
-                      <p key={`bet#${index}`}>
-                        {
-                          bet[1] > 0 ?
-                            `Space: ${bet[0]} Bet: $${bet[1]}` :
-                            ''
-                        }
-                      </p>) :
-                    'No Bets'
-                }
-              </div>
-              <div>
-                Current total bets: ${totalBets}
-              </div>
             </div>
             { readyToPlay ? 
               <RouletteWheel bets={bets} totalBets={totalBets} user={user} setBetChanged={setBetChanged} betChanged={betChanged} /> : 
@@ -87,6 +68,25 @@ const RouletteGame = () => {
                 }
               </Button> 
             }
+            <div className='currAndTotalBets'>
+              <div className='currBets'>
+                <h1>Current bets:</h1> {
+                  Object.values(bets).some((bet)=>bet > 0) ?
+                    Object.entries(bets).map((bet, index)=>
+                      <span display='block' key={`bet#${index}`}><b>
+                        {
+                          bet[1] > 0 ?
+                            `Space: ${bet[0]} Bet: $${bet[1]}` :
+                            ''
+                        }
+                       | </b></span>) :
+                    <i>No bets yet</i>
+                }
+              </div>
+              <div className='totalBets'>
+                <b>Current total bets: ${totalBets}</b>
+              </div>
+            </div>
           </div> :
           <span>
             Please <Button variant='contained' href='/login'>Login</Button> to play.

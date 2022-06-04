@@ -8,6 +8,7 @@ const RouletteTable = ( {bets, setBets, setBetChanged, betChanged} ) => {
   const segments = [
     '0', '28', '9', '26', '30', '11', '7', '20', '32', '17', '5', '22', '34', '15', '3', '24', '36', '13', '1', '00', '27', '10', '25', '29', '12', '8', '19', '31', '18', '6', '21', '33', '16', '4', '23', '35', '14', '2'
   ];
+  const otherOptions = ['1st 12', '2nd 12', '3rd 12', '1 - 18', '19 - 36', 'Even', 'Odd', 'Black', 'Red'];
   const addBet = (segment) => {
     const tempObj = Object.assign(bets);
     tempObj[segment] ? tempObj[segment] += 5 : tempObj[segment] = 5;
@@ -55,6 +56,40 @@ const RouletteTable = ( {bets, setBets, setBetChanged, betChanged} ) => {
                   <Button 
                     variant='contained'
                     onClick={ ()=>{ subBet(segment); } }
+                    color='error'
+                  >
+                  -
+                  </Button>
+                </Paper>
+              </div>
+            </Grid>;
+          })
+        }
+        {
+          otherOptions.map((option, index)=>{
+            return <Grid 
+              container
+              alignContent='center' 
+              spacing={0}
+              justifyContent='center'
+              alignItems='center' 
+              key={`segButton${index}`} 
+              item xs={12} sm={6} md={3}
+            >
+              <div>
+                <Paper>
+                
+                  <Button 
+                    variant='contained'
+                    onClick={ () => { addBet(option); } }
+                    color='success'
+                  >
+                  +
+                  </Button>
+                  {`      ${option}      `}
+                  <Button 
+                    variant='contained'
+                    onClick={ ()=>{ subBet(option); } }
                     color='error'
                   >
                   -
