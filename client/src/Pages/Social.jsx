@@ -235,7 +235,7 @@ const Social = () => {
   }, [messages]);
 
   return (
-    <SocialStyles className='wut' style={theme}>
+    <SocialStyles className='wut' style={{...theme, minHeight: '100vh'}}>
       <div className='social' style={{ maxWidth: '100%', display: 'flex' }}>
         <div className='friends'>
           <div className='friendsListWrapper'>

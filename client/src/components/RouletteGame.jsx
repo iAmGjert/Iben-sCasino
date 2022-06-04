@@ -53,7 +53,7 @@ const RouletteGame = () => {
       });  
   }, [betChanged]);
   return (
-    <div className='rouletteComponent' style={theme}>
+    <div className='rouletteComponent' style={{...theme, minHeight: '100vh'}}>
       <h1>Welcome to the roulette table!</h1>
       <h4>All bets are in increments of $5! Good luck!</h4>
       {

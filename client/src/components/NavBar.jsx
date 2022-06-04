@@ -10,10 +10,6 @@ const NavBar = (props) => {
       .then(( data )=>{
         if (data.status === 201) {
           setUser(data.data);
-          setTheme(data.data.theme === null ? themes.light 
-            : data.data.theme === 'light' ? themes.light 
-              : data.data.theme === 'dark' ? themes.dark 
-                : themes.light);
           setIsLoggedIn(true);
           return data.data;
         }
@@ -40,9 +36,6 @@ const NavBar = (props) => {
           </div>
           <div className='col s1.5'>
             <Link to={user ? '/social' : '/login'}>Social</Link>
-          </div>
-          <div className='col s1.5'>
-            <Link to={user ? '/addFriends' : '/login'}>Interacting with Players</Link>
           </div>
           <div className='col s1.5'>
             <Link to={user ? '/poker' : '/login'}>Poker</Link>

@@ -5,6 +5,7 @@ import axios from 'axios';
 import Blackjack from './Blackjack/Blackjack.jsx';
 import BlackjackStart from './Blackjack/BlackjackStart.jsx';
 import styled from 'styled-components';
+import { themes } from '../theme-context';
 
 const StyledGame = styled.div`
    h1 {
@@ -29,7 +30,8 @@ class Game extends React.Component {
       view: 'start',
       monies: 0,
       bet: 0,
-      name: ''
+      name: '',
+      theme: themes.light,
     };
     this.renderView = this.conditionalRender.bind(this);
     this.changeRender = this.changeRender.bind(this);
@@ -76,7 +78,11 @@ class Game extends React.Component {
       //  console.log('money', money)
       this.setState({
         name: name,
-        monies: money
+        monies: money,
+        theme: user.data.theme === null ? themes.light 
+                : user.data.theme === 'light' ? themes.light 
+                : user.data.theme === 'dark' ? themes.dark 
+                : themes.light
       });
     } catch (err) {
       console.log('game mount err', err);
@@ -109,7 +115,7 @@ class Game extends React.Component {
 
   render() {
     return (
-      <StyledGame>
+      <StyledGame style={{...this.state.theme, minHeight: '100vh'}}>
         <h1>{this.state.name}</h1>
         {this.conditionalRender()}
       </StyledGame>
