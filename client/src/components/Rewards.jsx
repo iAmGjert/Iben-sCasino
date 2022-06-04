@@ -16,7 +16,7 @@ const Rewards = ({ user }) => {
     })
       .then(() => {
         setRewardClaimed(true);
-        console.log('put worked');
+        //console.log('put worked');
       })
       .catch((err) => {
         console.error(err);
