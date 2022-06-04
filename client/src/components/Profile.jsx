@@ -3,13 +3,15 @@ import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import axios from 'axios';
 import Rewards from './Rewards.jsx';
+import ThemeContext, { themes } from '../theme-context';
 
 class Profile extends React.Component {
   
   constructor(props) {
     super(props);
     this.state = {
-      user: [] 
+      user: [],
+      theme: themes.light
     };
     this.getUser = this.getUser.bind(this);
   }
@@ -25,9 +27,15 @@ class Profile extends React.Component {
     const userData = await this.getUser(); 
     
     this.setState({
-      user: [Object.values(userData)] 
+      user: [Object.values(userData)],
+      theme: userData.theme === null ? themes.light 
+      : userData.theme === 'light' ? themes.light 
+      : userData.theme === 'dark' ? themes.dark 
+      : themes.light
     });
   }
+
+
 
   render() {
     const style = {
@@ -47,26 +55,33 @@ class Profile extends React.Component {
       marginLeft: '80px',
       borderShadow: '4px',
       boxShadow: '3px 3px 3px',
+      textAlign: 'center'
       
     };
 
     //map over user profile from database and render to profile page
     return (
-      <div style={style}>
+      
+      <div style={this.state.theme}>
         <div className='card-panel green darken-2' style={border}><h1>Player's Room</h1></div>
         
         {
           this.state.user.map((info, i) => {
             return (
               <div key={i}>
-                <div className='row'>
-                  <h2>{info[2]}</h2>
+
+                {/* <div>
+                {
+                  info[5] >= 10200 ? <button onClick={this.toggleTheme}>Change Theme</button> : ''
+                }        
+                </div> */}
+
+                <div className='row' style={{textAlign: 'center'}}>
+                  <h5 style={{textAlign: 'right'}}>${info[5]}</h5>
+                  <h2>Welcome back, {info[2]}! <img className='circle responsive-img z-depth-4' src={info[3]} style={{width: 60}} /></h2>
                 </div>
-                <div><Rewards initUser={info} /></div>
-                <img className='circle responsive-img z-depth-4' src={info[3]} style={{width: 200}} />
-                <h3>{info[4]}</h3>
-                <h4>Baller Status: {info[5] > 75 ? 'Baller' : info[5] <= 75 && info[5] >= 35 ? 'Bum' : 'Broke!!!'}</h4>
-                <h3>$: {info[5]}</h3>
+                <div><Rewards user={info} /></div>
+                <h4 style={{textAlign: 'center'}}>Baller Status: {info[5] > 75 ? 'Baller' : info[5] <= 75 && info[5] >= 35 ? 'Bum' : 'Broke!!!'}</h4>
               </div>
             );
           })

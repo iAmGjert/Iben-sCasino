@@ -1,8 +1,12 @@
 import React from 'react'
 
-const ChangeTheme = () => {
+
+const ChangeTheme = ({ user, toggleTheme }) => {
+
   return (
-    <div>ChangeTheme</div>
+    <div>
+      <button onClick={toggleTheme}>{user.theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}</button>
+      </div>
   )
 }
 
