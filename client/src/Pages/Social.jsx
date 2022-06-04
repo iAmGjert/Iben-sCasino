@@ -42,11 +42,13 @@ const SocialStyles = styled.div`
   }
   .matchesWrapper {
     overflow-y: auto;
+    border: 2px solid black;
   }
 
   .messagesWrapper {
     display: flex;
     flex-direction: column;
+    border: 2px solid black;
   }
   .messagesTop {
     overflow-y: auto;
@@ -58,12 +60,14 @@ const SocialStyles = styled.div`
     padding: 10px;
     height: 50%;
     overflow-y: auto;
+    border: 2px solid black;
   }
   .addFriendsWrapper {
     position: relative;
     padding: 10px;
     flex: 1 1 auto;
     overflow-y: auto;
+    border: 2px solid black;
   }
   .messagesBottom {
     margin-top: 5px;
