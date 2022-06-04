@@ -39,7 +39,6 @@ const RewardsPage = () => {
     })
   }
 
-  console.log(user);
 
   useEffect(() => {
     getProfile();
