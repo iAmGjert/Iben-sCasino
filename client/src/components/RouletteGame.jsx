@@ -25,12 +25,8 @@ const RouletteGame = () => {
     setReadyToPlay(!readyToPlay);
   };
   useEffect(()=>{
-    let total = 0;
-    for (const bet in bets) {
-      total += bets[bet];
-    }
-    setTotalBets(total);
-  }, [Object.values(bets)]);
+    console.log(bets);
+  }, [bets]);
   return (
     <div className='rouletteComponent'>
       <h1>Welcome to the roulette table!</h1>
