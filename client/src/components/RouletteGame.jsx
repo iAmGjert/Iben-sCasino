@@ -3,6 +3,7 @@ import RouletteWheel from './Roulette/RouletteWheel.jsx';
 import RouletteTable from './Roulette/RouletteTable.jsx';
 import axios from 'axios';
 import { Button } from '@mui/material';
+import { themes } from '../theme-context';
 
 
 const RouletteGame = () => {
@@ -12,11 +13,16 @@ const RouletteGame = () => {
   const [totalBets, setTotalBets] = useState(0);
   const [betChanged, setBetChanged] = useState(false);
   const [userMoney, setUserMoney] = useState(0);
+  const [theme, setTheme] = useState(themes.light);
   useEffect(()=>{
     axios.get('/routes/profile/user')
       .then(( data )=>{
         if (data.status === 201) {
           setUser(data.data);
+          setTheme(data.data.theme === null ? themes.light 
+            : data.data.theme === 'light' ? themes.light 
+              : data.data.theme === 'dark' ? themes.dark 
+                : themes.light);
           return data.data;
         }
       });  
@@ -45,7 +51,7 @@ const RouletteGame = () => {
       });  
   }, [betChanged]);
   return (
-    <div className='rouletteComponent'>
+    <div className='rouletteComponent' style={theme}>
       <h1>Welcome to the roulette table!</h1>
       <h4>All bets are in increments of $5! Good luck!</h4>
       {
