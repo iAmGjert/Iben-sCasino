@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import WheelComponent from 'react-wheel-of-prizes';
 import axios from 'axios';
 
-const RouletteWheel = ({bets, totalBets, user, setBetChanged, betChanged}) => {
+const RouletteWheel = ({bets, totalBets, user, setBetChanged, betChanged, gameOver, setGameOver}) => {
+  let totalWinnings = 0;
   const [winNum, setWinNum] = useState(null);
   const [firstRender, setFirstRender] = useState(true);
   const segments = [
@@ -12,16 +13,15 @@ const RouletteWheel = ({bets, totalBets, user, setBetChanged, betChanged}) => {
     'green', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'red', 'green', 'red', 'black', 'red',
     'black', 'red', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'red', 'black'
   ];
-  const otherOptions = ['1st 12', '2nd 12', '3rd 12', '1 - 18', '19 - 36', 'Even', 'Odd', 'Black', 'Red'];
   const onFinished = (winner) => {
     setWinNum(winner);
+    setGameOver(true);
   };
   useEffect(()=>{
     if (firstRender) {
       setFirstRender(false);
       return;
     }
-    let totalWinnings = 0;
     for (const bet in bets) {
       if (bets[bet]) {
         if (winNum === bet) {
@@ -72,9 +72,6 @@ const RouletteWheel = ({bets, totalBets, user, setBetChanged, betChanged}) => {
         }
       }      
     }
-    totalWinnings - totalBets > 0 ?
-      console.log(`Congradulations! You won $${totalWinnings - totalBets}!`) :
-      console.log(`Better luck next time! You lost $${-(totalWinnings - totalBets)}!`);
     
 
     axios.put(`/routes/userDatabase/users/${user.id}`, {
@@ -92,7 +89,7 @@ const RouletteWheel = ({bets, totalBets, user, setBetChanged, betChanged}) => {
   
   
   return (
-    <div>
+    <div background='blue'>
       <WheelComponent
         segments={segments}
         segColors={segColors}
@@ -107,6 +104,19 @@ const RouletteWheel = ({bets, totalBets, user, setBetChanged, betChanged}) => {
         downDuration={1000}
         fontFamily='Arial'
       />
+      {
+        gameOver ? 
+          <div>
+            {
+              totalWinnings - totalBets > 0 ?
+                `Congradulations! You won $${totalWinnings - totalBets}!` :
+                `Better luck next time! You lost $${-(totalWinnings - totalBets)}!`
+            }
+          </div> : 
+          <div>
+            Good luck! You can return to the betting table to reset your bets!
+          </div>
+      }
     </div>
   );
 };
