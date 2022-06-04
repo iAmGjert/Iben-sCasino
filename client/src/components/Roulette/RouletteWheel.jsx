@@ -51,12 +51,10 @@ const RouletteWheel = ({bets, totalBets, user, setBetChanged, betChanged}) => {
         if (bet === 'Black') {
           if ((parseInt(winNum) >= 1 && parseInt(winNum) <= 10) || (parseInt(winNum) >= 19 && parseInt(winNum) <= 28)) {
             if (parseInt(winNum) % 2 === 0) {
-              console.log('this number should be black');
               totalWinnings += (bets[bet] * 2);
             }
           } else if ((parseInt(winNum) >= 11 && parseInt(winNum) <= 18) || (parseInt(winNum) >= 29 && parseInt(winNum) <= 36)) {
             if (parseInt(winNum) % 2 === 1) {
-              console.log('this number should be black');
               totalWinnings += (bets[bet] * 2);
             }
           }     

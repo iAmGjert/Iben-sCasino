@@ -61,14 +61,14 @@ const initialDeal = async (userId, buyIn, bigBlind) => {
 const addToFlop = async (gameId) => {
 //if deckId is not passed in, will need to find in PokerGame table via the gameId, but for now assume it is passed in
   const {deckId, flop} = await PokerGames.findByPk(gameId);
-  console.log('DECK ID !!!! !!!!! ', deckId);
+  //console.log('DECK ID !!!! !!!!! ', deckId);
   const draw = await axios.get(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`);
   const {code, image} = draw.data.cards[0];
 
   //add it to the specified player pile
   const add = await axios.get(`https://deckofcardsapi.com/api/deck/${deckId}/pile/flop/add/?cards=${code}`);
   //Add it to the flip in the db
-  console.log('flop', flop);
+  //console.log('flop', flop);
   const newFlop = flop.concat(code);
   await PokerGames.update({flop: newFlop}, {where: {id: gameId}});
 
