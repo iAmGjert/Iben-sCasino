@@ -7,6 +7,7 @@ import { themes } from '../theme-context';
 
 
 const RouletteGame = () => {
+  const [gameOver, setGameOver] = useState(false);
   const [user, setUser] = useState(null);
   const [readyToPlay, setReadyToPlay] = useState(false);
   const [bets, setBets] = useState({});
@@ -35,6 +36,7 @@ const RouletteGame = () => {
       setTotalBets(0);
       setUserMoney(user.money);
       setBetChanged(!betChanged);
+      setGameOver(false);
     }
   };
   useEffect(()=>{
@@ -61,8 +63,8 @@ const RouletteGame = () => {
               {`${user.name}'s money: $${userMoney}`}
             </div>
             { readyToPlay ? 
-              <RouletteWheel bets={bets} totalBets={totalBets} user={user} setBetChanged={setBetChanged} betChanged={betChanged} /> : 
-              <RouletteTable bets={bets} setBetChanged={setBetChanged} setBets={setBets} betChanged={betChanged}/>
+              <RouletteWheel userMoney={userMoney} bets={bets} totalBets={totalBets} user={user} setBetChanged={setBetChanged} betChanged={betChanged} gameOver={gameOver} setGameOver={setGameOver}/> : 
+              <RouletteTable bets={bets} setBetChanged={setBetChanged} setBets={setBets} betChanged={betChanged} userMoney={userMoney} totalBets={totalBets}/>
             } 
             { 
               <Button variant='contained' disabled={Object.values(bets).some((bet)=>bet > 0) ? false : true} onClick={handleClick}>
