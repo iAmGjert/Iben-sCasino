@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import WheelComponent from 'react-wheel-of-prizes';
 import axios from 'axios';
 
-const RouletteWheel = ({bets, totalBets, user, setBetChanged, betChanged}) => {
+const RouletteWheel = ({bets, totalBets, user, setBetChanged, betChanged, userMoney}) => {
   const [total, setTotal] = useState(null);
   const [winNum, setWinNum] = useState(null);
   const [firstRender, setFirstRender] = useState(true);
@@ -74,10 +74,14 @@ const RouletteWheel = ({bets, totalBets, user, setBetChanged, betChanged}) => {
     }
     setTotal(totalWinnings - totalBets);
     
-
+    console.log('this is a log right before the axios request.');
+    console.log('current user money: $' + user.money);
+    console.log('totalBets: ' + totalBets);
+    console.log('totalWinnings: $' + (totalWinnings - totalBets));
+    console.log(`new total user money: $${userMoney + totalWinnings - totalBets}`);
     axios.put(`/routes/userDatabase/users/${user.id}`, {
       users: {
-        money: user.money + (totalWinnings - totalBets)
+        money: userMoney + (totalWinnings - totalBets)
       }
     })
       .then(()=>{
@@ -94,7 +98,7 @@ const RouletteWheel = ({bets, totalBets, user, setBetChanged, betChanged}) => {
       <WheelComponent
         segments={segments}
         segColors={segColors}
-        winningSegment='16' //{segments[Math.floor(Math.random() * segments.length)]}
+        winningSegment={segments[Math.floor(Math.random() * segments.length)]}
         onFinished={(winner) => onFinished(winner)}
         primaryColor='black'
         contrastColor='white'

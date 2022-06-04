@@ -63,7 +63,7 @@ const RouletteGame = () => {
               {`${user.name}'s money: $${userMoney}`}
             </div>
             { readyToPlay ? 
-              <RouletteWheel bets={bets} totalBets={totalBets} user={user} setBetChanged={setBetChanged} betChanged={betChanged} gameOver={gameOver} setGameOver={setGameOver}/> : 
+              <RouletteWheel userMoney={userMoney} bets={bets} totalBets={totalBets} user={user} setBetChanged={setBetChanged} betChanged={betChanged} gameOver={gameOver} setGameOver={setGameOver}/> : 
               <RouletteTable bets={bets} setBetChanged={setBetChanged} setBets={setBets} betChanged={betChanged} userMoney={userMoney} totalBets={totalBets}/>
             } 
             { 
