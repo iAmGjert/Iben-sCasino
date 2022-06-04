@@ -74,11 +74,6 @@ const RouletteWheel = ({bets, totalBets, user, setBetChanged, betChanged, userMo
     }
     setTotal(totalWinnings - totalBets);
     
-    console.log('this is a log right before the axios request.');
-    console.log('current user money: $' + user.money);
-    console.log('totalBets: ' + totalBets);
-    console.log('totalWinnings: $' + (totalWinnings - totalBets));
-    console.log(`new total user money: $${userMoney + totalWinnings - totalBets}`);
     axios.put(`/routes/userDatabase/users/${user.id}`, {
       users: {
         money: userMoney + (totalWinnings - totalBets)
