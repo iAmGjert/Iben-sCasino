@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import { format } from 'timeago.js';
+
 const MatchStyles = styled.div`
   .match {
     display: flex;
@@ -64,7 +66,7 @@ const Match = ({ match, win }) => {
           {win ? '+' + match.netEarnings : match.netEarnings}
         </span>
         <span className='gameType'>Poker</span>
-        <span className='matchPlayed'>{match.createdAt}</span>
+        <span className='matchPlayed'>{format(match.createdAt)}</span>
       </div>
     </MatchStyles>
   );

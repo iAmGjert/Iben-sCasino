@@ -230,7 +230,7 @@ const Social = () => {
                   return (
                     <Conversation
                       user={f}
-                      key={f.sub}
+                      key={f.sub + 'friend'}
                       currentUser={currentUser}
                       setCurrentConversation={setCurrentConversation}
                       setRecipient={setRecipient}
@@ -277,7 +277,7 @@ const Social = () => {
                             message={m}
                             recipient={recipient}
                             currentUser={currentUser}
-                            key={m.id}
+                            key={m.id + 'message'}
                           />
                         </div>
                       );
@@ -288,7 +288,7 @@ const Social = () => {
                             message={m}
                             recipient={recipient}
                             currentUser={currentUser}
-                            key={m.id}
+                            key={m.id + 'message'}
                           />
                         </div>
                       );
@@ -320,7 +320,7 @@ const Social = () => {
               return (
                 <Match
                   match={m}
-                  key={m.deckId}
+                  key={m.deckId + 'matches'}
                   win={m.netEarnings > 0 ? true : false}
                 />
               );
