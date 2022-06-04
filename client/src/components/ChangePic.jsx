@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import axios from 'axios';
 
 
@@ -6,13 +6,15 @@ const ChangePic = ({ user }) => {
 
 const [imageSelected, setImageSelected] = useState(null);
 
+const CLOUDINARY_URL = process.env.CLOUDINARY_URL;
+
   const uploadImage = () => {
   
     const formData = new FormData();
     formData.append('file', imageSelected);
     formData.append('upload_preset', 'Casino');
 
-    axios.post('https://api.cloudinary.com/v1_1/bford002/image/upload', formData)
+    axios.post(CLOUDINARY_URL, formData)
     .then((res) => {
       axios.put(`/routes/userDatabase/users/${user.id}`, {
         users: {

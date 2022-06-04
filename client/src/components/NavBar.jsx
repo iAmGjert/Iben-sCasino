@@ -38,9 +38,6 @@ const NavBar = (props) => {
             <Link to={user ? '/social' : '/login'}>Social</Link>
           </div>
           <div className='col s1.5'>
-            <Link to={user ? '/addFriends' : '/login'}>Interacting with Players</Link>
-          </div>
-          <div className='col s1.5'>
             <Link to={user ? '/poker' : '/login'}>Poker</Link>
           </div>
           <div className='col s1.5'>
