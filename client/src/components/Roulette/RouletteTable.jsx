@@ -46,25 +46,35 @@ const RouletteTable = ( {bets, setBets, setBetChanged, betChanged, userMoney, to
               key={`segButton${index}`} 
               item xs={12} sm={6} md={3}
             >
-              <div>
-                <Paper>
+              <div style={{
+                display: 'flex'
+              }}>
                 
-                  <Button 
-                    variant='contained'
-                    onClick={ () => { addBet(segment); } }
-                    color='success'
-                  >
-                  +
-                  </Button>
-                  {`      ${segment}      `}
-                  <Button 
-                    variant='contained'
-                    onClick={ ()=>{ subBet(segment); } }
-                    color='error'
-                  >
+                
+                <Button 
+                  variant='contained'
+                  onClick={ ()=>{ subBet(segment); } }
+                  color='error'
+                >
                   -
-                  </Button>
-                </Paper>
+                </Button>
+                <div style={{
+                  width: '4rem',
+                  background: 'white',
+                  color: 'black',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  userSelect: 'none'
+                }}>{segment}</div>
+                <Button 
+                  variant='contained'
+                  onClick={ () => { addBet(segment); } }
+                  color='success'
+                >
+                  +
+                </Button>
+                
               </div>
             </Grid>;
           })
@@ -80,25 +90,36 @@ const RouletteTable = ( {bets, setBets, setBetChanged, betChanged, userMoney, to
               key={`segButton${index}`} 
               item xs={12} sm={6} md={3}
             >
-              <div>
-                <Paper>
+              <div style={{
+                display: 'flex'
+              }}>
                 
-                  <Button 
-                    variant='contained'
-                    onClick={ () => { addBet(option); } }
-                    color='success'
-                  >
-                  +
-                  </Button>
-                  {`      ${option}      `}
-                  <Button 
-                    variant='contained'
-                    onClick={ ()=>{ subBet(option); } }
-                    color='error'
-                  >
+                
+                <Button 
+                  variant='contained'
+                  onClick={ ()=>{ subBet(option); } }
+                  color='error'
+                >
                   -
-                  </Button>
-                </Paper>
+                </Button>
+                <div style={{
+                  width: '4rem',
+                  background: 'white',
+                  color: 'black',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  userSelect: 'none'
+                }}>{option}</div>
+                <Button 
+                  variant='contained'
+                  onClick={ () => { addBet(option); } }
+                  color='success'
+                >
+                  +
+                </Button>
+                  
+                
               </div>
             </Grid>;
           })
