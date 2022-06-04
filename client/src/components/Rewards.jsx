@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 
-const Rewards = ({ user }) => {
+const Rewards = ({ user, rerenderParentCallback }) => {
 
   const [rewardClaimed, setRewardClaimed] = useState(false);
 
@@ -16,12 +16,15 @@ const Rewards = ({ user }) => {
     })
       .then(() => {
         setRewardClaimed(true);
-        //console.log('put worked');
+        rerenderParentCallback();
+        // console.log('put worked');
       })
       .catch((err) => {
         console.error(err);
       });
   };
+
+
 
 
   return (

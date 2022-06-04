@@ -5,6 +5,7 @@ import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import styled from 'styled-components';
 import PokerStart from './Poker/PokerStart.jsx';
+import { themes } from '../theme-context';
 
 const StyledGame = styled.div`
    h1 {
@@ -77,7 +78,8 @@ class PokerGame extends React.Component {
       buyIn: 50,
       userMoney: 0,
       userName: '',
-      history: []
+      history: [],
+      theme: themes.light,
     };
     this.changeView = this.changeView.bind(this);
     this.conditionalRender = this.conditionalRender.bind(this);
@@ -91,7 +93,11 @@ class PokerGame extends React.Component {
       const user = await axios.get('/routes/profile/user'); 
       this.setState({
         userMoney: user.data.money, //set with the usermoney in the bank
-        userName: user.data.name
+        userName: user.data.name,
+        theme: user.data.theme === null ? themes.light 
+                : user.data.theme === 'light' ? themes.light 
+                : user.data.theme === 'dark' ? themes.dark 
+                : themes.light
       }, );
       await this.getHist();
     } catch (err) {
@@ -151,7 +157,7 @@ class PokerGame extends React.Component {
   render() {
     const {name} = this.state;
     return ( 
-      <StyledGame>
+      <StyledGame style={{...this.state.theme, minHeight: '100vh'}}>
         <h1>{name}</h1>
         {this.conditionalRender()}
       </StyledGame>);

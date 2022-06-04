@@ -10,6 +10,8 @@ const RewardsPage = () => {
 
   const [theme, setTheme] = useState(themes.light);
 
+  const [render, setRender] = useState(false);
+
 
   const getProfile = () => {
     axios
@@ -34,21 +36,23 @@ const RewardsPage = () => {
               : null
       }
     })
-      .then(() => {
-        //console.log('changed theme');
-      });
+    .then(() => {
+      reRender();
+    })
   };
 
-  //console.log(user);
+  const reRender = () => {
+    setRender(!render);
+  }
 
   useEffect(() => {
     getProfile();
-  }, [theme]);
+  }, [render]);
 
 
 
   return (
-    <div style={theme}>
+    <div style={{...theme, minHeight: '100vh'}}>
 
       <div style={{ textAlign: 'center' }}>
         <h2>{user.name}</h2>
@@ -78,7 +82,7 @@ const RewardsPage = () => {
       <div style={{ width: '400px' }}>
         {
           user.money >= 1600 ?
-            <><h6>You can now change your theme!</h6><ChangeTheme toggleTheme={toggleTheme} user={user} /></> : ''
+            <><h6>You can now change your theme!</h6><ChangeTheme toggleTheme={toggleTheme} reRender={reRender} user={user} /></> : ''
         }
       </div>
 

@@ -10,10 +10,6 @@ const NavBar = (props) => {
       .then(( data )=>{
         if (data.status === 201) {
           setUser(data.data);
-          setTheme(data.data.theme === null ? themes.light 
-            : data.data.theme === 'light' ? themes.light 
-              : data.data.theme === 'dark' ? themes.dark 
-                : themes.light);
           setIsLoggedIn(true);
           return data.data;
         }
