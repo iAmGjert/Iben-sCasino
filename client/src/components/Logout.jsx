@@ -13,7 +13,7 @@ const Logout = () => {
 
 
   const logout = async () => {
-    console.log('hit');
+    //console.log('hit');
     try {
       await axios.get('/logout');
       

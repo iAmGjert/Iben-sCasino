@@ -18,8 +18,8 @@ const RewardsPage = () => {
         setUser(user.data);
         setTheme(user.data.theme === null ? themes.light 
           : user.data.theme === 'light' ? themes.light 
-          : user.data.theme === 'dark' ? themes.dark 
-          : themes.light);
+            : user.data.theme === 'dark' ? themes.dark 
+              : themes.light);
       })
       .catch((err) => console.log('getprof err', err));
   };
@@ -29,16 +29,17 @@ const RewardsPage = () => {
     axios.put(`/routes/userDatabase/users/${user.id}`, {
       users: {
         theme: user.theme === null ? 'dark' 
-        : user.theme === 'dark' ? 'light' 
-        : user.theme === 'light' ? 'dark' 
-        : null
+          : user.theme === 'dark' ? 'light' 
+            : user.theme === 'light' ? 'dark' 
+              : null
       }
     })
-    .then(() => {
-      console.log('changed theme');
-    })
-  }
+      .then(() => {
+        //console.log('changed theme');
+      });
+  };
 
+  //console.log(user);
 
   useEffect(() => {
     getProfile();
@@ -70,14 +71,14 @@ const RewardsPage = () => {
       <div style={{ width: '400px', marginBottom: '50px' }}>
         {
           user.money >= 1400 ? 
-          <><h6>You can now change your profile picture!</h6><ChangePic user={user} /></> : <h6>Earn More Money To Earn Rewards</h6>
+            <><h6>You can now change your profile picture!</h6><ChangePic user={user} /></> : <h6>Earn More Money To Earn Rewards</h6>
         }
       </div>
 
       <div style={{ width: '400px' }}>
         {
           user.money >= 1600 ?
-          <><h6>You can now change your theme!</h6><ChangeTheme toggleTheme={toggleTheme} user={user} /></> : ''
+            <><h6>You can now change your theme!</h6><ChangeTheme toggleTheme={toggleTheme} user={user} /></> : ''
         }
       </div>
 

@@ -24,7 +24,7 @@ class FollowingBar extends Component {
       .then(() => {
         axios.get(`/routes/userDatabase/friends/${this.state.currentUser.id}`)
           .then(friends => {
-            console.log(friends);
+            //console.log(friends);
             this.setState({
               friends: friends.data,
             });
@@ -68,7 +68,7 @@ class FollowingBar extends Component {
       color: 'white',
       textShadow: '2px 2px 4px #000000'
     };
-    console.log(latestFriends);
+    //console.log(latestFriends);
     return (
       <div className='following-bar' style={{height: '300px', width: '300px', backgroundColor: '#2F4050', marginTop: '255px'}}>
         <ul className="list-bar" style={{height: 'auto', padding: '0', width: '100%'}}>

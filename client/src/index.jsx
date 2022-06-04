@@ -17,7 +17,7 @@ import RewardsPage from './Pages/RewardsPage.jsx';
 
 ReactDOM.render(
   
-
+  
   <Router>
     <NavBar />
     <Route exact path='/poker' component={PokerGame} />

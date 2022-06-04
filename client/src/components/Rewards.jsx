@@ -14,14 +14,14 @@ const Rewards = ({ user }) => {
         money: user[5] + 200
       }
     })
-    .then(() => {
-      setRewardClaimed(true);
-      console.log('put worked');
-    })
-    .catch((err) => {
-      console.error(err);
-    })
-  }
+      .then(() => {
+        setRewardClaimed(true);
+        //console.log('put worked');
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
 
 
   return (
@@ -30,16 +30,16 @@ const Rewards = ({ user }) => {
       <div style={{textAlign: 'center'}}>
         {
           user[5] === 1400 ? <Link to='/rewards'><button style={{fontSize: '35px', lineHeight: '35px'}}>New Reward!</button></Link> 
-          : user[5] === 1800 ? <Link to='/rewards'><button style={{fontSize: '35px', lineHeight: '35px'}}>New Reward!</button></Link> : ''
+            : user[5] === 1800 ? <Link to='/rewards'><button style={{fontSize: '35px', lineHeight: '35px'}}>New Reward!</button></Link> : ''
         }
-        </div>
+      </div>
         
       <div>As a thank you for returning, here is $200!</div>
 
       <div>
         {
           rewardClaimed ? <button style={{fontSize: '25px', lineHeight: '25px'}}>Reward Claimed</button> 
-          : <button style={{fontSize: '25px', lineHeight: '25px'}} onClick={updateUser}>Claim $200</button>
+            : <button style={{fontSize: '25px', lineHeight: '25px'}} onClick={updateUser}>Claim $200</button>
         }
       </div>
 
@@ -50,8 +50,8 @@ const Rewards = ({ user }) => {
       </div>
 
     </h3>
-  )
-}
+  );
+};
 
 
 export default Rewards;
