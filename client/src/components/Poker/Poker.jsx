@@ -182,7 +182,7 @@ class Poker extends React.Component {
   async dealerFirstBet () {
     try {
 
-      console.log('dealer first bet');
+      //console.log('dealer first bet');
 
       
       const {bigBlind, gameId} = this.state;
@@ -214,7 +214,7 @@ class Poker extends React.Component {
    * other bets: the dealer bets first after the card is turned, they can check(call), raise, or fold
    */
   async dealerRoundBet () {
-    console.log('dealer round bet');
+    //console.log('dealer round bet');
 
     try {
 
@@ -234,7 +234,7 @@ class Poker extends React.Component {
 
       //if dealer folds: game is over
       if (data.move === 'fold') {
-        console.log('fold');
+        //console.log('fold');
         this.setState({
           gameOver: true
         }, () => console.log('fold', this.state));
