@@ -3,53 +3,52 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 
-const Rewards = ({ initUser }) => {
+const Rewards = ({ user }) => {
 
-  const [user, setUser] = useState(initUser)
+  const [rewardClaimed, setRewardClaimed] = useState(false);
 
-  const getProfile = () => {
-    axios.get('/routes/profile/user')
-      .then(user => {
-        setUser(user.data)
-      })
-      .catch((err => console.log('getprof err', err)));
-  }
 
   const updateUser = () => {
-    axios.put(`/routes/userDatabase/users/${initUser[0]}`, {
+    axios.put(`/routes/userDatabase/users/${user[0]}`, {
       users: {
-        money: initUser[5] + 200
+        money: user[5] + 200
       }
     })
     .then(() => {
-      // console.log('put worked');
+      setRewardClaimed(true);
+      console.log('put worked');
     })
     .catch((err) => {
       console.error(err);
     })
   }
 
-  // useEffect(() => {
-  //   updateUser();
-  //   getProfile();
-  // }, []);
-
-
 
   return (
     <h3>
-      <div>
+
+      <div style={{textAlign: 'center'}}>
         {
-          user.money === 9600 ? <Link to='/rewards'><button className='rewardButton'>New Reward!</button></Link> : ''
+          user[5] === 1400 ? <Link to='/rewards'><button style={{fontSize: '35px', lineHeight: '35px'}}>New Reward!</button></Link> 
+          : user[5] === 1800 ? <Link to='/rewards'><button style={{fontSize: '35px', lineHeight: '35px'}}>New Reward!</button></Link> : ''
         }
         </div>
-      <div>Welcome back!</div>
-      <div>As a thank you, $200 has been added to your account!</div>
+        
+      <div>As a thank you for returning, here is $200!</div>
+
       <div>
         {
-          user.money > 9600 ? <Link to='/rewards'><button className='rewardButton'>Check Rewards</button></Link> : ''
+          rewardClaimed ? <button style={{fontSize: '25px', lineHeight: '25px'}}>Reward Claimed</button> 
+          : <button style={{fontSize: '25px', lineHeight: '25px'}} onClick={updateUser}>Claim $200</button>
         }
       </div>
+
+      <div>
+        {
+          user[5] > 1400 ? <Link to='/rewards'><button style={{fontSize: '13px', lineHeight: '13px'}}>See Earned Rewards</button></Link> : ''
+        }
+      </div>
+
     </h3>
   )
 }
