@@ -4,7 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button } from '@mui/material';
 
-const RouletteTable = ( {bets, setBets} ) => {
+const RouletteTable = ( {bets, setBets, setBetChanged, betChanged} ) => {
   const segments = [
     '0', '28', '9', '26', '30', '11', '7', '20', '32', '17', '5', '22', '34', '15', '3', '24', '36', '13', '1', '00', '27', '10', '25', '29', '12', '8', '19', '31', '18', '6', '21', '33', '16', '4', '23', '35', '14', '2'
   ];
@@ -12,11 +12,13 @@ const RouletteTable = ( {bets, setBets} ) => {
     const tempObj = Object.assign(bets);
     tempObj[segment] ? tempObj[segment] += 5 : tempObj[segment] = 5;
     setBets(tempObj);
+    setBetChanged(!betChanged);
   };
   const subBet = (segment) => {
     const tempObj = Object.assign(bets);
     tempObj[segment] > 0 ? tempObj[segment] -= 5 : tempObj[segment] = 0;
     setBets(tempObj);
+    setBetChanged(!betChanged);
   };
   return (
     <div>

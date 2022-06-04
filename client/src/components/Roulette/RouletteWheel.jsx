@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import WheelComponent from 'react-wheel-of-prizes';
+import axios from 'axios';
 
-const RouletteWheel = ({bets, totalBets}) => {
+const RouletteWheel = ({bets, totalBets, user, setBetChanged, betChanged}) => {
   const [winNum, setWinNum] = useState(null);
   const [firstRender, setFirstRender] = useState(true);
   const segments = [
@@ -30,6 +31,17 @@ const RouletteWheel = ({bets, totalBets}) => {
     totalWinnings - totalBets > 0 ?
       console.log(`Congradulations! You won $${totalWinnings - totalBets}!`) :
       console.log(`Better luck next time! You lost $${-(totalWinnings - totalBets)}!`);
+    
+
+    axios.put(`/routes/userDatabase/users/${user.id}`, {
+      users: {
+        money: user.money + (totalWinnings - totalBets)
+      }
+    })
+      .then(()=>{
+        setBetChanged(!betChanged);
+      });
+    
     
     
   }, [winNum]);

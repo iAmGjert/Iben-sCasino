@@ -10,6 +10,8 @@ const RouletteGame = () => {
   const [readyToPlay, setReadyToPlay] = useState(false);
   const [bets, setBets] = useState({});
   const [totalBets, setTotalBets] = useState(0);
+  const [betChanged, setBetChanged] = useState(false);
+  const [userMoney, setUserMoney] = useState(0);
   useEffect(()=>{
     axios.get('/routes/profile/user')
       .then(( data )=>{
@@ -17,16 +19,31 @@ const RouletteGame = () => {
           setUser(data.data);
           return data.data;
         }
-      }); 
-    
+      });  
   }, []);
   const handleClick = () => {
     readyToPlay ? setBets({}) : null;
     setReadyToPlay(!readyToPlay);
+    if (readyToPlay) {
+      setBets({});
+      setTotalBets(0);
+      setUserMoney(user.money);
+      setBetChanged(!betChanged);
+    }
   };
   useEffect(()=>{
-    console.log(bets);
-  }, [bets]);
+    let total = 0;
+    for (const bet in bets) {
+      total += bets[bet];
+    }
+    setTotalBets(total);
+    axios.get('/routes/profile/user')
+      .then(( data )=>{
+        if (data.status === 201) {
+          setUserMoney(data.data.money);
+        }
+      });  
+  }, [betChanged]);
   return (
     <div className='rouletteComponent'>
       <h1>Welcome to the roulette table!</h1>
@@ -35,7 +52,7 @@ const RouletteGame = () => {
         user ?
           <div>
             <div>
-              {`${user.name}'s money: $${user.money}`}
+              {`${user.name}'s money: $${userMoney}`}
             </div>
             <div>
               <div>
@@ -57,8 +74,8 @@ const RouletteGame = () => {
               </div>
             </div>
             { readyToPlay ? 
-              <RouletteWheel bets={bets} totalBets={totalBets}/> : 
-              <RouletteTable bets={bets} setBets={setBets}/>
+              <RouletteWheel bets={bets} totalBets={totalBets} user={user} setBetChanged={setBetChanged} betChanged={betChanged} /> : 
+              <RouletteTable bets={bets} setBetChanged={setBetChanged} setBets={setBets} betChanged={betChanged}/>
             } 
             { 
               <Button variant='contained' disabled={Object.values(bets).some((bet)=>bet > 0) ? false : true} onClick={handleClick}>
