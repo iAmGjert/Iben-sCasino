@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import WheelComponent from 'react-wheel-of-prizes';
 import axios from 'axios';
 
-const RouletteWheel = ({bets, totalBets, user, setBetChanged, betChanged}) => {
+const RouletteWheel = ({bets, totalBets, user, setBetChanged, betChanged, userMoney}) => {
+  const [total, setTotal] = useState(null);
   const [winNum, setWinNum] = useState(null);
   const [firstRender, setFirstRender] = useState(true);
   const segments = [
@@ -12,7 +13,6 @@ const RouletteWheel = ({bets, totalBets, user, setBetChanged, betChanged}) => {
     'green', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'red', 'green', 'red', 'black', 'red',
     'black', 'red', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'red', 'black', 'red', 'black'
   ];
-  const otherOptions = ['1st 12', '2nd 12', '3rd 12', '1 - 18', '19 - 36', 'Even', 'Odd', 'Black', 'Red'];
   const onFinished = (winner) => {
     setWinNum(winner);
   };
@@ -72,14 +72,11 @@ const RouletteWheel = ({bets, totalBets, user, setBetChanged, betChanged}) => {
         }
       }      
     }
-    totalWinnings - totalBets > 0 ?
-      console.log(`Congradulations! You won $${totalWinnings - totalBets}!`) :
-      console.log(`Better luck next time! You lost $${-(totalWinnings - totalBets)}!`);
+    setTotal(totalWinnings - totalBets);
     
-
     axios.put(`/routes/userDatabase/users/${user.id}`, {
       users: {
-        money: user.money + (totalWinnings - totalBets)
+        money: userMoney + (totalWinnings - totalBets)
       }
     })
       .then(()=>{
@@ -96,7 +93,7 @@ const RouletteWheel = ({bets, totalBets, user, setBetChanged, betChanged}) => {
       <WheelComponent
         segments={segments}
         segColors={segColors}
-        winningSegment= {segments[Math.floor(Math.random() * segments.length)]}
+        winningSegment={segments[Math.floor(Math.random() * segments.length)]}
         onFinished={(winner) => onFinished(winner)}
         primaryColor='black'
         contrastColor='white'
@@ -107,7 +104,19 @@ const RouletteWheel = ({bets, totalBets, user, setBetChanged, betChanged}) => {
         downDuration={1000}
         fontFamily='Arial'
       />
+      {
+        total !== null ? 
+          total > 0 ?
+            <div>
+              {`Congradulations! You won $${total}`}
+            </div> : 
+            total === 0 ?
+              <div>At least you didn't lose anything! Your bets evened out.</div> :
+              <div>{`Better luck next time! You lost $${-total}`}</div> :
+          <div>Good Luck!</div>
+      }
     </div>
+    
   );
 };
 
