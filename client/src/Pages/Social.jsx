@@ -106,7 +106,11 @@ const Social = () => {
   const socket = useRef();
 
   useEffect(() => {
-    socket.current = io('ws://localhost:8900');
+    // this should be localhost instead of ec2 instance
+    socket.current = io(
+      'ws://ec2-54-202-187-31.us-west-2.compute.amazonaws.com:8900',
+      { transports: ['websocket'] }
+    );
     socket.current.on('getMessage', (data) => {
       setArrivalMessage({
         senderId: data.senderId,
@@ -235,7 +239,7 @@ const Social = () => {
   }, [messages]);
 
   return (
-    <SocialStyles className='wut' style={{...theme, minHeight: '100vh'}}>
+    <SocialStyles className='wut' style={{ ...theme, minHeight: '100vh' }}>
       <div className='social' style={{ maxWidth: '100%', display: 'flex' }}>
         <div className='friends'>
           <div className='friendsListWrapper'>
