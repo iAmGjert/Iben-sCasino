@@ -107,13 +107,13 @@ const RouletteWheel = ({bets, totalBets, user, setBetChanged, betChanged, userMo
       {
         total !== null ? 
           total > 0 ?
-            <div>
+            <h3>
               {`Congradulations! You won $${total}`}
-            </div> : 
+            </h3> : 
             total === 0 ?
-              <div>At least you didn't lose anything! Your bets evened out.</div> :
-              <div>{`Better luck next time! You lost $${-total}`}</div> :
-          <div><span style={{color: 'red'}}>WARNING: </span>Returning to the betting table will reset your bets!</div>
+              <h3>At least you didn't lose anything! Your bets evened out.</h3> :
+              <h3>{`Better luck next time! You lost $${-total}`}</h3> :
+          <h3><span style={{color: 'red'}}>WARNING: </span>Returning to the betting table will reset your bets!</h3>
       }
     </div>
     
