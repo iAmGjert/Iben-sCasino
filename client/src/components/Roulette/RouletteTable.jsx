@@ -30,7 +30,7 @@ const RouletteTable = ( {bets, setBets, setBetChanged, betChanged, userMoney, to
   return (
     <div>
       <div style={{ padding: '10px' }}>
-        <BetIncrements betAmount={betAmount} betChanged={betChanged} setBetChanged={setBetChanged} setBetAmount={setBetAmount}/>
+        <BetIncrements bets={bets} setBets={setBets} betAmount={betAmount} betChanged={betChanged} setBetChanged={setBetChanged} setBetAmount={setBetAmount}/>
       </div>
       <Grid 
         container
