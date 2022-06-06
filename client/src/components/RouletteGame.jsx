@@ -53,9 +53,9 @@ const RouletteGame = () => {
       });  
   }, [betChanged]);
   return (
-    <div className='rouletteComponent' style={{...theme, minHeight: '100vh'}}>
-      <h1>Welcome to the roulette table!</h1>
-      <h4>All bets are in increments of $5! Good luck!</h4>
+    <div className='rouletteComponent' style={{...theme, minHeight: '100vh', userSelect: 'none'}}>
+      <h1>Welcome to the { readyToPlay ? 'roulette wheel!' : 'betting table!' }</h1>
+      <h4>{readyToPlay ? <div><p>Click anywhere on the wheel below to start your spin!</p><p>To return to the betting board click the button below the wheel!</p></div> : 'Place your bets then click the button below to see the roulette wheel!'}</h4>
       {
         user ?
           <div className='rouletteTable/Wheel'>
