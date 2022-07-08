@@ -46,7 +46,7 @@ class Login extends React.Component {
     };
     return (
       <div style={style}>
-        <h1 style={headerStyle}>BIG EASY CASINO</h1>
+        <h1 style={headerStyle}>Iben's Casino</h1>
         <div className="col s12 m6 offset-m3 left-align">
           <a className="oauth-container btn darken-4 white black-text" href='/google' style={{textTransform: 'none'}}>
             <div className="left">

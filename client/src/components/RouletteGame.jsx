@@ -53,54 +53,56 @@ const RouletteGame = () => {
       });  
   }, [betChanged]);
   return (
-    <div className='rouletteComponent' style={{...theme, minHeight: '100vh'}}>
-      <h1>Welcome to the roulette table!</h1>
-      <h4>All bets are in increments of $5! Good luck!</h4>
-      {
-        user ?
-          <div className='rouletteTable/Wheel'>
-            <div className='currUserAndMoney'>
-              {`${user.name}'s money: $${userMoney}`}
-            </div>
-            { readyToPlay ? 
-              <RouletteWheel userMoney={userMoney} bets={bets} totalBets={totalBets} user={user} setBetChanged={setBetChanged} betChanged={betChanged} gameOver={gameOver} setGameOver={setGameOver}/> : 
-              <RouletteTable bets={bets} setBetChanged={setBetChanged} setBets={setBets} betChanged={betChanged} userMoney={userMoney} totalBets={totalBets}/>
-            } 
-            { 
-              <Button variant='contained' disabled={Object.values(bets).some((bet)=>bet > 0) ? false : true} onClick={handleClick}>
-                { readyToPlay ?
-                  'Back to table for bets' : 
-                  Object.values(bets).some((bet)=>bet > 0) ?
-                    'To the wheel for spin' : 
-                    'Place your bets'
-                }
-              </Button> 
-            }
-            <div className='currAndTotalBets'>
-              <div className='currBets'>
-                <h1>Current bets:</h1> {
-                  Object.values(bets).some((bet)=>bet > 0) ?
-                    Object.entries(bets).map((bet, index)=>
-                      <span display='block' key={`bet#${index}`}><b>
-                        {
-                          bet[1] > 0 ?
-                            `Space: ${bet[0]} Bet: $${bet[1]}` :
-                            ''
-                        }
+    userMoney > 0 ?
+      <div className='rouletteComponent' style={{...theme, minHeight: '100vh', userSelect: 'none'}}>
+        <h1>Welcome to the { readyToPlay ? 'roulette wheel!' : 'betting table!' }</h1>
+        <h4>{readyToPlay ? <div><p>Click anywhere on the wheel below to start your spin!</p><p>To return to the betting board click the button below the wheel!</p></div> : 'Place your bets then click the button below to see the roulette wheel!'}</h4>
+        {
+          user ?
+            <div className='rouletteTable/Wheel'>
+              <div className='currUserAndMoney'>
+                {`${user.name}'s money: $${userMoney}`}
+              </div>
+              { readyToPlay ? 
+                <RouletteWheel userMoney={userMoney} bets={bets} totalBets={totalBets} user={user} setBetChanged={setBetChanged} betChanged={betChanged} gameOver={gameOver} setGameOver={setGameOver}/> : 
+                <RouletteTable bets={bets} setBetChanged={setBetChanged} setBets={setBets} betChanged={betChanged} userMoney={userMoney} totalBets={totalBets}/>
+              } 
+              { 
+                <Button variant='contained' disabled={Object.values(bets).some((bet)=>bet > 0) ? false : true} onClick={handleClick}>
+                  { readyToPlay ?
+                    'Back to table for bets' : 
+                    Object.values(bets).some((bet)=>bet > 0) ?
+                      'To the wheel for spin' : 
+                      'Place your bets'
+                  }
+                </Button> 
+              }
+              <div className='currAndTotalBets'>
+                <div className='currBets'>
+                  <h1>Current bets:</h1> {
+                    Object.values(bets).some((bet)=>bet > 0) ?
+                      Object.entries(bets).map((bet, index)=>
+                        <span display='block' key={`bet#${index}`}><b>
+                          {
+                            bet[1] > 0 ?
+                              `Space: ${bet[0]} Bet: $${bet[1]}` :
+                              ''
+                          }
                        | </b></span>) :
-                    <i>No bets yet</i>
-                }
+                      <i>No bets yet</i>
+                  }
+                </div>
+                <div className='totalBets'>
+                  <b>Current total bets: ${totalBets}</b>
+                </div>
               </div>
-              <div className='totalBets'>
-                <b>Current total bets: ${totalBets}</b>
-              </div>
-            </div>
-          </div> :
-          <span>
+            </div> :
+            <span>
             Please <Button variant='contained' href='/login'>Login</Button> to play.
-          </span>
-      }
-    </div>
+            </span>
+        }
+      </div> :
+      <div style={{...theme, minHeight: '100vh', userSelect: 'none'}}>Sorry, {user ? user.name : 'user'}, but you haven't got any money! Come back once you're not so broke!</div>
   );
 };
 
